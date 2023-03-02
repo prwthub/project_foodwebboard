@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 01, 2023 at 05:47 PM
+-- Generation Time: Mar 02, 2023 at 04:18 PM
 -- Server version: 10.3.16-MariaDB
 -- PHP Version: 7.3.6
 
@@ -29,10 +29,10 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `category` (
-  `id_category` int(100) NOT NULL,
-  `tag` varchar(64) NOT NULL,
-  `food_country` varchar(100) NOT NULL,
-  `food_type` varchar(100) NOT NULL
+  `category_id` int(100) NOT NULL,
+  `category_tag` varchar(64) NOT NULL,
+  `category_country` varchar(100) NOT NULL,
+  `category_type` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -42,11 +42,10 @@ CREATE TABLE `category` (
 --
 
 CREATE TABLE `comment` (
-  `user_id` int(11) NOT NULL,
-  `user_name` varchar(100) NOT NULL,
   `comment_id` int(100) NOT NULL,
-  `post_id` int(100) NOT NULL,
-  `c_content` varchar(300) NOT NULL
+  `comment_content` varchar(200) NOT NULL,
+  `user_id` int(100) NOT NULL,
+  `post_id` int(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -56,17 +55,18 @@ CREATE TABLE `comment` (
 --
 
 CREATE TABLE `post` (
-  `id_post` int(100) NOT NULL,
+  `post_id` int(100) NOT NULL,
   `user_id` int(100) NOT NULL,
-  `title` varchar(1000) NOT NULL,
-  `m_content` varchar(2024) NOT NULL,
-  `content` varchar(2048) NOT NULL,
-  `picture` varchar(500) NOT NULL,
-  `post_date` datetime NOT NULL,
+  `user_name` varchar(100) NOT NULL,
+  `category_id` int(100) NOT NULL,
+  `post_title` varchar(1000) NOT NULL,
+  `post_maincontent` varchar(2024) NOT NULL,
+  `post_content` varchar(2048) NOT NULL,
+  `post_picture` varchar(500) NOT NULL,
+  `post_date` date NOT NULL,
   `post_like` int(100) NOT NULL,
   `post_dislike` int(100) NOT NULL,
-  `post_view` int(100) NOT NULL,
-  `id_category` int(100) NOT NULL
+  `post_view` int(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -77,10 +77,11 @@ CREATE TABLE `post` (
 
 CREATE TABLE `user` (
   `user_id` int(100) NOT NULL,
-  `user_name` varchar(64) NOT NULL,
-  `username` varchar(64) NOT NULL,
+  `user_username` varchar(64) NOT NULL,
   `user_password` varchar(64) NOT NULL,
-  `user_email` varchar(64) NOT NULL
+  `user_name` varchar(64) NOT NULL,
+  `user_email` varchar(64) NOT NULL,
+  `user_role` varchar(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -91,22 +92,23 @@ CREATE TABLE `user` (
 -- Indexes for table `category`
 --
 ALTER TABLE `category`
-  ADD PRIMARY KEY (`id_category`);
+  ADD PRIMARY KEY (`category_id`);
 
 --
 -- Indexes for table `comment`
 --
 ALTER TABLE `comment`
-  ADD PRIMARY KEY (`user_id`),
-  ADD KEY `post_id` (`post_id`);
+  ADD PRIMARY KEY (`comment_id`),
+  ADD KEY `post_id` (`post_id`),
+  ADD KEY `user_id` (`user_id`);
 
 --
 -- Indexes for table `post`
 --
 ALTER TABLE `post`
-  ADD PRIMARY KEY (`id_post`),
+  ADD PRIMARY KEY (`post_id`),
   ADD KEY `user_id` (`user_id`),
-  ADD KEY `id_category` (`id_category`);
+  ADD KEY `category_id` (`category_id`);
 
 --
 -- Indexes for table `user`
@@ -122,7 +124,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `post`
 --
 ALTER TABLE `post`
-  MODIFY `id_post` int(100) NOT NULL AUTO_INCREMENT;
+  MODIFY `post_id` int(100) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `user`
@@ -138,14 +140,14 @@ ALTER TABLE `user`
 -- Constraints for table `comment`
 --
 ALTER TABLE `comment`
-  ADD CONSTRAINT `comment_ibfk_1` FOREIGN KEY (`post_id`) REFERENCES `post` (`id_post`);
+  ADD CONSTRAINT `comment_ibfk_1` FOREIGN KEY (`post_id`) REFERENCES `post` (`post_id`);
 
 --
 -- Constraints for table `post`
 --
 ALTER TABLE `post`
   ADD CONSTRAINT `post_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`),
-  ADD CONSTRAINT `post_ibfk_2` FOREIGN KEY (`id_category`) REFERENCES `category` (`id_category`);
+  ADD CONSTRAINT `post_ibfk_2` FOREIGN KEY (`category_id`) REFERENCES `category` (`category_id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
