@@ -43,7 +43,7 @@
       $conn = new PDO("mysql:host=$server_name;dbname=$database;charset=utf8", "$username", "$password");
       $conn->exec("SET CHARACTER SET utf8");
 
-      $data = $conn->query("SELECT p.category_id,p.post_title,p.user_id,p.user_name,p.post_date,p.post_like,p.post_dislike,p.post_id FROM post p , category c order by p.post_id DESC;");
+      $data = $conn->query("SELECT p.category_id,p.post_title,p.user_id,u.user_name,p.post_date,p.post_like,p.post_dislike,p.post_id FROM post p , category c , user u order by p.post_id DESC;");
       if($data !== false){
           while($row = $data->fetch()){
           // echo "<tr><td><a href=\"post.php?id=".$row['0'].'\" style=text-decoration:none></a>"; 

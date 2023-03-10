@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.0.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 02, 2023 at 04:18 PM
--- Server version: 10.3.16-MariaDB
--- PHP Version: 7.3.6
+-- Generation Time: Mar 10, 2023 at 05:24 PM
+-- Server version: 10.4.25-MariaDB
+-- PHP Version: 8.1.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -43,7 +42,7 @@ CREATE TABLE `category` (
 
 CREATE TABLE `comment` (
   `comment_id` int(100) NOT NULL,
-  `comment_content` varchar(200) NOT NULL,
+  `comment_content` varchar(2000) NOT NULL,
   `user_id` int(100) NOT NULL,
   `post_id` int(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -57,12 +56,11 @@ CREATE TABLE `comment` (
 CREATE TABLE `post` (
   `post_id` int(100) NOT NULL,
   `user_id` int(100) NOT NULL,
-  `user_name` varchar(100) NOT NULL,
   `category_id` int(100) NOT NULL,
   `post_title` varchar(1000) NOT NULL,
-  `post_maincontent` varchar(2024) NOT NULL,
+  `post_ingredient` varchar(2024) NOT NULL,
   `post_content` varchar(2048) NOT NULL,
-  `post_picture` varchar(500) NOT NULL,
+  `post_picture` longblob NOT NULL,
   `post_date` date NOT NULL,
   `post_like` int(100) NOT NULL,
   `post_dislike` int(100) NOT NULL,
@@ -124,13 +122,13 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `post`
 --
 ALTER TABLE `post`
-  MODIFY `post_id` int(100) NOT NULL AUTO_INCREMENT;
+  MODIFY `post_id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `user_id` int(100) NOT NULL AUTO_INCREMENT;
+  MODIFY `user_id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Constraints for dumped tables
