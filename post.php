@@ -17,78 +17,55 @@ session_start();
         crossorigin="anonymous"></script>
     <!--Icon-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
-
     <title>Post</title>
 </head>
 
 <body>
     <div class="container-xxl">
         <?php
-        include "nav.php";
+            include "nav.php";
         ?>
 
         <section class="col-md-5 mx-auto m-3">
             <?php
-            isset($_GET['id']) ? $id = $_GET['id'] : header("Location: index.php");
-            echo "<center>ต้องการดูกระทู้หมายเลข $id <br>";
+                isset($_GET['id']) ? $id = $_GET['id'] : header("Location: index.php");
+                echo "<center>ต้องการดูกระทู้หมายเลข $id <br>";
             ?>
-
             <?php
             // ******************connect database****************************
-            // $conn = new PDO("mysql:host=$server_name;dbname=$database;charset=utf8", "$username", "$password");
-            // $data = $conn->query("SELECT p.id,p.title,p.content,p.post_date ,c.name,u.name FROM post p , user u , category c WHERE p.id = $id AND p.user_ID = u.id;");
+            $server_name = "localhost";
+            $username = "root";
+            $password = "";
+            $database = "webboard_recipes";
+            
+            $conn = new PDO("mysql:host=$server_name;dbname=$database;charset=utf8", "$username", "$password");
+            // ข้อมูลที่ดึงขึ้แสดงที่ Post
+            $data = $conn->query("SELECT p.post_id, p.post_title, p.post_content, p.post_date, c.category_id, u.user_username FROM post p , user u , category c WHERE p.post_id = $id AND p.user_id = u.user_id;");
+            // ข้อมูลสำหรับแสดง Comment
+            $comment = $conn->query("SELECT p.post_id, u.user_username, u.user_id, c.comment_content, c.user_id, c.comment_id, c.post_id FROM post p , user u , comment c WHERE p.post_id = c.post_id AND c.user_id = u.user_id AND c.post_id = $id ORDER BY c.comment_id ASC");
+            // ดึงข้อมูลมาใช้งาน จาก DATABASE 
+            if($data !== false){
+                while($row = $data->fetch()){
             ?>
 
             <!--*********************ส่วนแสดง post******************************* -->
             <div class="card text-dark bg-white border-primary mb-3">
-                <?php $row = $data->fetch(); ?>
-                
                 <div class="card-header alert alert-primary">
                     <strong>
-                        <?
-                        //=
-                        // แสดง หัวข้อของรายการอาหารจาก database
-                        //  $row['1']; 
+                        <?php
+                            echo $row['1']." "; //แสดงหัวข้อ Topic    
+                            echo $row['3'];     //แสดงวนที่ของ Post
                         ?>
                     </strong></div>
                 <div class="card-body pb-1">
                     <div class="container row mb-3 justify-content-between">
-                        <?
-                        //=
-                        // แสดง ข้อมูลเกี่ยวกับรายการอาหารจาก database
-                        //  $row['2']. $row['5'] . " - " . $row['3']; 
+                        <?php
+                            echo $row['4']."<BR>";  //แสดง Category
+                            echo $row['2']."<BR>";  //แสดง Content
                         ?>                         
                     </div>
                 </div>
             </div>
-
-            <!--*********************ส่วนแสดง comment******************************* -->
-            <?php
-            $result = $conn->query($sql);
-            $i = 0;
-            foreach ($result as $row) {
-                $i++;
-            ?>
-                <!--แสดงความคิดเห็นที่เท่าไหร่ -->
-                <div class="card text-dark bg-white border-info mb-3">
-                    <div class="card-header bg-info text-white">
-                        <?= " ความคิดเห็นที่ " . $i; ?>
-                    </div>
-                    <div class="card-body pb-1">
-                        <div class="container row mb-3 justify-content-between">
-                            <?
-                            //= 
-                            // แสดง ข้อมูลความคิดเห็นจาก database
-                            // $row['1'].$row['5'] . " - " . $row['2']; 
-                            ?>                             
-                        </div>
-                    </div>
-                </div>
-                <?php
-            }
-            $conn = null;
-            ?>
-
 
             <!--*********************ส่วนแสดง comment******************************* -->
             <?php
@@ -121,12 +98,39 @@ session_start();
                     </div>
                 </div>
 
+                <!--*********************ส่วนแสดง comment******************************* -->
+                <?php
+                if($comment !== false){
+                    while($comm = $comment->fetch()){
+                ?>
+                <div class="card text-dark bg-white border-info mb-3">
+                    <div class="card-header bg-info text-white">
+                        <?php echo "ความคิดเห็นจาก ".$comm['1']; ?>
+                    </div>
+                    <div class="card-body pb-1">
+                        <div class="container row mb-3 justify-content-between">
+                            <?php
+                                echo $comm['3'];
+                            ?>                       
+                        </div>
+                    </div>
+                </div>
+                <?php
+                    }
+                }
+                ?>
+
+                <?php
+                $conn = null;
+                }  
+                ?>
+
             <?php
             }
+            }  
             ?>
 
         </section>
     </div>
 </body>
-
 </html>

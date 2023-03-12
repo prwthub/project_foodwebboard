@@ -42,13 +42,7 @@
         $_SESSION["error"] = 1;
 
     }
-    header("Location: login.php");       
-    die();
     $conn=null;
-
+    header("Location: login.php");       
+    die(); 
 ?>
-    
-
-
-
-

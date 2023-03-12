@@ -1,7 +1,7 @@
 <?php
     session_start();
     if(isset($_SESSION["id"])){
-        header("location:test_session.php"); //test_session
+        header("location:index.php"); //test_session
         //header("location:index.php");
         die();
     }
