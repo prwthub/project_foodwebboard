@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 4.9.0.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 10, 2023 at 05:24 PM
--- Server version: 10.4.25-MariaDB
--- PHP Version: 8.1.10
+-- Generation Time: Mar 15, 2023 at 12:09 PM
+-- Server version: 10.3.16-MariaDB
+-- PHP Version: 7.3.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -42,7 +43,8 @@ CREATE TABLE `category` (
 
 CREATE TABLE `comment` (
   `comment_id` int(100) NOT NULL,
-  `comment_content` varchar(2000) NOT NULL,
+  `comment_content` varchar(200) NOT NULL,
+  `comment_time` datetime(6) NOT NULL,
   `user_id` int(100) NOT NULL,
   `post_id` int(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -56,9 +58,10 @@ CREATE TABLE `comment` (
 CREATE TABLE `post` (
   `post_id` int(100) NOT NULL,
   `user_id` int(100) NOT NULL,
+  `user_name` varchar(100) NOT NULL,
   `category_id` int(100) NOT NULL,
   `post_title` varchar(1000) NOT NULL,
-  `post_ingredient` varchar(2024) NOT NULL,
+  `post_maincontent` varchar(2024) NOT NULL,
   `post_content` varchar(2048) NOT NULL,
   `post_picture` longblob NOT NULL,
   `post_date` date NOT NULL,
@@ -79,7 +82,15 @@ CREATE TABLE `user` (
   `user_password` varchar(64) NOT NULL,
   `user_name` varchar(64) NOT NULL,
   `user_email` varchar(64) NOT NULL,
-  `user_role` varchar(1) NOT NULL
+  `user_role` varchar(1) NOT NULL,
+  `user_fname` varchar(100) NOT NULL,
+  `user_lname` varchar(100) NOT NULL,
+  `user_phone` int(10) NOT NULL,
+  `user_exp` varchar(255) NOT NULL,
+  `user_des` varchar(255) NOT NULL,
+  `user_country` varchar(100) NOT NULL,
+  `user_state` varchar(100) NOT NULL,
+  `user_pic` longblob NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -122,13 +133,13 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `post`
 --
 ALTER TABLE `post`
-  MODIFY `post_id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `post_id` int(100) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `user_id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `user_id` int(100) NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables
