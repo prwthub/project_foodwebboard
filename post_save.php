@@ -15,7 +15,7 @@
     $sql = "INSERT INTO comment(comment_content,user_id,post_id) VALUES
                                  ('$comment', '$user_id', '$post_id')";
     $conn->exec($sql);
-    header("location: post.php?id=$post_id"); 
+    header("location: post.php?id=$post_id");
     $conn = null;
     die();
 ?>
