@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 16, 2023 at 03:12 PM
+-- Generation Time: Mar 16, 2023 at 05:24 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.1.12
 
@@ -63,7 +63,13 @@ INSERT INTO `comment` (`comment_id`, `comment_content`, `comment_time`, `user_id
 (7, '1', '0000-00-00 00:00:00.000000', 6, 9),
 (8, '2', '0000-00-00 00:00:00.000000', 6, 9),
 (9, '3', '0000-00-00 00:00:00.000000', 6, 9),
-(10, '4', '0000-00-00 00:00:00.000000', 6, 9);
+(10, '4', '0000-00-00 00:00:00.000000', 6, 9),
+(11, '55555555555555555555555555555555', '0000-00-00 00:00:00.000000', 6, 11),
+(12, 'กฟหกฟหกฟ', '0000-00-00 00:00:00.000000', 6, 11),
+(13, 'ว้าว สุดยอดไปเลย', '0000-00-00 00:00:00.000000', 6, 11),
+(14, 'จริงปะ', '0000-00-00 00:00:00.000000', 6, 9),
+(15, 'ว้าว', '0000-00-00 00:00:00.000000', 4, 12),
+(16, 'yeah', '0000-00-00 00:00:00.000000', 4, 12);
 
 -- --------------------------------------------------------
 
@@ -91,7 +97,8 @@ CREATE TABLE `post` (
 
 INSERT INTO `post` (`post_id`, `user_id`, `category_id`, `post_title`, `post_ingredient`, `post_content`, `post_picture`, `post_date`, `post_like`, `post_dislike`, `post_view`) VALUES
 (9, 4, 1, 'หมูทอด', 'หมู\r\nม้ำมัน\r\nหมา', 'เอาหมาไปทอด', '', '2023-03-16', 0, 0, 0),
-(11, 4, 3, 'ไข่แมวทอด', 'ไข่แมวสดๆ\r\nน้ำมัน', 'เอามอสไปทอด', '', '2023-03-16', 0, 0, 0);
+(11, 4, 3, 'ไข่แมวทอด', 'ไข่แมวสดๆ\r\nน้ำมัน', 'เอามอสไปทอด', '', '2023-03-16', 0, 0, 0),
+(12, 6, 2, 'หมาพิมชื่อ', 'หมาพิมวัตถุดิบ', 'หมาพิมขั้นตอน', '', '2023-03-16', 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -171,13 +178,13 @@ ALTER TABLE `category`
 -- AUTO_INCREMENT for table `comment`
 --
 ALTER TABLE `comment`
-  MODIFY `comment_id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `comment_id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `post`
 --
 ALTER TABLE `post`
-  MODIFY `post_id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `post_id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `user`
