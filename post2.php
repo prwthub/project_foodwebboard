@@ -29,7 +29,7 @@ session_start();
         if ($data !== false) {
             while ($row = $data->fetch()) {
                 echo "$row[0] โดย $row[1]";
-            }   
+            }
         }
         $conn = null;
         ?>
@@ -56,75 +56,125 @@ session_start();
             // ข้อมูลที่ดึงขึ้นแสดงที่ Post
             $data = $conn->query("SELECT p.post_id, p.post_title, p.post_date, p.category_id, c.category_tag, p.post_ingredient, p.post_content, p.post_picture, u.user_username , p.user_id , u.user_id 
                                     FROM post p , user u , category c 
-                                    WHERE p.post_id = $id AND p.user_id = u.user_id OR p.category_id = c.category_id");
+                                    WHERE p.post_id = $id and p.category_id = c.category_id and u.user_id = p.user_id");
+
+            $sql = "SELECT * FROM post p , user u , category c 
+            WHERE p.post_id = $id AND p.user_id = u.user_id OR p.category_id = c.category_id";
+            $query = $conn->query($sql);
+            $result = $query->fetch(PDO::FETCH_ASSOC);
+
+
+
+            // ดึงข้อมูลมาใช้งาน จาก DATABASE 
+            $conn = new PDO("mysql:host=$server_name;dbname=$database;charset=utf8", "$username", "$password");
+            $data = $conn->query("SELECT p.post_id, p.post_title, p.post_date,p.category_id,p.post_ingredient, p.post_content, u.user_username , p.user_id , u.user_id , c.category_tag , c.category_id
+                                    FROM post p , user u , category c 
+                                    WHERE p.post_id = $id and p.category_id = c.category_id and u.user_id = p.user_id");
+
+            $post_id ;
+            $post_title ;
+            $post_date ;
+            $category_id ;
+            $post_ingredient; 
+            $post_content ;
+            $user_username ;
+            $user_id ;
+            $category_tag ;
             // ดึงข้อมูลมาใช้งาน จาก DATABASE 
             if ($data !== false) {
                 while ($row = $data->fetch()) {
-                    echo "post_id = " . $row['0'] . " id = $id <bR>";
-                    echo "p.user_id = " . $row['9'] . "u.user_id = ".$row['10'];
-            ?>
-                    <!--*********************ส่วนแสดง post******************************* -->
-                    <div class="card text-dark bg-white border-primary mb-3">
-                        <div class="card-header alert alert-primary">
-                            <strong>
-                                <?php
-                                echo $row['1']; //แสดงหัวข้อ menuname  
-                                echo "<div tyle='text-align:left>$row[2]</div>";     //แสดงวันที่ของ date
-                                ?>
-                            </strong>
-                        </div>
-                        <div class="card-body pb-1">
-                            <div class="container row mb-3 justify-content-between">
-                                <?php
-                                echo "ประเภท : " . $row['4'] . "<BR><BR>";  //แสดง Category
-                                echo "วัตถุดิบ : " . $row['5'] . "<BR><BR>";  //แสดง ingredient
-                                echo "" . $row['6'] . "<BR><BR>";  //แสดง Content
-                                // echo pic [7]
-                                echo "เขียนโดย : " . $row['8'] . "<BR>";  //แสดง Content
-                                ?>
-                            </div>
-                        </div>
-                    </div>
+                    // echo "p.post_id = $row[0]                  id = $id <bR>";
+                    // echo "p.user_id = $row[7]           u.user_id = $row[8] <bR>";
+                    // echo "p.category_id = $row[3]   c.category_id = $row[9] <bR>";
+                    // echo "<BR><BR>";
 
-                    <!--*********************ส่วนแสดง comment (input)******************************* -->
-                    <?php
-                    // ต้อง login ก่อนถึงคอมเม้นได้
-                    if (isset($_SESSION["id"])) {
-                    ?>
+                    $post_id = $row[0];
+                    $post_title = $row[1];
+                    $post_date = $row[2];
+                    $category_id = $row[3];
+                    $post_ingredient = $row[4];
+                    $post_content = $row[5];
+                    $user_username = $row[6];
+                    $user_id = $row[7];
+                    $user_id = $row[8];
+                    $category_id = $row[9];
+                    $category_tag = $row[9];
 
-                        <div class="card text-dark bg-white border-success">
-                            <div class="card-header bg-success text-white">แสดงความคิดเห็น</div>
-                            <div class="card-body">
-                                <!-- ส่งข้อมูล comment ไปยัง post_save -->
-                                <form action="post_save.php" method="post">
-                                    <input type="hidden" name="post_id" value="<?= $id; ?>">
-                                    <div class="row mb-3 justify-content-center">
-                                        <div class="col-lg-10">
-                                            <textarea name="comment" class="form-control" rows="8"></textarea>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-lg-12">
-                                            <center>
-                                                <button type="submit" class="btn btn-success btn-sm text-white">
-                                                    <i class="bi bi-box-arrow-up-right me-1"></i>
-                                                    ส่งข้อความ
-                                                </button>
-                                            </center>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-
-                    <?php
-                    }
+                    // echo "<BR><BR><BR>";
+                    // echo $post_id . "<BR>";
+                    // echo $post_title . "<BR>";
+                    // echo $post_date . "<BR>";
+                    // echo $category_id . "<BR>";
+                    // echo $post_ingredient . "<BR>";
+                    // echo $post_content . "<BR>";
+                    // echo $user_username . "<BR>";
+                    // echo $user_id . "<BR>";
+                    // echo $user_id . "<BR>";
+                    // echo $category_id . "<BR>";
                 }
             }
             ?>
 
+
+            <!--*********************ส่วนแสดง post******************************* -->
+            <div class="card text-dark bg-white border-primary mb-3">
+                <div class="card-header alert alert-primary">
+                    <strong>
+                        <?php
+                            echo "$post_title <BR>";
+                            echo "$post_date";
+                        ?>
+                    </strong>
+                </div>
+                <div class="card-body pb-1">
+                    <div class="container row mb-3 justify-content-between">
+                        <?php
+                            echo "ประเภท : $category_id <BR>";
+                            echo "วัตถุดิบ : $post_ingredient <BR><BR>";
+                            echo "$post_content <BR><BR>";
+                            echo "เขียนโดย - $user_username <BR>";
+                        ?>
+                    </div>
+                </div>
+            </div>
+
+
+            <!--*********************ส่วนแสดง comment (input)******************************* -->
             <?php
-            //1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+            // ต้อง login ก่อนถึงคอมเม้นได้
+            if (isset($_SESSION["id"])) {
+            ?>
+
+                <div class="card text-dark bg-white border-success">
+                    <div class="card-header bg-success text-white">แสดงความคิดเห็น</div>
+                    <div class="card-body">
+                        <!-- ส่งข้อมูล comment ไปยัง post_save -->
+                        <form action="post_save.php" method="post">
+                            <input type="hidden" name="post_id" value="<?= $id; ?>">
+                            <div class="row mb-3 justify-content-center">
+                                <div class="col-lg-10">
+                                    <textarea name="comment" class="form-control" rows="8"></textarea>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <center>
+                                        <button type="submit" class="btn btn-success btn-sm text-white">
+                                            <i class="bi bi-box-arrow-up-right me-1"></i>
+                                            ส่งข้อความ
+                                        </button>
+                                    </center>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <br><br>
+            <?php
+            }
+            ?>
+
+            <?php
             //<!--*********************ส่วนแสดง comment******************************* -->
             $conn = null;
             $conn = new PDO("mysql:host=$server_name;dbname=$database;charset=utf8", "$username", "$password");
@@ -136,7 +186,7 @@ session_start();
 
             if ($comment !== false) {
                 while ($comm = $comment->fetch()) {
-                    ?>
+            ?>
                     <div class="card text-dark bg-white border-info mb-3">
                         <div class="card-header bg-info text-white">
                             <?php echo "ความคิดเห็นจาก " . $comm['1']; ?>
@@ -155,8 +205,11 @@ session_start();
             }
             ?>
 
+
         </section>
     </div>
+
+
 </body>
 
 </html>
