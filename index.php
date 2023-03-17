@@ -93,8 +93,10 @@ session_start();
           echo "<br>";
           echo "<div style='text-align:right'> Like - " . $row['5'] . " Dislike - " . $row['6']; // post_like , post_dislike
           // If role ADMIN, Show Delete button (ln. 64 - 66)
-          if ($_SESSION["role"] == "a") {
-            echo "</td><td><a href=\"delete.php?id=" . $row['7'] . "\" class=\"btn btn-danger bi bi-trash\" onclick='return deletePost();'></a>";
+          if (isset($_SESSION["role"])) {
+            if ($_SESSION["role"] == "a") {
+              echo "</td><td><a href=\"delete.php?id=" . $row['7'] . "\" class=\"btn btn-danger bi bi-trash\" onclick='return deletePost();'></a>";
+            }
           }
           echo "</td></tr>";
         }
