@@ -25,6 +25,7 @@ session_start();
         <?php
         // ต้อง login ก่อนถึงเขียน post ได้
         if (!isset($_SESSION["id"])) {
+            $_SESSION["add_post"] = 'error';
             header("Location: index.php");
         }
         ?>

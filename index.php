@@ -23,9 +23,31 @@ session_start();
 
   <form method="GET" action="search.php">
     <?php include "nav.php"; ?>
-    <div class="d-flex justify-content-center my-5">
+    <div class="justify-content-center my-5">
       <a href="newpost.php">
-        <button type="button" class="btn btn-primary">ADD FOOD MENU</button>
+        <!-- session ที่เอาไว้เตือนว่าถ้าไม่ log in ไม่สามารถ newpost ได่ -->
+        <?php
+        if (isset($_SESSION["add_post"])) {
+        ?>
+          <div class="row mt-3">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+              <?php
+              // register error
+              if ($_SESSION["add_post"] == 'error') {
+                echo "<center><div class=\"alert alert-danger bi bi-x-circle\" role=\"alert\" style='width:60%'>";
+                echo "  คุณจำเป็นต้องเข้าสู่ระบบก่อนถึงจะสามารถเพิ่มโพสได้";
+                echo "</div></center>";
+                unset($_SESSION["add_post"]);
+              }
+              ?>
+            </div>
+            <div class="col-md-3"></div>
+          </div>
+        <?php
+        }
+        ?>
+        <center><button type="button" class="btn btn-primary">ADD FOOD MENU</button></center>
       </a>
     </div>
 
