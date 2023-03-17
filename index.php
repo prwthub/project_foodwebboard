@@ -13,15 +13,33 @@ session_start();
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- CSS only -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
   <!-- JavaScript Bundle with Popper -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
+    crossorigin="anonymous"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
 </head>
 
+<script type="text/javascript">
+
+  // Script for delete button (ADMIN only)
+  function deletePost() {
+    let areYouSure = confirm("Do you really want to delete this post?");
+    if (areYouSure == true) {
+      alert("Post deleted");
+      return areYouSure;
+    } else {
+      return areYouSure;
+    }
+  }
+
+</script>
+
 <body>
 
-  <form method="GET" action="search.php">
+  <form method="GET" action="delete.php">
     <?php include "nav.php"; ?>
     <div class="d-flex justify-content-center my-5">
       <a href="newpost.php">
@@ -52,6 +70,10 @@ session_start();
           echo " " . $row['3'] . " - " . $row['4']; // user_name , post_date
           echo "<br>";
           echo "<div style='text-align:right'> Like - " . $row['5'] . " Dislike - " . $row['6']; // post_like , post_dislike
+          // If role ADMIN, Show Delete button (ln. 64 - 66)
+          if ($_SESSION["role"] == "a") {
+            echo "</td><td><a href=\"delete.php?id=" . $row['7'] . "\" class=\"btn btn-danger bi bi-trash\" onclick='return deletePost();'></a>";
+          }
           echo "</td></tr>";
         }
       }
