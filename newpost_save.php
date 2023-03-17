@@ -18,6 +18,7 @@
     $sql = "INSERT INTO post(user_id, category_id, post_title, post_ingredient, post_content, post_picture, post_date) 
                     VALUES  ('$user_id', '$category_id', '$menuname', '$ingre', '$content', '$picture', NOW())";
     $conn->exec($sql);
+    
     //header("location: post.php?id=$post_id");
     // เดียวแก้ปัญหา อีก table อัพข้อมูลไม่ทัน
     // ด้วยการสร้าง newpost_verify
