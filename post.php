@@ -9,9 +9,12 @@ session_start();
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- CSS only -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
     <!-- JavaScript Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+        crossorigin="anonymous"></script>
     <!--Icon-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
     <title>
@@ -45,7 +48,7 @@ session_start();
             <?php
             isset($_GET['id']) ? $id = $_GET['id'] : header("Location: index.php");
             //echo "<center>ต้องการดูกระทู้หมายเลข $id <br>";
-
+            
             // ******************connect database****************************
             $server_name = "localhost";
             $username = "root";
@@ -68,19 +71,19 @@ session_start();
             // ดึงข้อมูลมาใช้งาน จาก DATABASE 
             $conn = new PDO("mysql:host=$server_name;dbname=$database;charset=utf8", "$username", "$password");
             $data = $conn->query("SELECT p.post_id, p.post_title, p.post_date, p.category_id, p.post_ingredient, p.post_content, u.user_username, p.user_id, u.user_id, c.category_tag, c.category_id,
-                                        p.post_like, p.post_dislike, p.post_view
+                                        p.post_like, p.post_dislike, p.post_view /* ******************************* เรียกรูปจาก database *********************************************** */ 
                                     FROM post p , user u , category c 
                                     WHERE p.post_id = $id and p.category_id = c.category_id and u.user_id = p.user_id");
 
-            $post_id ;
-            $post_title ;
-            $post_date ;
-            $category_id ;
-            $post_ingredient; 
-            $post_content ;
-            $user_username ;
-            $user_id ;
-            $category_tag ;
+            $post_id;
+            $post_title;
+            $post_date;
+            $category_id;
+            $post_ingredient;
+            $post_content;
+            $user_username;
+            $user_id;
+            $category_tag;
 
             $post_like;
             $post_dislike;
@@ -93,7 +96,7 @@ session_start();
                     // echo "p.user_id = $row[7]           u.user_id = $row[8] <bR>";
                     // echo "p.category_id = $row[3]   c.category_id = $row[9] <bR>";
                     // echo "<BR><BR>";
-
+            
                     $post_id = $row[0];
                     $post_title = $row[1];
                     $post_date = $row[2];
@@ -109,7 +112,7 @@ session_start();
                     $post_like = $row[11];
                     $post_dislike = $row[12];
                     $post_view = $row[13];
-                    
+
 
                     // echo "<BR><BR><BR>";
                     // echo $post_id . "<BR>";
@@ -132,11 +135,11 @@ session_start();
                 <div class="card-header alert alert-primary">
                     <strong>
                         <?php
-                            echo "<div class = 'd-flex justify-content-between'>
+                        echo "<div class = 'd-flex justify-content-between'>
                             <div> $post_title </div>
                             <div style='text-align:right'> view : $post_view </div>
                             </div>";
-                            echo "<div class = 'd-flex justify-content-between'>
+                        echo "<div class = 'd-flex justify-content-between'>
                             <div> $post_date </div>
                             <div style='text-align:right'> like : $post_like  dislike : $post_dislike </div>
                             </div>";
@@ -146,21 +149,55 @@ session_start();
                 <div class="card-body pb-1">
                     <div class="container row mb-3 justify-content-between">
                         <?php
-                            echo "ประเภท : $category_tag <BR>";
-                            echo "วัตถุดิบ : $post_ingredient <BR><BR>";
-                            echo "$post_content <BR><BR>";
-                            echo "เขียนโดย - $user_username <BR>";
+                        echo "รูป :  <BR><BR>"; //******************************** เรียกรูปจาก database *********************************************** */ 
+                        echo "ประเภท : $category_tag <BR>";
+                        echo "วัตถุดิบ : $post_ingredient <BR><BR>";
+                        echo "$post_content <BR><BR>";
+                        echo "เขียนโดย - $user_username <BR>";
                         ?>
                     </div>
                 </div>
             </div>
+
+            <div class="d-flex">
+                <div class="input-group">
+                    <label>คอมเม้นเก่า,ใหม่: </label>
+                    <span class="dropdown">
+                        <button class="btn btn-light dropdown-toggle btn-sm " type="button" id="button2"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <?php
+                            //*********ตัวอย่าง************* */
+                            // if ($id != 0)
+                            //     foreach ($conn->query("SELECT name FROM category WHERE id = $id") as $row) {
+                            //         echo $row['0'];
+                            //     } else {
+                            //     echo '---ทั้งหมด---';
+                            
+                            // }
+                            ?>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="button2">
+
+                            <?php
+                            //*********ตัวอย่าง************* */
+                            // echo "<li><a href=\"index.php?id=0\" class='dropdown-item' value=0 > ---ทั้งหมด---</a></li>";
+                            // foreach ($conn->query($sql) as $row) {
+                            //     echo "<li><a href=\"index.php?id=" . $row['0'] . "\" class='dropdown-item' value=" . $row['id'] . ">" . $row['name'] . "</a></li>";
+                            // }
+                            // $conn = null;
+                            ?>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+
 
 
             <!--*********************ส่วนแสดง comment (input)******************************* -->
             <?php
             // ต้อง login ก่อนถึงคอมเม้นได้
             if (isset($_SESSION["id"])) {
-            ?>
+                ?>
 
                 <div class="card text-dark bg-white border-success">
                     <div class="card-header bg-success text-white">แสดงความคิดเห็น</div>
@@ -187,7 +224,7 @@ session_start();
                     </div>
                 </div>
                 <br><br>
-            <?php
+                <?php
             }
             ?>
 
@@ -203,7 +240,7 @@ session_start();
 
             if ($comment !== false) {
                 while ($comm = $comment->fetch()) {
-            ?>
+                    ?>
                     <div class="card text-dark bg-white border-info mb-3">
                         <div class="card-header bg-info text-white">
                             <?php echo "ความคิดเห็นจาก " . $comm['1']; ?>
@@ -216,7 +253,7 @@ session_start();
                             </div>
                         </div>
                     </div>
-            <?php
+                    <?php
                 }
                 $conn = null;
             }

@@ -90,9 +90,7 @@ session_start();
                             <div class="col-lg-9">
                                 <input type="file" name="picture" id="img" class="form-control streches-link" accept="image/gif,image/jpeg,image/png">
                                 <!-- error style="display" เลยลบ  -->
-                                <p class="small mb-0 mt2"><b>Note</b> Olay JPG, JPEG, PMG & GIF files are allowed to
-                                    upload
-                                </p>
+                                <p class="small mb-0 mt2"><b>Note</b> Olay JPG, JPEG, PMG & GIF files are allowed to upload </p>
                             </div>
                         </div>
 
