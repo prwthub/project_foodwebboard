@@ -12,19 +12,18 @@
     $ingre = $_POST['ingre'];
     $content = $_POST['content'];
     $picture = $_POST['picture'];
-    $post_id = $_POST['post_id'];
 
     $conn = new PDO("mysql:host=$server_name;dbname=$database;charset=utf8","$username","$password");
     $sql = "INSERT INTO post(user_id, category_id, post_title, post_ingredient, post_content, post_picture, post_date) 
                     VALUES  ('$user_id', '$category_id', '$menuname', '$ingre', '$content', '$picture', NOW())";
     $conn->exec($sql);
     
-    //header("location: post.php?id=$post_id");
-    // เดียวแก้ปัญหา อีก table อัพข้อมูลไม่ทัน
-    // ด้วยการสร้าง newpost_verify
-
-    header("location: index.php");
-    
+    $conn = new PDO("mysql:host=$server_name;dbname=$database;charset=utf8","$username","$password");
+    $data = $conn->query("SELECT post_id FROM post ORDER BY post_id DESC;");
+    while ($row = $data->fetch()) {
+        $id = $row["post_id"];
+        break;
+    }
+    header("location: post.php?id=$id");
     $conn = null;
-    die();
 ?>
