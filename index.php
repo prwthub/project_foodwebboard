@@ -38,6 +38,12 @@ session_start();
 </script>
 
 <body>
+  <?php 
+    // echo "session['id'] = ".session_id()."<BR>";
+    // echo "session['id'] = ".$_SESSION['id']."<BR>";
+    // echo "session['user_id'] = ".$_SESSION['user_id']."<BR>";
+    // echo "session['username'] = ".$_SESSION['username'];
+  ?>
 
   <form method="GET" action="delete.php">
     <?php include "nav.php"; ?>
