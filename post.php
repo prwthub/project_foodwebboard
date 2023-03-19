@@ -36,7 +36,7 @@ session_start();
         }
         $conn = null;
         ?>
-        
+
     </title>
 </head>
 
@@ -113,7 +113,7 @@ session_start();
                     $post_view = $row[13];
                     $post_picture = $row[14];
 
-                    
+
 
 
                     // echo "<BR><BR><BR>";
@@ -149,8 +149,33 @@ session_start();
                 </div>
                 <div class="card-body pb-1">
                     <div class="container row mb-3 justify-content-between">
-                        <?php 
-                        echo "รูป : $post_picture <BR><BR>"; //******************************** เรียกรูปจาก database *********************************************** */ 
+                        
+                        <?php
+                        echo "รูป :";
+                        // Include the database configuration file  
+                        require_once 'dbConfig.php'; 
+                        
+                        // Get image data from database 
+                        $result = $db->query("SELECT image FROM images WHERE post_id = $id"); 
+                        ?>
+
+                        <?php if($result->num_rows > 0){ ?> 
+                            <div class="gallery"> 
+                                <?php while($row = $result->fetch_assoc()){ ?> 
+                                    <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($row['image']); ?>" /> 
+                                <?php } ?> 
+                            </div> 
+                        <?php }else{ ?> 
+                            <form action="upload.php" method="post" enctype="multipart/form-data">
+                                <label>Select Image File:</label>
+                                <input type="hidden" name="id" value="<?= $id; ?>">
+                                <input type="file" name="image">
+                                <input type="submit" name="submit" value="Upload" >
+                            </form>
+                        <?php } ?>
+
+                        <?php
+                         //******************************** เรียกรูปจาก database *********************************************** */ 
                         echo "ประเภท : $category_tag <BR>";
                         echo "วัตถุดิบ : $post_ingredient <BR><BR>";
                         echo "$post_content <BR><BR>";
@@ -168,12 +193,12 @@ session_start();
                     </form>
                 </div>
             </div>
-            
+
             <!--*********************ส่วนแสดง comment (input)******************************* -->
             <?php
             // ต้อง login ก่อนถึงคอมเม้นได้
             if (isset($_SESSION["id"])) {
-            ?>
+                ?>
                 <div class="card text-dark bg-white border-success">
                     <div class="card-header bg-success text-white">แสดงความคิดเห็น</div>
                     <div class="card-body">
@@ -199,26 +224,25 @@ session_start();
                     </div>
                 </div>
                 <br><br>
-            <?php
+                <?php
             }
             ?>
 
             <?php
             //<!--*********************ส่วนแสดง comment******************************* -->
-
+            
             // Sort By Date
             $conn = null;
             $conn = new PDO("mysql:host=$server_name;dbname=$database;charset=utf8", "$username", "$password");
-            if(isset($_POST['sort']) && !empty($_POST['sort']) && $_POST['sort']==1){
-                    $comment = $conn->query("SELECT p.post_id, u.user_name, u.user_id, c.comment_content, c.user_id, c.comment_id, c.post_id 
+            if (isset($_POST['sort']) && !empty($_POST['sort']) && $_POST['sort'] == 1) {
+                $comment = $conn->query("SELECT p.post_id, u.user_name, u.user_id, c.comment_content, c.user_id, c.comment_id, c.post_id 
                     FROM post p , user u , comment c 
                     WHERE p.post_id = c.post_id AND c.user_id = u.user_id AND c.post_id = $id ORDER BY c.comment_id ASC");
-                }
-            else{
-                    $comment = $conn->query("SELECT p.post_id, u.user_name, u.user_id, c.comment_content, c.user_id, c.comment_id, c.post_id 
+            } else {
+                $comment = $conn->query("SELECT p.post_id, u.user_name, u.user_id, c.comment_content, c.user_id, c.comment_id, c.post_id 
                     FROM post p , user u , comment c 
                     WHERE p.post_id = c.post_id AND c.user_id = u.user_id AND c.post_id = $id ORDER BY c.comment_id DESC");
-                }
+            }
 
             // ข้อมูลสำหรับแสดง Comment
             if ($comment !== false) {
