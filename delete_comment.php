@@ -17,7 +17,7 @@
     // echo "<BR>post_id = ".$pid;
 
     $conn = new PDO("mysql:host=$server_name;dbname=$database;charset=utf8", "$username", "$password");
-    $sql_comment = "DELETE FROM comment WHERE post_id = $pid and comment_id = $id";
+    $sql_comment = "DELETE FROM comment WHERE comment_id = $id";
     $conn->query($sql_comment);
 
     unset($_SESSION['comment_id']);

@@ -37,6 +37,21 @@ session_start();
     </title>
 </head>
 
+<script type="text/javascript">
+
+  // Script for delete button (ADMIN only)
+  function deleteComment() {
+    let areYouSure = confirm("Do you really want to delete this comment?");
+    if (areYouSure == true) {
+      alert("Comment deleted");
+      return areYouSure;
+    } else {
+      return areYouSure;
+    }
+  }
+
+</script>
+
 <body>
     <?php
     include "nav.php";
@@ -263,7 +278,7 @@ session_start();
                                     //echo "post_id = " . $_SESSION['post_id'];
 
                                     echo '<form method = "GET" action="delete_comment.php">';
-                                    echo "<a href=\"delete_comment.php?id=$_SESSION[comment_id]\">
+                                    echo "<a href=\"delete_comment.php?id=$_SESSION[comment_id]\" onclick='return deleteComment()'>
                                                 <button type='button' class='btn btn-danger'>delete comment</button>
                                             </a>";
                                     echo '</form>';
