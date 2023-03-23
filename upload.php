@@ -2,6 +2,7 @@
 session_start();
 // Include the database configuration file  
 require_once 'dbConfig.php'; 
+
 // If file upload form is submitted 
 $id = $_POST['id'];
 $status = $statusMsg = ''; 
@@ -20,7 +21,7 @@ if(isset($_POST["submit"])){
          
             // Insert image content into database 
             $insert = $db->query("INSERT into images (image, post_id) VALUES ('$imgContent','$id')"); 
-             
+
             if($insert){ 
                 $status = 'success'; 
                 $statusMsg = "File uploaded successfully."; 
@@ -37,6 +38,6 @@ if(isset($_POST["submit"])){
 // Display status message 
 echo $statusMsg; 
 header("location: post.php?id=$id"); 
-$conn = null;
- die();
+$db = null;
+die();
 ?>

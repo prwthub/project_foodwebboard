@@ -146,33 +146,42 @@ session_start();
                 </div>
                 <div class="card-body pb-1">
                     <div class="container row mb-3 justify-content-between">
-                        
+
                         <?php
                         echo "รูป :";
                         // Include the database configuration file  
-                        require_once 'dbConfig.php'; 
-                        
+                        require_once 'dbConfig.php';
+
                         // Get image data from database 
-                        $result = $db->query("SELECT image FROM images WHERE post_id = $id"); 
+                        $result = $db->query("SELECT image FROM images WHERE post_id = $id");
                         ?>
 
-                        <?php if($result->num_rows > 0){ ?> 
-                            <div class="gallery"> 
-                                <?php while($row = $result->fetch_assoc()){ ?> 
-                                    <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($row['image']); ?>" /> 
-                                <?php } ?> 
-                            </div> 
-                        <?php }else{ ?> 
-                            <form action="upload.php" method="post" enctype="multipart/form-data">
-                                <label>Select Image File:</label>
-                                <input type="hidden" name="id" value="<?= $id; ?>">
-                                <input type="file" name="image">
-                                <input type="submit" name="submit" value="Upload" >
-                            </form>
+                        <?php if ($result->num_rows > 0) { ?>
+                            <div class="gallery">
+                                <?php while ($row = $result->fetch_assoc()) { ?>
+                                    <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($row['image']); ?>" />
+                                    <?php if ($user_id == $_SESSION['user_id']) { ?>
+                                        <form action="deleteimages.php" method="post" enctype="multipart/form-data">
+                                            <input type="hidden" name="id" value="<?= $id; ?>">
+                                            <input type="submit" name="photo" value="deleted photo">
+                                        </form>
+                                    <?php } ?>
+                                <?php } ?>
+
+                            </div>
+                        <?php } else if ($user_id == $_SESSION['user_id']) { ?>
+                                <form action="upload.php" method="post" enctype="multipart/form-data">
+                                    <label>Select Image File:</label>
+                                    <input type="hidden" name="id" value="<?= $id; ?>">
+                                    <input type="file" name="image">
+                                    <input type="submit" name="submit" value="Upload">
+                                </form>
+                        <?php } else { ?>
+                                <label>No Image Here</label>
                         <?php } ?>
 
                         <?php
-                         //******************************** เรียกรูปจาก database *********************************************** */ 
+                        //******************************** เรียกรูปจาก database *********************************************** */ 
                         echo "ประเภท : $category_tag <BR>";
                         echo "วัตถุดิบ : $post_ingredient <BR><BR>";
                         echo "$post_content <BR><BR>";
@@ -247,20 +256,20 @@ session_start();
                     ?>
                     <div class="card text-dark bg-white border-info mb-3">
                         <div class="card-header bg-info text-white">
-                            <?php echo "ความคิดเห็นจาก " . $comm['1']; 
-                                // คนเขียนสามารถลบ comment 
-                                if ($_SESSION["user_id"] == $comm['2']) {
-                                    $_SESSION["comment_id"] = $comm['5'];
-                                    $_SESSION["post_id"] = $comm['0'];
-                                    //echo "comment_id = ".$_SESSION['comment_id'];
-                                    //echo "post_id = ".$_SESSION['post_id'];
-                                    echo "<a href='delete_comment.php'>
+                            <?php echo "ความคิดเห็นจาก " . $comm['1'];
+                            // คนเขียนสามารถลบ comment 
+                            if ($_SESSION["user_id"] == $comm['2']) {
+                                $_SESSION["comment_id"] = $comm['5'];
+                                $_SESSION["post_id"] = $comm['0'];
+                                //echo "comment_id = ".$_SESSION['comment_id'];
+                                //echo "post_id = ".$_SESSION['post_id'];
+                                echo "<a href='delete_comment.php'>
                                             <button type='button' class='btn btn-danger'>delete comment</button>
                                         </a>";
-                                }
+                            }
                             ?>
-                            
-                            
+
+
                         </div>
                         <div class="card-body pb-1">
                             <div class="container row mb-3 justify-content-between">
