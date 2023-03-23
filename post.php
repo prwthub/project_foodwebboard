@@ -172,7 +172,7 @@ session_start();
                             <div class="gallery">
                                 <?php while ($row = $result->fetch_assoc()) { ?>
                                     <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($row['image']); ?>" />
-                                    <?php if ($user_id == $_SESSION['user_id']) { ?>
+                                    <?php if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id']) && $user_id == $_SESSION['user_id']) { ?>
                                         <form action="deleteimages.php" method="post" enctype="multipart/form-data">
                                             <input type="hidden" name="id" value="<?= $id; ?>">
                                             <input type="submit" name="photo" value="deleted photo">
@@ -271,7 +271,7 @@ session_start();
                             
                             <?php echo "ความคิดเห็นจาก " . $comm['1'];
                                 // คนเขียนสามารถลบ comment 
-                                if ($_SESSION["user_id"] == $comm['2']) {
+                                if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id']) && $_SESSION["user_id"] == $comm['2'] ) {
                                     $_SESSION["comment_id"] = $comm['5'];
                                     $_SESSION["post_id"] = $comm['0'];
                                     //echo "comment_id = " . $_SESSION['comment_id'];
