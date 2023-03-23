@@ -38,11 +38,11 @@ session_start();
 </script>
 
 <body>
-  <?php 
-    // echo "session['id'] = ".session_id()."<BR>";
-    // echo "session['id'] = ".$_SESSION['id']."<BR>";
-    // echo "session['user_id'] = ".$_SESSION['user_id']."<BR>";
-    // echo "session['username'] = ".$_SESSION['username'];
+  <?php
+  // echo "session['id'] = ".session_id()."<BR>";
+  // echo "session['id'] = ".$_SESSION['id']."<BR>";
+  // echo "session['user_id'] = ".$_SESSION['user_id']."<BR>";
+  // echo "session['username'] = ".$_SESSION['username'];
   ?>
 
   <form method="GET" action="delete.php">
@@ -52,7 +52,7 @@ session_start();
         <!-- session ที่เอาไว้เตือนว่าถ้าไม่ log in ไม่สามารถ newpost ได่ -->
         <?php
         if (isset($_SESSION["add_post"])) {
-        ?>
+          ?>
           <div class="row mt-3">
             <div class="col-md-3"></div>
             <div class="col-md-6">
@@ -68,7 +68,7 @@ session_start();
             </div>
             <div class="col-md-3"></div>
           </div>
-        <?php
+          <?php
         }
         ?>
         <center><button type="button" class="btn btn-primary">ADD FOOD MENU</button></center>
@@ -90,21 +90,24 @@ session_start();
       if ($data !== false) {
         while ($row = $data->fetch()) {
           // echo "<tr><td><a href=\"post.php?id=".$row['0'].'\" style=text-decoration:none></a>"; 
-          echo "<tr><td>";
-          echo "[ " . $row['7'] . " ] "; // post_id
+          echo "<tr><td><div class = 'row'>";
+          echo "<div class = 'col'>" . " [ " . $row['7'] . " ] "; // post_id
           echo "<a href=\"post.php?id=" . $row['7'] . "\" style=text-decoration:none>";
-          echo $row['1'] . "</a>"; // post_title
-          echo "<br>";
-          echo " " . $row['3'] . " - " . $row['4']; // user_name , post_date
-          echo "<br>";
-          echo "<div style='text-align:right'> Like - " . $row['5'] . " Dislike - " . $row['6']; // post_like , post_dislike
-          // If role ADMIN, Show Delete button (ln. 64 - 66)
+          echo $row['1'] . "</a></div>"; // post_title
+          // If role ADMIN, Show Delete button
           if (isset($_SESSION["role"])) {
             if ($_SESSION["role"] == "a") {
-              echo "</td><td><a href=\"delete.php?id=" . $row['7'] . "\" class=\"btn btn-danger bi bi-trash\" onclick='return deletePost();'></a>";
+              echo "<div class = 'col d-flex justify-content-end'>";
+              echo "<a href=\"delete.php?id=" . $row['7'] . "\" class=\"btn btn-danger bi bi-trash\" 
+              onclick='return deletePost();'></a></div>";
             }
           }
-          echo "</td></tr>";
+          echo "</div>";
+          echo "<div class = 'row'><div class = 'col'>" . $row['3'] . " - " . $row['4'] . "</div>"; // user_name , post_date
+          echo "<div class = 'col d-flex justify-content-end'>";
+          echo "Like - " . $row['5'] . " Dislike - " . $row['6'] . "</div>"; // post_like , post_dislike
+      
+          echo "</div></td></tr>";
         }
       }
       $conn = null;
