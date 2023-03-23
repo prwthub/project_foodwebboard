@@ -9,9 +9,12 @@ session_start();
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- CSS only -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
     <!-- JavaScript Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+        crossorigin="anonymous"></script>
     <!--Icon-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
     <title>
@@ -37,6 +40,21 @@ session_start();
     </title>
 </head>
 
+<script type="text/javascript">
+
+  // Script for delete button (ADMIN only)
+  function deleteComment() {
+    let areYouSure = confirm("Do you really want to delete this comment?");
+    if (areYouSure == true) {
+      alert("Comment deleted");
+      return areYouSure;
+    } else {
+      return areYouSure;
+    }
+  }
+
+</script>
+
 <body>
     <?php
     include "nav.php";
@@ -46,7 +64,7 @@ session_start();
             <?php
             isset($_GET['id']) ? $id = $_GET['id'] : header("Location: index.php");
             //echo "<center>ต้องการดูกระทู้หมายเลข $id <br>";
-
+            
             // ******************connect database****************************
             $server_name = "localhost";
             $username = "root";
@@ -92,7 +110,7 @@ session_start();
                     // echo "p.user_id = $row[7]           u.user_id = $row[8] <bR>";
                     // echo "p.category_id = $row[3]   c.category_id = $row[9] <bR>";
                     // echo "<BR><BR>";
-
+            
                     $post_id = $row[0];
                     $post_title = $row[1];
                     $post_date = $row[2];
@@ -167,14 +185,14 @@ session_start();
 
                             </div>
                         <?php } else if ($user_id == $_SESSION['user_id']) { ?>
-                            <form action="upload.php" method="post" enctype="multipart/form-data">
-                                <label>Select Image File:</label>
-                                <input type="hidden" name="id" value="<?= $id; ?>">
-                                <input type="file" name="image">
-                                <input type="submit" name="submit" value="Upload">
-                            </form>
+                                <form action="upload.php" method="post" enctype="multipart/form-data">
+                                    <label>Select Image File:</label>
+                                    <input type="hidden" name="id" value="<?= $id; ?>">
+                                    <input type="file" name="image">
+                                    <input type="submit" name="submit" value="Upload">
+                                </form>
                         <?php } else { ?>
-                            <label>No Image Here</label>
+                                <label>No Image Here</label>
                         <?php } ?>
 
                         <?php
@@ -187,10 +205,11 @@ session_start();
                     </div>
                 </div>
             </div>
+            <!-- เรียงคอมเมนต์ในโพส  -->
             <div class="d-flex pb-2">
                 <div class="input-group">
                     <label>เรียงโดย: </label>
-                    <form name="" method="post">
+                    <form method="Post">
                         <button type="submit" name="sort" class="button" value="1">เก่า-ใหม่</button>
                         <button type="submit" name="sort" class="button" value="0">ใหม่-เก่า</button>
                     </form>
@@ -201,7 +220,7 @@ session_start();
             <?php
             // ต้อง login ก่อนถึงคอมเม้นได้
             if (isset($_SESSION["id"])) {
-            ?>
+                ?>
                 <div class="card text-dark bg-white border-success">
                     <div class="card-header bg-success text-white">แสดงความคิดเห็น</div>
                     <div class="card-body">
@@ -227,13 +246,13 @@ session_start();
                     </div>
                 </div>
                 <br><br>
-            <?php
+                <?php
             }
             ?>
 
             <?php
             //<!--*********************ส่วนแสดง comment******************************* -->
-
+            
             // Sort By Date
             $conn = null;
             $conn = new PDO("mysql:host=$server_name;dbname=$database;charset=utf8", "$username", "$password");
@@ -250,26 +269,23 @@ session_start();
             // ข้อมูลสำหรับแสดง Comment
             if ($comment !== false) {
                 while ($comm = $comment->fetch()) {
-            ?>
+                    ?>
                     <div class="card text-dark bg-white border-info mb-3">
                         <div class="card-header bg-info text-white">
-                            
                             <?php echo "ความคิดเห็นจาก " . $comm['1'];
-                                // คนเขียนสามารถลบ comment 
-                                if ($_SESSION["user_id"] == $comm['2']) {
-                                    $_SESSION["comment_id"] = $comm['5'];
-                                    $_SESSION["post_id"] = $comm['0'];
-                                    //echo "comment_id = " . $_SESSION['comment_id'];
-                                    //echo "post_id = " . $_SESSION['post_id'];
-
-                                    echo '<form method = "GET" action="delete_comment.php">';
-                                    echo "<a href=\"delete_comment.php?id=$_SESSION[comment_id]\">
-                                                <button type='button' class='btn btn-danger'>delete comment</button>
-                                            </a>";
-                                    echo '</form>';
-                                }
+                            // คนเขียนสามารถลบ comment 
+                            if ($_SESSION["user_id"] == $comm['2']) {
+                                $_SESSION["comment_id"] = $comm['5'];
+                                $_SESSION["post_id"] = $comm['0'];
+                                echo "comment_id = ".$_SESSION['comment_id'];
+                                echo "post_id = ".$_SESSION['post_id'];
+                                echo "<a href='delete_comment.php'>;
+                                            <button type='button' class='btn btn-danger' onclick='return deleteComment()'>delete comment</button>
+                                        </a>";
+                            }
                             ?>
-                            
+
+
                         </div>
                         <div class="card-body pb-1">
                             <div class="container row mb-3 justify-content-between">
@@ -279,7 +295,7 @@ session_start();
                             </div>
                         </div>
                     </div>
-            <?php
+                    <?php
                 }
                 $conn = null;
             }
