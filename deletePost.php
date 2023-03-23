@@ -40,14 +40,15 @@ session_start();
             $conn->exec("SET CHARACTER SET utf8");
             $sql_comment = "DELETE FROM comment WHERE post_id = $id";
             $query = $conn->query($sql_comment);
-            $sql_post = "DELETE post, images FROM post JOIN images ON post.post_id = images.post_id WHERE post.post_id = $id";
+            $sql_image = "DELETE FROM images WHERE post_id = $id";
+            $query = $conn->query($sql_image);
+            $sql_post = "DELETE p.post_title FROM post p WHERE post_id = $id";
             $query = $conn->query($sql_post);
 
 
 
             header("location:index.php");
 
-            //     }
         }
 
 

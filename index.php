@@ -45,7 +45,7 @@ session_start();
   // echo "session['username'] = ".$_SESSION['username'];
   ?>
 
-  <form method="GET" action="delete.php">
+  <form method="GET" action="deletePost.php">
     <?php include "nav.php"; ?>
     <div class="justify-content-center my-5">
       <a href="newpost.php">
@@ -98,7 +98,7 @@ session_start();
           if (isset($_SESSION["role"])) {
             if ($_SESSION["role"] == "a") {
               echo "<div class = 'col d-flex justify-content-end'>";
-              echo "<a href=\"delete.php?id=" . $row['7'] . "\" class=\"btn btn-danger bi bi-trash\" 
+              echo "<a href=\"deletePost.php?id=" . $row['7'] . "\" class=\"btn btn-danger bi bi-trash\" 
               onclick='return deletePost();'></a></div>";
             }
           }
