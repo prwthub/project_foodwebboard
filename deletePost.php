@@ -42,7 +42,7 @@ session_start();
             $query = $conn->query($sql_comment);
             $sql_image = "DELETE FROM images WHERE post_id = $id";
             $query = $conn->query($sql_image);
-            $sql_post = "DELETE p.post_title FROM post p WHERE post_id = $id";
+            $sql_post = "DELETE FROM post WHERE post_id = $id";
             $query = $conn->query($sql_post);
 
 
