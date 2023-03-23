@@ -113,9 +113,6 @@ session_start();
                     $post_view = $row[13];
                     $post_picture = $row[14];
 
-
-
-
                     // echo "<BR><BR><BR>";
                     // echo $post_id . "<BR>";
                     // echo $post_title . "<BR>";
@@ -184,7 +181,7 @@ session_start();
                     </div>
                 </div>
             </div>
-            <div class="d-flex">
+            <div class="d-flex pb-2">
                 <div class="input-group">
                     <label>เรียงโดย: </label>
                     <form name="Email Header" method="post">
@@ -250,7 +247,20 @@ session_start();
                     ?>
                     <div class="card text-dark bg-white border-info mb-3">
                         <div class="card-header bg-info text-white">
-                            <?php echo "ความคิดเห็นจาก " . $comm['1']; ?>
+                            <?php echo "ความคิดเห็นจาก " . $comm['1']; 
+                                // คนเขียนสามารถลบ comment 
+                                if ($_SESSION["user_id"] == $comm['2']) {
+                                    $_SESSION["comment_id"] = $comm['5'];
+                                    $_SESSION["post_id"] = $comm['0'];
+                                    //echo "comment_id = ".$_SESSION['comment_id'];
+                                    //echo "post_id = ".$_SESSION['post_id'];
+                                    echo "<a href='delete_comment.php'>
+                                            <button type='button' class='btn btn-danger'>delete comment</button>
+                                        </a>";
+                                }
+                            ?>
+                            
+                            
                         </div>
                         <div class="card-body pb-1">
                             <div class="container row mb-3 justify-content-between">
