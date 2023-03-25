@@ -1,19 +1,14 @@
 <?php
     session_start();
    
-    $server_name = "localhost";
-    $username = "root";
-    $password = "";
-    $database = "webboard_recipes";
+    require 'dbConfig_PDO.php';
     
     $login = $_POST['login'];
     $passwd = $_POST['pwd'];
     $name = $_POST['name'];
     $email = $_POST['email'];
 
-    $conn = new PDO("mysql:host=$server_name;dbname=$database;charset=utf8","$username","$password");
     $passwd = sha1($passwd);
-    
     
     $sql = "SELECT * FROM user where user_name ='$login' or user_email = '$email'";
     $result=$conn->query($sql);

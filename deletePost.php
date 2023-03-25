@@ -29,29 +29,19 @@ session_start();
             header("location:index.php");
         } else {
             $id = $_GET["id"];
-
-
-            $server_name = "localhost";
-            $username = "root";
-            $password = "";
-            $database = "webboard_recipes";
-
-            $conn = new PDO("mysql:host=$server_name;dbname=$database;charset=utf8", "$username", "$password");
+            require 'dbConfig_PDO.php';
+            
             $conn->exec("SET CHARACTER SET utf8");
             $sql_comment = "DELETE FROM comment WHERE post_id = $id";
             $query = $conn->query($sql_comment);
-            $sql_comment = "DELETE FROM images WHERE post_id = $id";
+            $sql_comment = "DELETE FROM images_post WHERE post_id = $id";
             $conn->exec($sql_comment);
             $sql_post = "DELETE FROM post WHERE post_id = $id";
             $query = $conn->query($sql_post);
 
-
-
             header("location:index.php");
 
         }
-
-
 
         $conn = null;
         ?>

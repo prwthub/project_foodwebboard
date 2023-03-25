@@ -16,19 +16,20 @@ session_start();
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
     <title>
         <?php
-        $server_name = "localhost";
-        $username = "root";
-        $password = "";
-        $database = "webboard_recipes";
-
-        $conn = new PDO("mysql:host=$server_name;dbname=$database;charset=utf8", "$username", "$password");
+        require 'dbConfig_PDO.php';
+        
         //isset($_GET['id']) ? $id = $_GET['id'] : header("Location: index.php");
         $id = $_GET['id'];
 
         $data = $conn->query("SELECT p.post_title,u.user_name,p.user_id,u.user_id FROM post p , user u WHERE p.post_id = $id and p.user_id = u.user_id;");
         if ($data !== false) {
             while ($row = $data->fetch()) {
-                echo "$row[0] โดย $row[1]";
+                $post_title = $row['0'];
+                $user_name = $row['1'];
+                $user_id = $row['2'];
+                $user_id = $row['3'];
+
+                echo "$post_title โดย $user_name";
             }
         }
         $conn = null;
@@ -63,26 +64,19 @@ session_start();
             //echo "<center>ต้องการดูกระทู้หมายเลข $id <br>";
 
             // ******************connect database****************************
-            $server_name = "localhost";
-            $username = "root";
-            $password = "";
-            $database = "webboard_recipes";
-
+            require 'dbConfig_PDO.php';
+            $conn = null;
             $conn = new PDO("mysql:host=$server_name;dbname=$database;charset=utf8", "$username", "$password");
-            // ข้อมูลที่ดึงขึ้นแสดงที่ Post
-            $data = $conn->query("SELECT p.post_id, p.post_title, p.post_date, p.category_id, c.category_tag, p.post_ingredient, p.post_content, p.post_picture, u.user_username , p.user_id , u.user_id 
-                                    FROM post p , user u , category c 
-                                    WHERE p.post_id = $id and p.category_id = c.category_id and u.user_id = p.user_id");
 
             $sql = "SELECT * FROM post p , user u , category c 
-            WHERE p.post_id = $id AND p.user_id = u.user_id OR p.category_id = c.category_id";
+                    WHERE p.post_id = $id AND p.user_id = u.user_id OR p.category_id = c.category_id";
             $query = $conn->query($sql);
             $result = $query->fetch(PDO::FETCH_ASSOC);
 
-            // ดึงข้อมูลมาใช้งาน จาก DATABASE 
+            // ดึงข้อมูลมาใช้งานแสดงPost
             $conn = new PDO("mysql:host=$server_name;dbname=$database;charset=utf8", "$username", "$password");
             $data = $conn->query("SELECT p.post_id, p.post_title, p.post_date, p.category_id, p.post_ingredient, p.post_content, u.user_username, p.user_id, u.user_id, c.category_tag, c.category_id,
-                                        p.post_like, p.post_dislike, p.post_view ,p.post_picture/* ******************************* เรียกรูปจาก database *********************************************** */ 
+                                        p.post_like, p.post_dislike, p.post_view 
                                     FROM post p , user u , category c 
                                     WHERE p.post_id = $id and p.category_id = c.category_id and u.user_id = p.user_id");
 
@@ -123,7 +117,6 @@ session_start();
                     $post_like = $row[11];
                     $post_dislike = $row[12];
                     $post_view = $row[13];
-                    $post_picture = $row[14];
 
                     // echo "<BR><BR><BR>";
                     // echo $post_id . "<BR>";
@@ -162,10 +155,10 @@ session_start();
                         <?php
                         echo "รูป :";
                         // Include the database configuration file  
-                        require_once 'dbConfig.php';
+                        require_once 'dbConfig_SQLi.php';
 
                         // Get image data from database 
-                        $result = $db->query("SELECT image FROM images WHERE post_id = $id");
+                        $result = $db->query("SELECT image FROM images_post WHERE post_id = $id");
                         ?>
 
                         <?php if ($result->num_rows > 0) { ?>
@@ -265,15 +258,22 @@ session_start();
             // ข้อมูลสำหรับแสดง Comment
             if ($comment !== false) {
                 while ($comm = $comment->fetch()) {
+                    $post_id = $comm['0'];
+                    $user_name = $comm['1'];
+                    $user_id = $comm['2'];
+                    $comment_content = $comm['3'];
+                    $user_id = $comm['4'];
+                    $comment_id = $comm['5'];
+                    $post_id = $comm['6'];
             ?>
                     <div class="card text-dark bg-white border-info mb-3">
                         <div class="card-header bg-info text-white">
                             
-                            <?php echo "ความคิดเห็นจาก " . $comm['1'];
+                            <?php echo "ความคิดเห็นจาก " . $user_name;
                                 // คนเขียนสามารถลบ comment 
-                                if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id']) && $_SESSION["user_id"] == $comm['2'] ) {
-                                    $_SESSION["comment_id"] = $comm['5'];
-                                    $_SESSION["post_id"] = $comm['0'];
+                                if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id']) && $_SESSION["user_id"] == $user_id ) {
+                                    $_SESSION["comment_id"] = $comment_id;
+                                    $_SESSION["post_id"] = $post_id;
                                     //echo "comment_id = " . $_SESSION['comment_id'];
                                     //echo "post_id = " . $_SESSION['post_id'];
 
@@ -289,7 +289,7 @@ session_start();
                         <div class="card-body pb-1">
                             <div class="container row mb-3 justify-content-between">
                                 <?php
-                                echo $comm['3'];
+                                echo $comment_content;
                                 ?>
                             </div>
                         </div>

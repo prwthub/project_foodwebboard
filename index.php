@@ -77,36 +77,59 @@ session_start();
 
     <table class="table table-striped">
       <?php
-      $server_name = "localhost";
-      $username = "root";
-      $password = "";
-      $database = "webboard_recipes";
+      // Include the database configuration file  
+      require_once 'dbConfig_SQLi.php';
+      require 'dbConfig_PDO.php';
 
-      $conn = new PDO("mysql:host=$server_name;dbname=$database;charset=utf8", "$username", "$password");
       $conn->exec("SET CHARACTER SET utf8");
+      
 
-      $data = $conn->query("SELECT p.category_id,p.post_title,p.user_id,u.user_name,p.post_date,p.post_like,p.post_dislike,p.post_id 
-                            FROM post p , user u WHERE p.user_id = u.user_id ORDER BY p.post_id DESC;");
+      // Get image data from database 
+      
+      $data = $conn->query("SELECT p.category_id,p.post_title,p.user_id,u.user_name,p.post_date,p.post_like,p.post_dislike,p.post_id
+                            FROM post p, user u WHERE p.user_id = u.user_id ORDER BY p.post_id DESC;");
+                            
       if ($data !== false) {
         while ($row = $data->fetch()) {
+          $category_id = $row['0'];
+          $post_title = $row['1'];
+          $user_id = $row['2'];
+          $user_name = $row['3'];
+          $post_date = $row['4'];
+          $post_like = $row['5'];
+          $post_dislike = $row['6'];
+          $post_id = $row['7'];
+
+          $result = $db->query("SELECT image, post_id FROM images_post WHERE post_id = $post_id");
+          
           // echo "<tr><td><a href=\"post.php?id=".$row['0'].'\" style=text-decoration:none></a>"; 
           echo "<tr><td><div class = 'row'>";
-          echo "<div class = 'col'>" . " [ " . $row['7'] . " ] "; // post_id
-          echo "<a href=\"post.php?id=" . $row['7'] . "\" style=text-decoration:none>";
-          echo $row['1'] . "</a></div>"; // post_title
+          ?>
+            <div class="gallery">
+                <?php while ($img = $result->fetch_assoc()) { 
+                    if($img['post_id'] == $post_id){
+                    ?>
+                    <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($img['image']); ?>" width="100" height="100" />
+                    <?php 
+                    }
+                  } ?>
+            </div>
+          <?php 
+          echo "<div class = 'col'>" . " [ " . $post_id . " ] "; // post_id
+          echo "<a href=\"post.php?id=" . $post_id . "\" style=text-decoration:none>";
+          echo $post_title . "</a></div>"; // post_title
           // If role ADMIN, Show Delete button
           if (isset($_SESSION["role"])) {
             if ($_SESSION["role"] == "a") {
               echo "<div class = 'col d-flex justify-content-end'>";
-              echo "<a href=\"deletePost.php?id=" . $row['7'] . "\" class=\"btn btn-danger bi bi-trash\" 
+              echo "<a href=\"deletePost.php?id=" . $post_id . "\" class=\"btn btn-danger bi bi-trash\" 
               onclick='return deletePost();'></a></div>";
             }
           }
           echo "</div>";
-          echo "<div class = 'row'><div class = 'col'>" . $row['3'] . " - " . $row['4'] . "</div>"; // user_name , post_date
+          echo "<div class = 'row'><div class = 'col'>" . $user_name . " - " . $post_date . "</div>"; // user_name , post_date
           echo "<div class = 'col d-flex justify-content-end'>";
-          echo "Like - " . $row['5'] . " Dislike - " . $row['6'] . "</div>"; // post_like , post_dislike
-      
+          echo "Like - " . $post_like . " Dislike - " . $post_dislike . "</div>"; // post_like , post_dislike
           echo "</div></td></tr>";
         }
       }

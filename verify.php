@@ -13,13 +13,8 @@
     // ถ้ามีการรับ pwd เข้ามา ให้ passwd เท่ากับ pwd
     isset($_POST['pwd']) ? $passwd = $_POST['pwd'] : $passwd = "";
 
-
-    $server_name = "localhost";
-    $username = "root";
-    $password = "";
-    $database = "webboard_recipes";
-
-    $conn = new PDO("mysql:host=$server_name;dbname=$database;charset=utf8","$username","$password");
+    require 'dbConfig_PDO.php';
+    
     // ตรวจว่า username และ password ถูกต้อง
     
     $sql = "SELECT * FROM user WHERE (user_username='$login' OR user_email='$login') AND user_password = sha1('$passwd')";

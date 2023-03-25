@@ -48,17 +48,16 @@ session_start();
                                 <select id="type" name="type" style='width:100%'>
                                     <?php
                                     session_start();
-                                    $server_name = "localhost";
-                                    $username = "root";
-                                    $password = "";
-                                    $database = "webboard_recipes";
+                                    require 'dbConfig_PDO.php';
 
-                                    $conn = new PDO("mysql:host=$server_name;dbname=$database;charset=utf8", "$username", "$password");
                                     $data = $conn->query("SELECT category_id , category_tag 
                                                         FROM category ORDER BY category_id ;");
                                     if ($data !== false) {
                                         while ($row = $data->fetch()) {
-                                            echo "<option value='$row[0]'>$row[0] $row[1]</option>";
+                                            $category_id = $row['0'];
+                                            $category_tag = $row['1'];
+                                    
+                                            echo "<option value='$category_id'>$category_id $category_tag</option>";
                                         }
                                         $conn = null;
                                     }

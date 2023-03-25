@@ -1,7 +1,7 @@
 <?php 
 session_start();
 // Include the database configuration file  
-require_once 'dbConfig.php'; 
+require_once 'dbConfig_SQLi.php'; 
 
 // If file upload form is submitted 
 $id = $_POST['id'];
@@ -20,7 +20,7 @@ if(isset($_POST["submit"])){
             $imgContent = addslashes(file_get_contents($image)); 
          
             // Insert image content into database 
-            $insert = $db->query("INSERT into images (image, post_id) VALUES ('$imgContent','$id')"); 
+            $insert = $db->query("INSERT into images_post (image, post_id) VALUES ('$imgContent','$id')"); 
 
             if($insert){ 
                 $status = 'success'; 
