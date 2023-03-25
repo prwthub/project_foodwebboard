@@ -181,7 +181,7 @@ session_start();
                                 <?php } ?>
 
                             </div>
-                        <?php } else if ($user_id == $_SESSION['user_id']) { ?>
+                        <?php } else if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id']) && $user_id == $_SESSION['user_id']) { ?>
                             <form action="upload.php" method="post" enctype="multipart/form-data">
                                 <label>Select Image File:</label>
                                 <input type="hidden" name="id" value="<?= $id; ?>">
