@@ -6,6 +6,11 @@ $password = "";
 $database = "webboard_recipes";
        
 // Create database connection
-$conn = new PDO("mysql:host=$server_name;dbname=$database;charset=utf8", "$username", "$password");
-
+try {
+    $dbo = new PDO('mysql:host='.$host_name.';dbname='.$database, $username, $password);
+    } catch (PDOException $e) {
+    print "Error!: " . $e->getMessage() . "<br/>";
+    die();
+    }
+?>
 ?>
