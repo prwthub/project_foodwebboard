@@ -225,7 +225,7 @@ session_start();
                             <input type="hidden" name="post_id" value="<?= $id; ?>">
                             <div class="row mb-3 justify-content-center">
                                 <div class="col-lg-10">
-                                    <textarea name="comment" class="form-control" rows="8"></textarea>
+                                    <textarea name="comment" class="form-control" rows="8" required></textarea>
                                 </div>
                             </div>
                             <div class="row">
