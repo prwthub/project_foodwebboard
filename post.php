@@ -164,7 +164,7 @@ session_start();
                         <?php if ($result->num_rows > 0) { ?>
                             <div class="gallery">
                                 <?php while ($row = $result->fetch_assoc()) { ?>
-                                    <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($row['image']); ?>" />
+                                    <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($row['image']); ?>"width='500' height='500' />
                                     <?php if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id']) && $user_id == $_SESSION['user_id']) { ?>
                                         <form action="deleteimages.php" method="post" enctype="multipart/form-data">
                                             <input type="hidden" name="id" value="<?= $id; ?>">
