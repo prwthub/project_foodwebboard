@@ -34,8 +34,10 @@ session_start();
             $conn->exec("SET CHARACTER SET utf8");
             $sql_comment = "DELETE FROM comment WHERE post_id = $id";
             $query = $conn->query($sql_comment);
-            $sql_comment = "DELETE FROM images_post WHERE post_id = $id";
-            $conn->exec($sql_comment);
+            $sql_images = "DELETE FROM images_post WHERE post_id = $id";
+            $conn->exec($sql_images);
+            $sql_rating = "DELETE FROM rating_post WHERE post_id = $id";
+            $query = $conn->query($sql_rating);
             $sql_post = "DELETE FROM post WHERE post_id = $id";
             $query = $conn->query($sql_post);
 

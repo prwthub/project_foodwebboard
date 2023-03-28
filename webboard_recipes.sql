@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 25, 2023 at 10:36 AM
+-- Generation Time: Mar 28, 2023 at 05:17 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 7.4.29
 
@@ -119,11 +119,36 @@ CREATE TABLE `post` (
 --
 
 INSERT INTO `post` (`post_id`, `user_id`, `category_id`, `post_title`, `post_ingredient`, `post_content`, `post_picture`, `post_date`, `post_like`, `post_dislike`, `post_view`) VALUES
-(97, 8, 1, 'หมูทอด', 'หมู น้ำมัน', 'เอาไปทอดไง', '', '2023-03-23', 0, 0, 0),
+(97, 8, 1, 'หมูทอด', 'หมู น้ำมัน', 'เอาไปทอดไง', '', '2023-03-23', 0, 2, 0),
 (98, 6, 2, 'มอส', 'มอส', 'เอาไปยำ', '', '2023-03-23', 0, 0, 0),
-(99, 4, 3, 'แซลมอนดอง', 'แซลมอน น้ำดอง', 'เอาไปดอง ทำไรเยอะแยะวะ', '', '2023-03-23', 0, 0, 0),
-(101, 5, 1, 'King', 'Kuy', 'Kuy Ling', '', '2023-03-23', 0, 0, 0),
-(108, 4, 2, 'YandereSword', 'Sword', 'YadereSword', '', '2023-03-25', 0, 0, 0);
+(99, 4, 3, 'แซลมอนดอง', 'แซลมอน น้ำดอง', 'เอาไปดอง ทำไรเยอะแยะวะ', '', '2023-03-23', 1, 1, 0),
+(101, 5, 1, 'King', 'Kuy', 'Kuy Ling', '', '2023-03-23', 1, 0, 0),
+(108, 4, 2, 'YandereSword', 'Sword', 'YadereSword', '', '2023-03-25', 2, 0, 7);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `rating_post`
+--
+
+CREATE TABLE `rating_post` (
+  `user_id` int(11) NOT NULL,
+  `post_id` int(11) NOT NULL,
+  `rating` varchar(30) CHARACTER SET utf8 NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `rating_post`
+--
+
+INSERT INTO `rating_post` (`user_id`, `post_id`, `rating`) VALUES
+(4, 97, '-1'),
+(4, 99, '-1'),
+(4, 101, '1'),
+(4, 108, '1'),
+(5, 97, '-1'),
+(5, 99, '1'),
+(5, 108, '1');
 
 -- --------------------------------------------------------
 
@@ -156,7 +181,8 @@ INSERT INTO `user` (`user_id`, `user_username`, `user_password`, `user_name`, `u
 (4, 'admin', '8dc9fa69ec51046b4472bb512e292d959edd2aef', 'ADMIN', 'admin@email.com', 'a', '', '', 0, '', '', '', '', ''),
 (5, 'member', 'b54df48c4c77522382a5a3c2f0358573ad43746e', 'MEMBER', 'member@email.com', 'm', '', '', 0, '', '', '', '', ''),
 (6, 'a', '86f7e437faa5a7fce15d1ddcb9eaeaea377667b8', 'A', 'a@gmail.com', 'a', '', '', 0, '', '', '', '', ''),
-(8, 'm', '6b0d31c0d563223024da45691584643ac78c96e8', 'M', 'm@email.com', 'm', '', '', 0, '', '', '', '', '');
+(8, 'm', '6b0d31c0d563223024da45691584643ac78c96e8', 'M', 'm@email.com', 'm', '', '', 0, '', '', '', '', ''),
+(9, 'TESTER', 'ff4c7367e4da28145902749e950f81039557c4be', 'TESTER', 'TEST@gmail.com', 'm', '', '', 0, '', '', '', '', '');
 
 --
 -- Indexes for dumped tables
@@ -190,6 +216,12 @@ ALTER TABLE `post`
   ADD PRIMARY KEY (`post_id`),
   ADD KEY `user_id` (`user_id`),
   ADD KEY `post_ibfk_2` (`category_id`);
+
+--
+-- Indexes for table `rating_post`
+--
+ALTER TABLE `rating_post`
+  ADD UNIQUE KEY `UC_rating_info` (`user_id`,`post_id`);
 
 --
 -- Indexes for table `user`
@@ -229,7 +261,7 @@ ALTER TABLE `post`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `user_id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `user_id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- Constraints for dumped tables

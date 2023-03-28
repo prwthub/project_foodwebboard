@@ -9,15 +9,18 @@ session_start();
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- CSS only -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
     <!-- JavaScript Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+        crossorigin="anonymous"></script>
     <!--Icon-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
     <title>
         <?php
         require 'dbConfig_PDO.php';
-        
+
         //isset($_GET['id']) ? $id = $_GET['id'] : header("Location: index.php");
         $id = $_GET['id'];
 
@@ -40,16 +43,16 @@ session_start();
 
 <script type="text/javascript">
 
-  // Script for delete button (ADMIN only)
-  function deleteComment() {
-    let areYouSure = confirm("Do you really want to delete this comment?");
-    if (areYouSure == true) {
-      alert("Comment deleted");
-      return areYouSure;
-    } else {
-      return areYouSure;
+    // Script for delete button (ADMIN only)
+    function deleteComment() {
+        let areYouSure = confirm("Do you really want to delete this comment?");
+        if (areYouSure == true) {
+            alert("Comment deleted");
+            return areYouSure;
+        } else {
+            return areYouSure;
+        }
     }
-  }
 
 </script>
 
@@ -62,9 +65,20 @@ session_start();
             <?php
             isset($_GET['id']) ? $id = $_GET['id'] : header("Location: index.php");
             //echo "<center>ต้องการดูกระทู้หมายเลข $id <br>";
-
+            //View Count
+            require 'dbConfig_PDO.php';$conn = new PDO("mysql:host=$server_name;dbname=$database;charset=utf8","$username","$password");
+            $sql = $conn->query("SELECT * FROM post WHERE post_id = $id");
+            if ($sql != false) {
+                while ($row = $sql->fetch()) {
+                    $view = $row['post_view'];
+                }
+                $view++;
+            }
+            $conn = null;
+            $conn = new PDO("mysql:host=$server_name;dbname=$database;charset=utf8","$username","$password");
+            $update = ("UPDATE post SET post_view = $view WHERE post_id = $id");
+            $conn->exec($update);
             // ******************connect database****************************
-            require 'dbConfig_PDO.php';
             $conn = null;
             $conn = new PDO("mysql:host=$server_name;dbname=$database;charset=utf8", "$username", "$password");
 
@@ -101,7 +115,7 @@ session_start();
                     // echo "p.user_id = $row[7]           u.user_id = $row[8] <bR>";
                     // echo "p.category_id = $row[3]   c.category_id = $row[9] <bR>";
                     // echo "<BR><BR>";
-
+            
                     $post_id = $row[0];
                     $post_title = $row[1];
                     $post_date = $row[2];
@@ -151,7 +165,6 @@ session_start();
                 </div>
                 <div class="card-body pb-1">
                     <div class="container row mb-3 justify-content-between">
-
                         <?php
                         echo "รูป :";
                         // Include the database configuration file  
@@ -160,11 +173,13 @@ session_start();
                         // Get image data from database 
                         $result = $db->query("SELECT image FROM images_post WHERE post_id = $id");
                         ?>
-
-                        <?php if ($result->num_rows > 0) { ?>
+                        <?php
+                        //******************************** เรียกรูปจาก database *********************************************** */ 
+                        if ($result->num_rows > 0) { ?>
                             <div class="gallery">
                                 <?php while ($row = $result->fetch_assoc()) { ?>
-                                    <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($row['image']); ?>"width='500' height='500' />
+                                    <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($row['image']); ?>"
+                                        width='500' height='500' />
                                     <?php if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id']) && $user_id == $_SESSION['user_id']) { ?>
                                         <form action="deleteimages.php" method="post" enctype="multipart/form-data">
                                             <input type="hidden" name="id" value="<?= $id; ?>">
@@ -175,26 +190,86 @@ session_start();
 
                             </div>
                         <?php } else if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id']) && $user_id == $_SESSION['user_id']) { ?>
-                            <form action="upload.php" method="post" enctype="multipart/form-data">
-                                <label>Select Image File:</label>
-                                <input type="hidden" name="id" value="<?= $id; ?>">
-                                <input type="file" name="image">
-                                <input type="submit" name="submit" value="Upload">
-                            </form>
+                                <form action="upload.php" method="post" enctype="multipart/form-data">
+                                    <label>Select Image File:</label>
+                                    <input type="hidden" name="id" value="<?= $id; ?>">
+                                    <input type="file" name="image">
+                                    <input type="submit" name="submit" value="Upload">
+                                </form>
                         <?php } else { ?>
-                            <label>No Image Here</label>
-                        <?php } ?>
-
-                        <?php
-                        //******************************** เรียกรูปจาก database *********************************************** */ 
+                                <label>No Image Here</label>
+                        <?php }
+                        // แสดงข้อมูล
                         echo "ประเภท : $category_tag <BR>";
                         echo "วัตถุดิบ : $post_ingredient <BR><BR>";
                         echo "$post_content <BR><BR>";
                         echo "เขียนโดย - $user_username <BR>";
                         ?>
+                        <?php
+                        // เรียกข้อมูลเช็ค Rating
+                        $conn = null;
+                        $conn = new PDO("mysql:host=$server_name;dbname=$database;charset=utf8", "$username", "$password");
+                        if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) {
+                            $session_user_id = $_SESSION['user_id'];
+                            $rating_info = $conn->query("SELECT * FROM rating_post WHERE user_id = $session_user_id AND post_id = $post_id");
+                        } else {
+                            $rating_info = $conn->query("SELECT * FROM rating_post WHERE post_id = $post_id");
+                        }
+                        $rating_uid = 0;
+                        $rating_status = 0;
+                        if ($rating_info != false) {
+                            while ($rating = $rating_info->fetch()) {
+                                //echo 'POST_FETCH = '.$rating['post_id'].'<BR>';
+                                //echo 'UID_FETCH = '.$rating['user_id'].'<BR>';
+                                //echo 'RATING_FETCH = '.$rating['rating'].'<BR>';
+                                $rating_uid = $rating['user_id'];
+                                $rating_status = $rating['rating'];
+                            }
+                        }
+                        //echo 'CURRENT_STATUS_FETCH = '.$rating_status.'<BR>';
+                        //echo 'CURRENT_UID_FETCH = '.$rating_uid.'<BR>';
+                        //echo 'SESSION_UID = '.$_SESSION['user_id'].'<BR>';
+                        //echo 'CURRENT_POST_ID = '.$post_id .'<BR>';
+                        
+                        if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) { ?>
+                            <form action="test_area.php" name="" method="post">
+                                <input type="hidden" name="post_id" value="<?= $id; ?>">
+                                <?php if (($_SESSION['user_id'] == $rating_uid || $rating_uid == '0') && $rating_status != '1') { ?>
+                                    <button type="submit" name="rating" class="button" value="1">LIKE
+                                        <?php echo $post_like ?>
+                                    </button>
+                                <?php } else { ?>
+                                    <button type="submit" name="rating" class="button" value="2">UNLIKE
+                                        <?php echo $post_like ?>
+                                    </button>
+                                <?php } ?>
+                                &nbsp;&nbsp;&nbsp;
+                                <?php if (($_SESSION['user_id'] == $rating_uid || $rating_uid == '0') && $rating_status != '-1') { ?>
+                                    <button type="submit" name="rating" class="button" value="-1">DISLIKE
+                                        <?php echo $post_dislike ?>
+                                    </button>
+                                <?php } else { ?>
+                                    <button type="submit" name="rating" class="button" value="-2">UNDISLIKE
+                                        <?php echo $post_dislike ?>
+                                    </button>
+                                <?php } ?>
+                            </form>
+                        <?php } else {
+                            //แสดงอย่างเดียว Action ไม่ได้ ?>
+                            <form action="" name="" method="post">
+                                <button type="submit" name="rating" class="button" value="">LIKE
+                                    <?php echo $post_like ?>
+                                </button>
+                                &nbsp;&nbsp;&nbsp;
+                                <button type="submit" name="rating" class="button" value="">DISLIKE
+                                    <?php echo $post_like ?>
+                                </button>
+                            <?php } ?>
+                        </form>
                     </div>
                 </div>
             </div>
+            <!-- ตัวเลือกการเรียงลำดับการแสดง Comment -->
             <div class="d-flex pb-2">
                 <div class="input-group">
                     <label>เรียงโดย: </label>
@@ -204,12 +279,11 @@ session_start();
                     </form>
                 </div>
             </div>
-
             <!--*********************ส่วนแสดง comment (input)******************************* -->
             <?php
             // ต้อง login ก่อนถึงคอมเม้นได้
             if (isset($_SESSION["id"])) {
-            ?>
+                ?>
                 <div class="card text-dark bg-white border-success">
                     <div class="card-header bg-success text-white">แสดงความคิดเห็น</div>
                     <div class="card-body">
@@ -235,13 +309,13 @@ session_start();
                     </div>
                 </div>
                 <br><br>
-            <?php
+                <?php
             }
             ?>
 
             <?php
             //<!--*********************ส่วนแสดง comment******************************* -->
-
+            
             // Sort By Date
             $conn = null;
             $conn = new PDO("mysql:host=$server_name;dbname=$database;charset=utf8", "$username", "$password");
@@ -265,26 +339,26 @@ session_start();
                     $user_id = $comm['4'];
                     $comment_id = $comm['5'];
                     $post_id = $comm['6'];
-            ?>
+                    ?>
                     <div class="card text-dark bg-white border-info mb-3">
                         <div class="card-header bg-info text-white">
-                            
-                            <?php echo "ความคิดเห็นจาก " . $user_name;
-                                // คนเขียนสามารถลบ comment 
-                                if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id']) && $_SESSION["user_id"] == $user_id ) {
-                                    $_SESSION["comment_id"] = $comment_id;
-                                    $_SESSION["post_id"] = $post_id;
-                                    //echo "comment_id = " . $_SESSION['comment_id'];
-                                    //echo "post_id = " . $_SESSION['post_id'];
 
-                                    echo '<form method = "GET" action="delete_comment.php">';
-                                    echo "<a href=\"delete_comment.php?id=$_SESSION[comment_id]\" onclick='return deleteComment()'>
+                            <?php echo "ความคิดเห็นจาก " . $user_name;
+                            // คนเขียนสามารถลบ comment 
+                            if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id']) && $_SESSION["user_id"] == $user_id) {
+                                $_SESSION["comment_id"] = $comment_id;
+                                $_SESSION["post_id"] = $post_id;
+                                //echo "comment_id = " . $_SESSION['comment_id'];
+                                //echo "post_id = " . $_SESSION['post_id'];
+                    
+                                echo '<form method = "GET" action="delete_comment.php">';
+                                echo "<a href=\"delete_comment.php?id=$_SESSION[comment_id]\" onclick='return deleteComment()'>
                                                 <button type='button' class='btn btn-danger'>delete comment</button>
                                             </a>";
-                                    echo '</form>';
-                                }
+                                echo '</form>';
+                            }
                             ?>
-                            
+
                         </div>
                         <div class="card-body pb-1">
                             <div class="container row mb-3 justify-content-between">
@@ -294,15 +368,14 @@ session_start();
                             </div>
                         </div>
                     </div>
-            <?php
+                    <?php
                 }
                 $conn = null;
+                $db = null;
             }
             ?>
-
         </section>
     </div>
-
 </body>
 
 </html>
