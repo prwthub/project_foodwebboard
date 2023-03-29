@@ -232,7 +232,7 @@ session_start();
                         //echo 'CURRENT_POST_ID = '.$post_id .'<BR>';
                         
                         if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) { ?>
-                            <form action="test_area.php" name="" method="post">
+                            <form action="rating_post.php" name="" method="post">
                                 <input type="hidden" name="post_id" value="<?= $id; ?>">
                                 <?php if (($_SESSION['user_id'] == $rating_uid || $rating_uid == '0') && $rating_status != '1') { ?>
                                     <button type="submit" name="rating" class="button" value="1">LIKE

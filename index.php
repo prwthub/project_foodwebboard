@@ -86,7 +86,7 @@ session_start();
 
       // Get image data from database 
       
-      $data = $conn->query("SELECT p.category_id,p.post_title,p.user_id,u.user_name,p.post_date,p.post_like,p.post_dislike,p.post_id
+      $data = $conn->query("SELECT p.category_id,p.post_title,p.user_id,u.user_name,p.post_date,p.post_like,p.post_dislike,p.post_id,p.post_view
                             FROM post p, user u WHERE p.user_id = u.user_id ORDER BY p.post_id DESC;");
                             
       if ($data !== false) {
@@ -99,6 +99,7 @@ session_start();
           $post_like = $row['5'];
           $post_dislike = $row['6'];
           $post_id = $row['7'];
+          $post_view = $row['8'];
 
           $result = $db->query("SELECT image, post_id FROM images_post WHERE post_id = $post_id");
           
@@ -129,7 +130,7 @@ session_start();
           echo "</div>";
           echo "<div class = 'row'><div class = 'col'>" . $user_name . " - " . $post_date . "</div>"; // user_name , post_date
           echo "<div class = 'col d-flex justify-content-end'>";
-          echo "Like - " . $post_like . " Dislike - " . $post_dislike . "</div>"; // post_like , post_dislike
+          echo "View - ".$post_view." Like - " . $post_like . " Dislike - " . $post_dislike . "</div>"; // post_like , post_dislike
           echo "</div></td></tr>";
         }
       }
