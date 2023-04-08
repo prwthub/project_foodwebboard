@@ -201,10 +201,51 @@ session_start();
                         <?php }
                         // แสดงข้อมูล
                         echo "ประเภท : $category_tag <BR>";
-                        echo "วัตถุดิบ : $post_ingredient <BR><BR>";
+
+                        require_once 'dbConfig_SQLi.php';
+                        $tag_count = 0;
+                        $sql_tag = "SELECT post_tag FROM post WHERE post_id = $id";
+                        $result = $db->query($sql_tag);
+                        if ($result->num_rows > 0) {
+                            echo "Tag : "; 
+                            while ($row = $result->fetch_assoc()) {
+                                $data = json_decode($row['post_tag']);
+                                while(true){
+                                    if(!empty($data[$tag_count])){
+                                        echo " '".$data[$tag_count]."' ";
+                                    }else{
+                                        break;
+                                    }
+                                    $tag_count++;
+                                }
+                            }
+                            echo "<BR>";
+                        }
+
+                        $ingredient_count = 0;
+                        $sql_ingredient = "SELECT post_ingredient FROM post WHERE post_id = $id";
+                        $result = $db->query($sql_ingredient);
+                        if ($result->num_rows > 0) {
+                            echo "วัตถุดิบ : "; 
+                            while ($row = $result->fetch_assoc()) {
+                                $data = json_decode($row['post_ingredient']);
+                                while(true){
+                                    if(!empty($data[$ingredient_count])){
+                                        echo " '".$data[$ingredient_count]."' ";
+                                    }else{
+                                        break;
+                                    }
+                                    $ingredient_count++;
+                                }
+                            }
+                            echo "<BR><BR>";
+                        }
+                        $db = null;
+
                         echo "$post_content <BR><BR>";
                         echo "เขียนโดย - $user_username <BR>";
                         ?>
+
                         <?php
                         // เรียกข้อมูลเช็ค Rating
                         $conn = null;

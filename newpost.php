@@ -1,5 +1,10 @@
 <?php
 session_start();
+// ต้อง login ก่อนถึงเขียน post ได้
+if (!isset($_SESSION["id"])) {
+    $_SESSION["add_post"] = 'error';
+    header("location: index.php");
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -17,21 +22,71 @@ session_start();
         crossorigin="anonymous"></script>
     <!--Icon-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
     <title>Newpost</title>
+
+    <!-- สำหรับเพิ่ม tag -->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var maxField = 3; //Input fields increment limitation
+            var addButton = $('.add_button'); //Add button selector
+            var wrapper = $('.field_wrapper'); //Input field wrapper
+            var fieldHTML = '<div><input type="text" name="tag[]" value=""required/><a href="javascript:void(0);" class="remove_button">  <i class="bi bi-trash3-fill"></i></a></div>'; //New input field html 
+            var x = 0; //Initial field counter is 1
+
+            //Once add button is clicked
+            $(addButton).click(function () {
+                //Check maximum number of input fields
+                if (x < maxField) {
+                    x++; //Increment field counter
+                    $(wrapper).append(fieldHTML); //Add field html
+                }
+            });
+
+            //Once remove button is clicked
+            $(wrapper).on('click', '.remove_button', function (e) {
+                e.preventDefault();
+                $(this).parent('div').remove(); //Remove field html
+                x--; //Decrement field counter
+            });
+        });
+    </script>
+
+    <!-- สำหรับเพิ่ม ingredient -->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var maxField = 100; //Input fields increment limitation
+            var addButton = $('.add_button1'); //Add button selector
+            var wrapper = $('.field_wrapper1'); //Input field wrapper
+            var fieldHTML = '<div><input type="text" name="ingredient[]" value=""required/><a href="javascript:void(0);" class="remove_button">  <i class="bi bi-trash3-fill"></i></a></div>'; //New input field html 
+            var x = 0; //Initial field counter is 1
+
+            //Once add button is clicked
+            $(addButton).click(function () {
+                //Check maximum number of input fields
+                if (x < maxField) {
+                    x++; //Increment field counter
+                    $(wrapper).append(fieldHTML); //Add field html
+                }
+            });
+
+            //Once remove button is clicked
+            $(wrapper).on('click', '.remove_button', function (e) {
+                e.preventDefault();
+                $(this).parent('div').remove(); //Remove field html
+                x--; //Decrement field counter
+            });
+        });
+    </script>
+
 </head>
 
 <body>
     <?php include "nav.php"; ?>
     <div class="container">
-
-        <?php
-        // ต้อง login ก่อนถึงเขียน post ได้
-        if (!isset($_SESSION["id"])) {
-            $_SESSION["add_post"] = 'error';
-            header("Location: index.php");
-        }
-        ?>
 
         <section class="col-md-5 mx-auto m-3">
             <div class="card text-dark bg-white border-info">
@@ -56,13 +111,24 @@ session_start();
                                         while ($row = $data->fetch()) {
                                             $category_id = $row['0'];
                                             $category_tag = $row['1'];
-                                    
+
                                             echo "<option value='$category_id'>$category_id $category_tag</option>";
                                         }
                                         $conn = null;
                                     }
                                     ?>
                                 </select>
+                            </div>
+                        </div>
+                        <!-- เพิ่ม Tag -->
+                        <div class="row mb-3">
+                            <label class="col-lg-3 col-form-lable">tag :</label>
+                            <div class="field_wrapper col-lg-9">
+
+                                <input type="text" name="tag[]" value="" required>
+                                <a href="javascript:void(0);" class="add_button" title="Add field"><i
+                                        class="bi bi-plus-square"></i></a>
+
                             </div>
                         </div>
                         <!-- เพิ่มเมนู -->
@@ -75,8 +141,12 @@ session_start();
                         <!-- เพิ่มวัตถุดิบ -->
                         <div class="row mb-3">
                             <label class="col-lg-3 col-form-lable">วัตถุดิบ :</label>
-                            <div class="col-lg-9">
-                                <textarea name="ingre" class="form-control" rows="8" require></textarea>
+                            <div class="field_wrapper1 col-lg-9">
+
+                                <input type="text" name="ingredient[]" value="" required>
+                                <a href="javascript:void(0);" class="add_button1" title="Add field"><i
+                                        class="bi bi-plus-square"></i></a>
+
                             </div>
                         </div>
                         <!-- เพิ่มเนื้อหา -->
