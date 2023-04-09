@@ -17,6 +17,10 @@ session_start();
         crossorigin="anonymous"></script>
     <!--Icon-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+    <!-- Import Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;600;900&display=swap" rel="stylesheet">
     <title>
         <?php
         require 'dbConfig_PDO.php';
@@ -40,7 +44,45 @@ session_start();
 
     </title>
 </head>
+<style>
+    .card {
+        padding: 15px;
+        border-radius: 50px;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
+    }
 
+    section {
+        display: block;
+    }
+
+    .food-circle {
+        width: 100pt;
+        height: 100pt;
+        border-radius: 20%
+    }
+
+    .contain-rounder {
+        width: 50%;
+        height: 50%;
+        border-radius: 20%
+    }
+
+    hr.solid {
+        border-top: 3px solid #bbb;
+    }
+
+    .centerBlock {
+        display: table;
+        margin: auto;
+    }
+
+    .responsiveImage {
+        width: 100%;
+        height: 20vw;
+        object-fit: cover;
+
+    }
+</style>
 <script type="text/javascript">
 
     // Script for delete button (ADMIN only)
@@ -56,17 +98,17 @@ session_start();
 
 </script>
 
-<body>
+<body style="background-color:#7fd4d2">
     <?php
     include "nav.php";
     ?>
-    <div class="container-xxl">
-        <section class="col-md-8 mx-auto m-3">
+
             <?php
             isset($_GET['id']) ? $id = $_GET['id'] : header("Location: index.php");
             //echo "<center>ต้องการดูกระทู้หมายเลข $id <br>";
             //View Count
-            require 'dbConfig_PDO.php';$conn = new PDO("mysql:host=$server_name;dbname=$database;charset=utf8","$username","$password");
+            require 'dbConfig_PDO.php';
+            $conn = new PDO("mysql:host=$server_name;dbname=$database;charset=utf8", "$username", "$password");
             $sql = $conn->query("SELECT * FROM post WHERE post_id = $id");
             if ($sql != false) {
                 while ($row = $sql->fetch()) {
@@ -75,7 +117,7 @@ session_start();
                 $view++;
             }
             $conn = null;
-            $conn = new PDO("mysql:host=$server_name;dbname=$database;charset=utf8","$username","$password");
+            $conn = new PDO("mysql:host=$server_name;dbname=$database;charset=utf8", "$username", "$password");
             $update = ("UPDATE post SET post_view = $view WHERE post_id = $id");
             $conn->exec($update);
             // ******************connect database****************************
@@ -148,12 +190,14 @@ session_start();
             ?>
 
             <!--*********************ส่วนแสดง post******************************* -->
+            <div class="container d-flex justify-content-start col-xs-6 bg-white rounded pt-3" style="margin-top:20px" ;> <!-- Main container -->
+
             <div class="card text-dark bg-white border-primary mb-3">
                 <div class="card-header alert alert-primary">
                     <strong>
                         <?php
                         echo "<div class = 'd-flex justify-content-between'>
-                            <div> $post_title </div>
+                            <div><h1> $post_title </h1></div>
                             <div style='text-align:right'> view : $post_view </div>
                             </div>";
                         echo "<div class = 'd-flex justify-content-between'>
@@ -207,13 +251,13 @@ session_start();
                         $sql_tag = "SELECT post_tag FROM post WHERE post_id = $id";
                         $result = $db->query($sql_tag);
                         if ($result->num_rows > 0) {
-                            echo "Tag : "; 
+                            echo "Tag : ";
                             while ($row = $result->fetch_assoc()) {
                                 $data = json_decode($row['post_tag']);
-                                while(true){
-                                    if(!empty($data[$tag_count])){
-                                        echo " '".$data[$tag_count]."' ";
-                                    }else{
+                                while (true) {
+                                    if (!empty($data[$tag_count])) {
+                                        echo " '" . $data[$tag_count] . "' ";
+                                    } else {
                                         break;
                                     }
                                     $tag_count++;
@@ -226,13 +270,13 @@ session_start();
                         $sql_ingredient = "SELECT post_ingredient FROM post WHERE post_id = $id";
                         $result = $db->query($sql_ingredient);
                         if ($result->num_rows > 0) {
-                            echo "วัตถุดิบ : "; 
+                            echo "วัตถุดิบ : ";
                             while ($row = $result->fetch_assoc()) {
                                 $data = json_decode($row['post_ingredient']);
-                                while(true){
-                                    if(!empty($data[$ingredient_count])){
-                                        echo " '".$data[$ingredient_count]."' ";
-                                    }else{
+                                while (true) {
+                                    if (!empty($data[$ingredient_count])) {
+                                        echo " '" . $data[$ingredient_count] . "' ";
+                                    } else {
                                         break;
                                     }
                                     $ingredient_count++;
