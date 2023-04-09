@@ -61,8 +61,8 @@
     }
 
     .responsiveImage {
-        width: 100%;
-        height: 20vw;
+        width: 75%;
+        height: 10vw;
         object-fit: cover;
 
     }
@@ -143,11 +143,19 @@
                                     while ($img = $result->fetch_assoc()) {
                                         if ($img['post_id'] == $post_id) {
                                     ?>
-                                            <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($img['image']); ?>" class='card-img-top food-circle responsiveImage' />
-                                </div>
+                                            <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($img['image']); ?>" 
+                                            class='card-img-top food-circle responsiveImage' />
+                                
                         <?php
-                                        }
+                                        } else { ?>
+                                            <img
+                                              src=""
+                                              class='card-img-top food-circle responsiveImage' />
+                                          <?php } 
+                                          
                                     }
+                                    ?>
+                                </div> <?php
                                     $dataname = $conn->query("SELECT user_name FROM user WHERE user_id = $user_id  ;");
                                     if ($dataname !== false) {
                                         while ($name = $dataname->fetch()) {
