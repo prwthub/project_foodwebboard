@@ -41,7 +41,12 @@ session_start();
             $sql_post = "DELETE FROM post WHERE post_id = $id";
             $query = $conn->query($sql_post);
 
-            header("location:index.php");
+            if(isset($_SESSION["mymenu"])){
+                header("location:mymenu.php"); 
+            }else{
+                header("location:index.php");    
+            }
+           
 
         }
 
