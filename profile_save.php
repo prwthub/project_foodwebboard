@@ -27,6 +27,6 @@
     
     
     $conn = null;
-    header("Location: profile.php");       
+    header("Location: myprofile.php");       
     die();
 ?>

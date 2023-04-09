@@ -289,6 +289,20 @@ session_start();
                         echo "$post_content <BR><BR>";
                         echo "เขียนโดย - $user_username <BR>";
                         ?>
+                        
+                        <form action="profile_view.php" method="get">
+                            <input type="hidden" name="profile_id" value="<?= $user_id; ?>">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <center>
+                                        <button type="submit" class="btn btn-danger btn-sm text-white">
+                                            <i class="bi bi-person-circle"></i>
+                                            ดูโปรไฟล์
+                                        </button>
+                                    </center>
+                                </div>
+                            </div>
+                        </form>
 
                         <?php
                         // เรียกข้อมูลเช็ค Rating
