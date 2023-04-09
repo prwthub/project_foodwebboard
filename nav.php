@@ -49,10 +49,12 @@ if (!isset($_SESSION['id'])) {
             </a>
 
             <a class="navbar-text col-md-8">
-                <span class="input-group">
-                    <span class="input-group-text" class="form-label"><i class="bi bi-search"></i></span>
-                    <input type="text" class="form-control" placeholder="Search...">
-                </span>
+                <form action="search.php" method="get">
+                    <span class="input-group">
+                        <input type="text" name="search" class="form-control" placeholder="Search...">
+                        <button type="submit"><i class="bi bi-search"></i></button>
+                    </span>
+                </form>
             </a>
 
             <ul class="navbar-nav">
@@ -74,10 +76,12 @@ if (!isset($_SESSION['id'])) {
             </a>
 
             <a class="navbar-text col-md-8">
-                <span class="input-group">
-                    <span class="input-group-text" class="form-label"><i class="bi bi-search"></i></span>
-                    <input type="text" class="form-control" placeholder="Search...">
-                </span>
+                <form action="search.php" method="get">
+                    <span class="input-group">
+                        <input type="text" name="search" class="form-control" placeholder="Search...">
+                        <button type="submit"><i class="bi bi-search"></i></button>
+                    </span>
+                </form>
             </a>
 
             <ul class="navbar-nav">

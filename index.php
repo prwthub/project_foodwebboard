@@ -95,7 +95,9 @@ session_start();
 
     <div class="container-sm bg-white rounded pt-3" style="margin-top:20px" ;> <!-- Main container -->
 
-
+      <?php
+        if (!isset($_SESSION["search"])) {
+      ?>
       <section>
         <div class="card mx-3" ;>
           <img src="https://www.cnet.com/a/img/resize/69256d2623afcbaa911f08edc45fb2d3f6a8e172/hub/2023/02/03/afedd3ee-671d-4189-bf39-4f312248fb27/gettyimages-1042132904.jpg?auto=webp&fit=crop&height=675&width=1200">
@@ -153,6 +155,9 @@ session_start();
           </div>
         </div>
       </section>
+      <?php 
+        }
+      ?>
 
       <hr class="solid">
 
@@ -170,21 +175,27 @@ session_start();
 
 
       // Get image data from database 
-      
-      $data = $conn->query("SELECT p.category_id,p.post_title,p.user_id,u.user_name,p.post_date,p.post_like,p.post_dislike,p.post_id,p.post_view
-                            FROM post p, user u WHERE p.user_id = u.user_id ORDER BY p.post_id DESC;");
+      if (isset($_SESSION["search"])) {
+        $search = $_SESSION["search"];
+        echo "<h1>ผลการค้นหา : $search</h1>";
+        $data = $conn->query("SELECT * FROM post WHERE (post_title LIKE CONCAT('%', '$search', '%') OR post_tag LIKE CONCAT('%', '$search', '%'));");
+      }
+      else{
+        $data = $conn->query("SELECT p.category_id,p.post_title,p.user_id,u.user_name,p.post_date,p.post_like,p.post_dislike,p.post_id,p.post_view
+          FROM post p, user u WHERE p.user_id = u.user_id ORDER BY p.post_id DESC;");
+      }unset($_SESSION['search']);
 
       if ($data !== false) {
         while ($row = $data->fetch()) {
-          $category_id = $row['0'];
-          $post_title = $row['1'];
-          $user_id = $row['2'];
-          $user_name = $row['3'];
-          $post_date = $row['4'];
-          $post_like = $row['5'];
-          $post_dislike = $row['6'];
-          $post_id = $row['7'];
-          $post_view = $row['8'];
+          //$category_id = $row['0'];
+          $post_title = $row['post_title'];
+          $user_id = $row['user_id'];
+          //$user_name = $row['user_name'];
+          $post_date = $row['post_date'];
+          $post_like = $row['post_like'];
+          $post_dislike = $row['post_dislike'];
+          $post_id = $row['post_id'];
+          $post_view = $row['post_view'];
 
           $result = $db->query("SELECT image, post_id FROM images_post WHERE post_id = $post_id");
 
@@ -208,6 +219,12 @@ session_start();
                     <?php
                     }
                   }
+                  $dataname = $conn->query("SELECT user_name FROM user WHERE user_id = $user_id  ;");
+                  if ($dataname !== false) {
+                    while ($name = $dataname->fetch()) {
+                      $user_name = $name['user_name'];
+                    }
+                  }
 
                   echo "<div class = 'col-xs-6 col-sm-4 text-end lead centerBlock'>" . " [ " . $post_id . " ] "; // post_id"
               
@@ -219,7 +236,7 @@ session_start();
                   echo "<div class = 'col-xs-6 col-sm-4 centerBlock'>";
                   echo "<h3>Posted by</h3>";
                   echo "<h3 class = 'bold'>" . $user_name . "</h3>" . "" . $post_date . "</div>"; // user_name , post_date
-              
+                  
 
                   // If role ADMIN, Show Delete button              
                   if (isset($_SESSION["role"])) {
