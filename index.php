@@ -23,7 +23,8 @@ session_start();
   <!-- Import Font -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@200;400;600;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@200;400;600;900&display=swap"
+    rel="stylesheet">
 </head>
 
 <style>
@@ -88,7 +89,7 @@ session_start();
   // echo "session['user_id'] = ".$_SESSION['user_id']."<BR>";
   // echo "session['username'] = ".$_SESSION['username'];
   ?>
-      <?php include "nav.php"; ?>
+  <?php include "nav.php"; ?>
   <form method="GET" action="deletePost.php">
 
 
@@ -96,67 +97,68 @@ session_start();
     <div class="container-sm bg-white rounded pt-3" style="margin-top:20px" ;> <!-- Main container -->
 
       <?php
-        if (!isset($_SESSION["search"])) {
-      ?>
-      <section>
-        <div class="card mx-3 rounded" ;>
-          <img src="https://www.cnet.com/a/img/resize/69256d2623afcbaa911f08edc45fb2d3f6a8e172/hub/2023/02/03/afedd3ee-671d-4189-bf39-4f312248fb27/gettyimages-1042132904.jpg?auto=webp&fit=crop&height=675&width=1200">
-          <div class="d-flex card-body card-img-overlay">
-            <div class="pt-5 px-5 card-footer bg-dark text-white">
+      if (!isset($_SESSION["search"])) {
+        ?>
+        <section>
+          <div class="card mx-3 rounded" ;>
+            <img
+              src="https://www.cnet.com/a/img/resize/69256d2623afcbaa911f08edc45fb2d3f6a8e172/hub/2023/02/03/afedd3ee-671d-4189-bf39-4f312248fb27/gettyimages-1042132904.jpg?auto=webp&fit=crop&height=675&width=1200">
+            <div class="d-flex card-body card-img-overlay">
+              <div class="pt-5 px-5 card-footer bg-dark text-white">
 
-              <h1 class="card-title text-white mt-auto">
+                <h1 class="card-title text-white mt-auto">
 
-                สวัสดีครับ
-              </h1>
+                  สวัสดีครับ
+                </h1>
 
-              <p class="card-subtitle mb-2 text-white">
+                <p class="card-subtitle mb-2 text-white">
 
-                วันนี้ทำอะไรทานดี ~
+                  วันนี้ทำอะไรทานดี ~
 
-              </p>
-              <hr class="solid">
-              <h1 class="card-title text-white mt-auto">
-                หรือ
-              </h1>
+                </p>
+                <hr class="solid">
+                <h1 class="card-title text-white mt-auto">
+                  หรือ
+                </h1>
 
-              <p class="card-subtitle mb-2 text-white" style="text-decoration: underline">
+                <p class="card-subtitle mb-2 text-white" style="text-decoration: underline">
 
-                อยากเพิ่มเมนูขึ้นมาเอง
+                  อยากเพิ่มเมนูขึ้นมาเอง
 
-              </p>
+                </p>
 
 
 
-              <a href="newpost.php">
-                <!-- session ที่เอาไว้เตือนว่าถ้าไม่ log in ไม่สามารถ newpost ได่ -->
+                <a href="newpost.php">
+                  <!-- session ที่เอาไว้เตือนว่าถ้าไม่ log in ไม่สามารถ newpost ได่ -->
 
-                <button type="button" class="btn btn-primary">เพิ่มเมนูอาหาร</button>
-                <?php
-                if (isset($_SESSION["add_post"])) {
-                  ?>
-
-                  <div class="col-md-5">
-                    <?php
-                    // register error
-                    if ($_SESSION["add_post"] == 'error') {
-                      echo "<p class=\"alert alert-danger bi bi-x-circle\" role=\"alert\">";
-                      echo "    คุณจำเป็นต้องเข้าสู่ระบบก่อนถึงจะสามารถเพิ่มโพสได้";
-                      echo "</p>";
-                      unset($_SESSION["add_post"]);
-                    }
-                    ?>
-                  </div>
+                  <button type="button" class="btn btn-primary">เพิ่มเมนูอาหาร</button>
                   <?php
-                }
-                ?>
-              </a>
+                  if (isset($_SESSION["add_post"])) {
+                    ?>
 
+                    <div class="col-md-5">
+                      <?php
+                      // register error
+                      if ($_SESSION["add_post"] == 'error') {
+                        echo "<p class=\"alert alert-danger bi bi-x-circle\" role=\"alert\">";
+                        echo "    คุณจำเป็นต้องเข้าสู่ระบบก่อนถึงจะสามารถเพิ่มโพสได้";
+                        echo "</p>";
+                        unset($_SESSION["add_post"]);
+                      }
+                      ?>
+                    </div>
+                    <?php
+                  }
+                  ?>
+                </a>
+
+              </div>
             </div>
           </div>
-        </div>
-      </section>
-      <?php 
-        }
+        </section>
+        <?php
+      }
       ?>
 
       <hr class="solid">
@@ -179,11 +181,11 @@ session_start();
         $search = $_SESSION["search"];
         echo "<h1>ผลการค้นหา : $search</h1>";
         $data = $conn->query("SELECT * FROM post WHERE (post_title LIKE CONCAT('%', '$search', '%') OR post_tag LIKE CONCAT('%', '$search', '%'));");
-      }
-      else{
+      } else {
         $data = $conn->query("SELECT p.category_id,p.post_title,p.user_id,u.user_name,p.post_date,p.post_like,p.post_dislike,p.post_id,p.post_view
           FROM post p, user u WHERE p.user_id = u.user_id ORDER BY p.post_id DESC;");
-      }unset($_SESSION['search']);
+      }
+      unset($_SESSION['search']);
 
       if ($data !== false) {
         while ($row = $data->fetch()) {
@@ -215,38 +217,43 @@ session_start();
                       ?>
                       <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($img['image']); ?>"
                         class='card-img-top food-circle responsiveImage' />
-                    </div>
-                    <?php
-                    }
-                  }
-                  $dataname = $conn->query("SELECT user_name FROM user WHERE user_id = $user_id  ;");
-                  if ($dataname !== false) {
-                    while ($name = $dataname->fetch()) {
-                      $user_name = $name['user_name'];
-                    }
-                  }
 
-                  echo "<div class = 'col-xs-6 col-sm-4 text-end lead centerBlock'>" . " [ " . $post_id . " ] "; // post_id"
-              
-                  echo "<a href=\"post.php?id=" . $post_id . "\" style=text-decoration:none class = 'red'>";
-                  echo "<br>" . $post_title . "</a>"; // post_title
-                  echo "<br>" . "<i class='bi bi-eye'></i>&nbsp" . $post_view . " |" . "<i class='bi bi-hand-thumbs-up'></i>&nbsp" .
-                    $post_like . "&nbsp<i class='bi bi-hand-thumbs-down'></i>&nbsp" . $post_dislike . "</div>"; // post_like , post_dislike
-              
-                  echo "<div class = 'col-xs-6 col-sm-4 centerBlock'>";
-                  echo "<h3>Posted by</h3>";
-                  echo "<h3 class = 'bold'>" . $user_name . "</h3>" . "" . $post_date . "</div>"; // user_name , post_date
-                  
+                    <?php } else { ?>
+                      <img
+                        src=""
+                        class='card-img-top food-circle responsiveImage' />
+                    <?php }
+                  } ?>
+                </div>
+                <?php
+                $dataname = $conn->query("SELECT user_name FROM user WHERE user_id = $user_id  ;");
+                if ($dataname !== false) {
+                  while ($name = $dataname->fetch()) {
+                    $user_name = $name['user_name'];
+                  }
+                }
 
-                  // If role ADMIN, Show Delete button              
-                  if (isset($_SESSION["role"])) {
-                    if ($_SESSION["role"] == "a") {
-                      echo "<div class = 'd-flex pt-2 px-5 justify-content-end'>";
-                      echo "<a href=\"deletePost.php?id=" . $post_id . "\" class=\"btn btn-danger bi bi-trash\" 
+                echo "<div class = 'col-xs-6 col-sm-4 text-end lead centerBlock'>" . " [ " . $post_id . " ] "; // post_id"
+            
+                echo "<a href=\"post.php?id=" . $post_id . "\" style=text-decoration:none class = 'red'>";
+                echo "<br>" . $post_title . "</a>"; // post_title
+                echo "<br>" . "<i class='bi bi-eye'></i>&nbsp" . $post_view . " |" . "<i class='bi bi-hand-thumbs-up'></i>&nbsp" .
+                  $post_like . "&nbsp<i class='bi bi-hand-thumbs-down'></i>&nbsp" . $post_dislike . "</div>"; // post_like , post_dislike
+            
+                echo "<div class = 'col-xs-6 col-sm-4 centerBlock'>";
+                echo "<h3>Posted by</h3>";
+                echo "<h3 class = 'bold'>" . $user_name . "</h3>" . "" . $post_date . "</div>"; // user_name , post_date
+            
+
+                // If role ADMIN, Show Delete button              
+                if (isset($_SESSION["role"])) {
+                  if ($_SESSION["role"] == "a") {
+                    echo "<div class = 'd-flex pt-2 px-5 justify-content-end'>";
+                    echo "<a href=\"deletePost.php?id=" . $post_id . "\" class=\"btn btn-danger bi bi-trash\" 
                             onclick='return deletePost();'> Delete</div></a>";
-                    }
                   }
-                  ?>
+                }
+                ?>
               </div>
             </div>
           </section>
@@ -254,6 +261,7 @@ session_start();
         }
       }
       $conn = null;
+      $db = null;
 
       ?>
 

@@ -11,8 +11,7 @@
 
 
     h1,
-    a
-    {
+    a {
         font-family: 'Noto Sans Thai', sans-serif;
         font-weight: 600;
         color: #34495e;
@@ -20,31 +19,32 @@
 
     body,
     div,
-    p{
+    p {
         font-family: 'Noto Sans Thai', sans-serif;
         font-weight: 400;
         color: #34495e;
     }
 
-    .bold{
+    .bold {
         font-family: 'Noto Sans Thai', sans-serif;
         font-weight: 900;
         color: #34495e;
     }
 
-    .lighter{
+    .lighter {
         font-family: 'Noto Sans Thai', sans-serif;
         font-size: 16px;
         font-weight: 500;
         color: #34495e;
 
     }
+
     a.red {
         color: #c0392b;
         font-size: 24px;
     }
 
-    .dropdown-menu{
+    .dropdown-menu {
         font-family: 'Noto Sans Thai', sans-serif;
         font-size: 19px;
         font-weight: 200;
@@ -82,7 +82,8 @@ if (!isset($_SESSION['id'])) {
         </div>
     </nav>
 
-<?php } else { ?>
+<?php } else {
+    $user_id = $_SESSION['user_id']; ?>
 
     <nav class="navbar navbar-expand-lg navbar-light px-2" style="background-color: #D3D3D3;">
         <div class="container-fluid">
@@ -106,8 +107,24 @@ if (!isset($_SESSION['id'])) {
                             data-bs-toggle="dropdown" aria-expanded="false">
 
                             <?php echo $_SESSION['username']; ?>
-                            <img src="https://media.discordapp.net/attachments/759437257961635907/1080497630490140744/333569516_3245945072382544_7351929676159766126_n.jpg?width=522&height=644"
-                                alt="" class="circle">
+                            <?php
+                            // Include the database configuration file  
+                            require_once 'dbConfig_SQLi.php';
+                            // Get image data from database 
+                            $result = $db->query("SELECT image FROM images_user WHERE user_id = $user_id");
+                            ?>
+
+                            <?php
+                            //******************************** เรียกรูปจาก database *********************************************** */ 
+                            if ($result->num_rows > 0) { ?>
+                                <?php while ($row = $result->fetch_assoc()) { ?>
+                                    <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($row['image']); ?>"
+                                        width='522' & height='644' alt="" class="circle">
+                                <?php } ?>
+                            <?php } else { ?>
+                                <img src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"
+                                    width='522' & height='644' alt='' class='circle'>
+                            <?php } ?>
                         </a>
 
                         <ul class="dropdown-menu" aria-labelledby="button1">

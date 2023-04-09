@@ -20,7 +20,8 @@ session_start();
     <!-- Import Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@200;400;600;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@200;400;600;900&display=swap"
+        rel="stylesheet">
     <title>
         <?php
         require 'dbConfig_PDO.php';
@@ -94,18 +95,16 @@ session_start();
     }
 
     .label {
-    display: inline;
-    padding: 0.5em 2em 0.5em;
-    font-size: 100%;
-    font-weight: normal;
-    line-height: 3;
-    color: #fff;
-    text-align: center;
-    white-space: nowrap;
-    vertical-align: baseline;
+        display: inline;
+        padding: 0.5em 2em 0.5em;
+        font-size: 100%;
+        font-weight: normal;
+        line-height: 3;
+        color: #fff;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: baseline;
     }
-
-
 </style>
 <script type="text/javascript">
 
@@ -223,187 +222,186 @@ session_start();
                     <?php
                     echo "<div class = 'col-xs-6 col-sm-12 text-end p-3'>";
                     echo "<h1 class = 'bold'> $post_title </h1>";
-                    echo "<p><div class='d-flex col-xs-6 col-sm-12 justify-content-sm-end lighter'>";   
+                    echo "<p><div class='d-flex col-xs-6 col-sm-12 justify-content-sm-end lighter'>";
                     echo "<i class='bi bi-eye'></i>&nbsp" . $post_view . "<i class='bi bi-hand-thumbs-up'></i>&nbsp" . $post_like . "<i class='bi bi-hand-thumbs-down'></i>&nbsp"
-                    . $post_dislike . " | Date posted " . $post_date . "</p></div>"; //Post_view, Like, Dislike,Post_date
+                        . $post_dislike . " | Date posted " . $post_date . "</p></div>"; //Post_view, Like, Dislike,Post_date
                     echo "</div>"; //Post_title
-
+                    
 
                     ?>
+                    <?php
+                    // Include the database configuration file  
+                    require_once 'dbConfig_SQLi.php';
 
-
-                        <?php
-                        // Include the database configuration file  
-                        require_once 'dbConfig_SQLi.php';
-
-                        // Get image data from database 
-                        $result = $db->query("SELECT image FROM images_post WHERE post_id = $id");
-                        ?>
-                        <?php
-                        //******************************** เรียกรูปจาก database *********************************************** */ 
-                        if ($result->num_rows > 0) { ?>
-                            <div class="col-xs-6 col-sm-6 text-center center">
-                                
-  
-                                    <?php while ($row = $result->fetch_assoc()) { ?>
-                                        <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($row['image']); ?>"
-                                            width='500' height='500' class = "responsiveImage border"/>
-                                        <?php if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id']) && $user_id == $_SESSION['user_id']) { ?>
-                                            <form action="deleteimages.php" method="post" enctype="multipart/form-data">
-                                                <input type="hidden" name="id" value="<?= $id; ?>">
-                                                <button type="submit" class="btn btn-danger btn-sm text-white" name="rmPhoto" >
-                                                <i class="bi bi-x-square"></i>
-                                                Remove Photo
-                                                </button>
-                                            </form>
-                                        <?php } ?>
-                                    <?php } ?>
-
-                            </div>
-                        <?php } else if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id']) && $user_id == $_SESSION['user_id']) { ?>
-                                <form action="upload.php" method="post" enctype="multipart/form-data">
-                                    <label>Select Image File:</label>
-                                    <input type="hidden" name="id" value="<?= $id; ?>">
-                                    <input type="file" name="image">
-                                    <input type="submit" name="submit" value="Upload">
-                                </form>
-                        <?php } else { ?>
-                                <label>No Image Here</label>                                
+                    // Get image data from database 
+                    $result = $db->query("SELECT image FROM images_post WHERE post_id = $id");
+                    ?>
+                    <?php
+                    //******************************** เรียกรูปจาก database *********************************************** */ 
+                    if ($result->num_rows > 0) { ?>
+                        <div class="col-xs-6 col-sm-6 text-center center">
+                            <?php while ($row = $result->fetch_assoc()) { ?>
+                                <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($row['image']); ?>"
+                                    width='500' height='500' class="responsiveImage border" />
+                                <?php if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id']) && $user_id == $_SESSION['user_id']) { ?>
+                                    <form action="deleteimages.php" method="post" enctype="multipart/form-data">
+                                        <input type="hidden" name="id" value="<?= $id; ?>">
+                                        <button type="submit" class="btn btn-danger btn-sm text-white" name="rmPhoto">
+                                            <i class="bi bi-x-square"></i>
+                                            Remove Photo
+                                        </button>
+                                    </form>
+                                <?php } ?>
+                            <?php } ?>
 
                         </div>
-                        <?php } ?> <?php
-                        // แสดงข้อมูล
-
-                        echo "<div class = 'col-xs-6 col-sm-6'>";
-                        echo "<span class = 'h3 bold'>" . " ประเภท : </span>
+                    <?php } else if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id']) && $user_id == $_SESSION['user_id']) { ?>
+                        <div class="col-xs-6 col-sm-6 text-center center">
+                        <img src="https://play-lh.googleusercontent.com/3jQbTB6TR95ZSUuunhZF-1Uk-fAkGpem2Nh19plzaHq4aYaxYoLgr6BH5jZ-mu9ls7w=w526-h296-rw"
+                                width='500' height='500' class="responsiveImage border" />
+                            <form action="upload.php" method="post" enctype="multipart/form-data">
+                                <label>Select Image File:</label>
+                                <input type="hidden" name="id" value="<?= $id; ?>">
+                                <input type="file" name="image">
+                                <input type="submit" name="submit" value="Upload">
+                            </form>
+                            </div>
+                    <?php } else { ?>
+                        <div class="col-xs-6 col-sm-6 text-center center">
+                            <img src="https://play-lh.googleusercontent.com/3jQbTB6TR95ZSUuunhZF-1Uk-fAkGpem2Nh19plzaHq4aYaxYoLgr6BH5jZ-mu9ls7w=w526-h296-rw"
+                                width='500' height='500' class="responsiveImage border" />
+                        </div>
+                <?php } ?>
+                <?php
+                // แสดงข้อมูล
+                
+                echo "<div class = 'col-xs-6 col-sm-6'>";
+                echo "<span class = 'h3 bold'>" . " ประเภท : </span>
                               <span class = 'h4'>" . $category_tag . "</span><BR>";
 
-                        require_once 'dbConfig_SQLi.php';
-                        $tag_count = 0;
-                        $sql_tag = "SELECT post_tag FROM post WHERE post_id = $id";
-                        $result = $db->query($sql_tag);
-                        if ($result->num_rows > 0) {
-                            echo "<span class = 'h3 bold '>แท็ก : </span>";
-                            while ($row = $result->fetch_assoc()) {
-                                $data = json_decode($row['post_tag']);
-                                while (true) {
-                                    if (!empty($data[$tag_count])) {
-                                        echo "<span class='label bg-success rounded'>$data[$tag_count]</span>";
-                                        echo " ";
-                                    } else {
-                                        break;
-                                    }
-                                    $tag_count++;
-                                }
+                require_once 'dbConfig_SQLi.php';
+                $tag_count = 0;
+                $sql_tag = "SELECT post_tag FROM post WHERE post_id = $id";
+                $result = $db->query($sql_tag);
+                if ($result->num_rows > 0) {
+                    echo "<span class = 'h3 bold '>แท็ก : </span>";
+                    while ($row = $result->fetch_assoc()) {
+                        $data = json_decode($row['post_tag']);
+                        while (true) {
+                            if (!empty($data[$tag_count])) {
+                                echo "<span class='label bg-success rounded'>$data[$tag_count]</span>";
+                                echo " ";
+                            } else {
+                                break;
                             }
-                            echo "<BR>";
+                            $tag_count++;
                         }
+                    }
+                    echo "<BR>";
+                }
 
-                        $ingredient_count = 0;
-                        $sql_ingredient = "SELECT post_ingredient FROM post WHERE post_id = $id";
-                        $result = $db->query($sql_ingredient);
-                        if ($result->num_rows > 0) {
-                            echo "วัตถุดิบ : ";
-                            while ($row = $result->fetch_assoc()) {
-                                $data = json_decode($row['post_ingredient']);
-                                while (true) {
-                                    if (!empty($data[$ingredient_count])) {
-                                        echo " '" . $data[$ingredient_count] . "' ";
-                                    } else {
-                                        break;
-                                    }
-                                    $ingredient_count++;
-                                }
+                $ingredient_count = 0;
+                $sql_ingredient = "SELECT post_ingredient FROM post WHERE post_id = $id";
+                $result = $db->query($sql_ingredient);
+                if ($result->num_rows > 0) {
+                    echo "วัตถุดิบ : ";
+                    while ($row = $result->fetch_assoc()) {
+                        $data = json_decode($row['post_ingredient']);
+                        while (true) {
+                            if (!empty($data[$ingredient_count])) {
+                                echo " '" . $data[$ingredient_count] . "' ";
+                            } else {
+                                break;
                             }
-                            echo "<BR><BR>";
+                            $ingredient_count++;
                         }
-                        $db = null;
+                    }
+                    echo "<BR><BR>";
+                }
+                $db = null;
 
-                        echo "$post_content <BR><BR>";
-                        echo "<span class = 'h5 bold d-inline-block d-flex justify-content-center'>เขียนโดย</span>";
-                        ?>
-                        <div class="row ">
-                        <div class="col-sm-12 center text-center">
+                echo "$post_content <BR><BR>";
+                echo "<span class = 'h5 bold d-inline-block d-flex justify-content-center'>เขียนโดย</span>";
+                ?>
+                <div class="row ">
+                    <div class="col-sm-12 center text-center">
                         <form action="profile_view.php" method="get">
                             <input type="hidden" name="profile_id" value="<?= $user_id; ?>">
 
-
-                                <img src="https://media.discordapp.net/attachments/759437257961635907/1080497630490140744/333569516_3245945072382544_7351929676159766126_n.jpg?width=522&height=644"
-                                alt="" class="circle">
-                                <?php echo $user_username ?> &nbsp;
-                                <button type="submit" class="btn btn-secondary btn-sm text-white ">
-                                            <i class="bi bi-person-circle"></i>
-                                            ดูโปรไฟล์
-                                        </button>
-                                </div>
-                            </div>
-                        </form>
-
-                        <?php
-                        // เรียกข้อมูลเช็ค Rating
-                        $conn = null;
-                        $conn = new PDO("mysql:host=$server_name;dbname=$database;charset=utf8", "$username", "$password");
-                        if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) {
-                            $session_user_id = $_SESSION['user_id'];
-                            $rating_info = $conn->query("SELECT * FROM rating_post WHERE user_id = $session_user_id AND post_id = $post_id");
-                        } else {
-                            $rating_info = $conn->query("SELECT * FROM rating_post WHERE post_id = $post_id");
-                        }
-                        $rating_uid = 0;
-                        $rating_status = 0;
-                        if ($rating_info != false) {
-                            while ($rating = $rating_info->fetch()) {
-                                //echo 'POST_FETCH = '.$rating['post_id'].'<BR>';
-                                //echo 'UID_FETCH = '.$rating['user_id'].'<BR>';
-                                //echo 'RATING_FETCH = '.$rating['rating'].'<BR>';
-                                $rating_uid = $rating['user_id'];
-                                $rating_status = $rating['rating'];
-                            }
-                        }
-                        //echo 'CURRENT_STATUS_FETCH = '.$rating_status.'<BR>';
-                        //echo 'CURRENT_UID_FETCH = '.$rating_uid.'<BR>';
-                        //echo 'SESSION_UID = '.$_SESSION['user_id'].'<BR>';
-                        //echo 'CURRENT_POST_ID = '.$post_id .'<BR>';
-                        
-                        if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) { ?>
-                            <form action="rating_post.php" name="" method="post">
-                                <input type="hidden" name="post_id" value="<?= $id; ?>">
-                                <?php if (($_SESSION['user_id'] == $rating_uid || $rating_uid == '0') && $rating_status != '1') { ?>
-                                    <button type="submit" name="rating" class="button" value="1">LIKE
-                                        <?php echo $post_like ?>
-                                    </button>
-                                <?php } else { ?>
-                                    <button type="submit" name="rating" class="button" value="2">UNLIKE
-                                        <?php echo $post_like ?>
-                                    </button>
-                                <?php } ?>
-                                &nbsp;&nbsp;&nbsp;
-                                <?php if (($_SESSION['user_id'] == $rating_uid || $rating_uid == '0') && $rating_status != '-1') { ?>
-                                    <button type="submit" name="rating" class="button" value="-1">DISLIKE
-                                        <?php echo $post_dislike ?>
-                                    </button>
-                                <?php } else { ?>
-                                    <button type="submit" name="rating" class="button" value="-2">UNDISLIKE
-                                        <?php echo $post_dislike ?>
-                                    </button>
-                                <?php } ?>
-                            </form>
-                        <?php } else {
-                            //แสดงอย่างเดียว Action ไม่ได้ ?>
-                            <form action="" name="" method="post">
-                                <button type="submit" name="rating" class="button" value="">LIKE
-                                    <?php echo $post_like ?>
-                                </button>
-                                &nbsp;&nbsp;&nbsp;
-                                <button type="submit" name="rating" class="button" value="">DISLIKE
-                                    <?php echo $post_like ?>
-                                </button>
-                            <?php } ?>
-                        </form>
+                            <?php echo $user_username ?> &nbsp;
+                            <button type="submit" class="btn btn-secondary btn-sm text-white ">
+                                <i class="bi bi-person-circle"></i>
+                                ดูโปรไฟล์
+                            </button>
                     </div>
-
                 </div>
-        </section>
+                </form>
+
+                <?php
+                // เรียกข้อมูลเช็ค Rating
+                $conn = null;
+                $conn = new PDO("mysql:host=$server_name;dbname=$database;charset=utf8", "$username", "$password");
+                if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) {
+                    $session_user_id = $_SESSION['user_id'];
+                    $rating_info = $conn->query("SELECT * FROM rating_post WHERE user_id = $session_user_id AND post_id = $post_id");
+                } else {
+                    $rating_info = $conn->query("SELECT * FROM rating_post WHERE post_id = $post_id");
+                }
+                $rating_uid = 0;
+                $rating_status = 0;
+                if ($rating_info != false) {
+                    while ($rating = $rating_info->fetch()) {
+                        //echo 'POST_FETCH = '.$rating['post_id'].'<BR>';
+                        //echo 'UID_FETCH = '.$rating['user_id'].'<BR>';
+                        //echo 'RATING_FETCH = '.$rating['rating'].'<BR>';
+                        $rating_uid = $rating['user_id'];
+                        $rating_status = $rating['rating'];
+                    }
+                }
+                //echo 'CURRENT_STATUS_FETCH = '.$rating_status.'<BR>';
+                //echo 'CURRENT_UID_FETCH = '.$rating_uid.'<BR>';
+                //echo 'SESSION_UID = '.$_SESSION['user_id'].'<BR>';
+                //echo 'CURRENT_POST_ID = '.$post_id .'<BR>';
+                
+                if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) { ?>
+                    <form action="rating_post.php" name="" method="post">
+                        <input type="hidden" name="post_id" value="<?= $id; ?>">
+                        <?php if (($_SESSION['user_id'] == $rating_uid || $rating_uid == '0') && $rating_status != '1') { ?>
+                            <button type="submit" name="rating" class="button" value="1">LIKE
+                                <?php echo $post_like ?>
+                            </button>
+                        <?php } else { ?>
+                            <button type="submit" name="rating" class="button" value="2">UNLIKE
+                                <?php echo $post_like ?>
+                            </button>
+                        <?php } ?>
+                        &nbsp;&nbsp;&nbsp;
+                        <?php if (($_SESSION['user_id'] == $rating_uid || $rating_uid == '0') && $rating_status != '-1') { ?>
+                            <button type="submit" name="rating" class="button" value="-1">DISLIKE
+                                <?php echo $post_dislike ?>
+                            </button>
+                        <?php } else { ?>
+                            <button type="submit" name="rating" class="button" value="-2">UNDISLIKE
+                                <?php echo $post_dislike ?>
+                            </button>
+                        <?php } ?>
+                    </form>
+                <?php } else {
+                    //แสดงอย่างเดียว Action ไม่ได้ ?>
+                    <form action="" name="" method="post">
+                        <button type="submit" name="rating" class="button" value="">LIKE
+                            <?php echo $post_like ?>
+                        </button>
+                        &nbsp;&nbsp;&nbsp;
+                        <button type="submit" name="rating" class="button" value="">DISLIKE
+                            <?php echo $post_like ?>
+                        </button>
+                    <?php } ?>
+                </form>
+            </div>
+
+    </div>
+    </section>
     </div>
 
     <!-- ตัวเลือกการเรียงลำดับการแสดง Comment -->
