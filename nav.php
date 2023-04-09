@@ -34,7 +34,8 @@
 
     .lighter{
         font-family: 'Noto Sans Thai', sans-serif;
-        font-weight: 200;
+        font-size: 16px;
+        font-weight: 500;
         color: #34495e;
 
     }

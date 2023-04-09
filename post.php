@@ -20,7 +20,7 @@ session_start();
     <!-- Import Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;600;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@200;400;600;900&display=swap" rel="stylesheet">
     <title>
         <?php
         require 'dbConfig_PDO.php';
@@ -45,9 +45,15 @@ session_start();
     </title>
 </head>
 <style>
-    .card {
+    .card.rounder {
         padding: 15px;
         border-radius: 50px;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
+    }
+
+    .card {
+        padding: 10px;
+        border-radius: 20px;
         box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
     }
 
@@ -77,11 +83,29 @@ session_start();
     }
 
     .responsiveImage {
-        width: 100%;
-        height: 20vw;
+        width: 80%;
+        height: 40vw;
         object-fit: cover;
 
     }
+
+    .border {
+        box-shadow: 0 0px 15px rgba(0, 0, 0, .6);
+    }
+
+    .label {
+    display: inline;
+    padding: 0.5em 2em 0.5em;
+    font-size: 100%;
+    font-weight: normal;
+    line-height: 3;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    }
+
+
 </style>
 <script type="text/javascript">
 
@@ -103,114 +127,112 @@ session_start();
     include "nav.php";
     ?>
 
-            <?php
-            isset($_GET['id']) ? $id = $_GET['id'] : header("Location: index.php");
-            //echo "<center>ต้องการดูกระทู้หมายเลข $id <br>";
-            //View Count
-            require 'dbConfig_PDO.php';
-            $conn = new PDO("mysql:host=$server_name;dbname=$database;charset=utf8", "$username", "$password");
-            $sql = $conn->query("SELECT * FROM post WHERE post_id = $id");
-            if ($sql != false) {
-                while ($row = $sql->fetch()) {
-                    $view = $row['post_view'];
-                }
-                $view++;
-            }
-            $conn = null;
-            $conn = new PDO("mysql:host=$server_name;dbname=$database;charset=utf8", "$username", "$password");
-            $update = ("UPDATE post SET post_view = $view WHERE post_id = $id");
-            $conn->exec($update);
-            // ******************connect database****************************
-            $conn = null;
-            $conn = new PDO("mysql:host=$server_name;dbname=$database;charset=utf8", "$username", "$password");
+    <?php
+    isset($_GET['id']) ? $id = $_GET['id'] : header("Location: index.php");
+    //echo "<center>ต้องการดูกระทู้หมายเลข $id <br>";
+    //View Count
+    require 'dbConfig_PDO.php';
+    $conn = new PDO("mysql:host=$server_name;dbname=$database;charset=utf8", "$username", "$password");
+    $sql = $conn->query("SELECT * FROM post WHERE post_id = $id");
+    if ($sql != false) {
+        while ($row = $sql->fetch()) {
+            $view = $row['post_view'];
+        }
+        $view++;
+    }
+    $conn = null;
+    $conn = new PDO("mysql:host=$server_name;dbname=$database;charset=utf8", "$username", "$password");
+    $update = ("UPDATE post SET post_view = $view WHERE post_id = $id");
+    $conn->exec($update);
+    // ******************connect database****************************
+    $conn = null;
+    $conn = new PDO("mysql:host=$server_name;dbname=$database;charset=utf8", "$username", "$password");
 
-            $sql = "SELECT * FROM post p , user u , category c 
+    $sql = "SELECT * FROM post p , user u , category c 
                     WHERE p.post_id = $id AND p.user_id = u.user_id OR p.category_id = c.category_id";
-            $query = $conn->query($sql);
-            $result = $query->fetch(PDO::FETCH_ASSOC);
+    $query = $conn->query($sql);
+    $result = $query->fetch(PDO::FETCH_ASSOC);
 
-            // ดึงข้อมูลมาใช้งานแสดงPost
-            $conn = new PDO("mysql:host=$server_name;dbname=$database;charset=utf8", "$username", "$password");
-            $data = $conn->query("SELECT p.post_id, p.post_title, p.post_date, p.category_id, p.post_ingredient, p.post_content, u.user_username, p.user_id, u.user_id, c.category_tag, c.category_id,
+    // ดึงข้อมูลมาใช้งานแสดงPost
+    $conn = new PDO("mysql:host=$server_name;dbname=$database;charset=utf8", "$username", "$password");
+    $data = $conn->query("SELECT p.post_id, p.post_title, p.post_date, p.category_id, p.post_ingredient, p.post_content, u.user_username, p.user_id, u.user_id, c.category_tag, c.category_id,
                                         p.post_like, p.post_dislike, p.post_view 
                                     FROM post p , user u , category c 
                                     WHERE p.post_id = $id and p.category_id = c.category_id and u.user_id = p.user_id");
 
-            $post_id;
-            $post_title;
-            $post_date;
-            $category_id;
-            $post_ingredient;
-            $post_content;
-            $user_username;
-            $user_id;
-            $category_tag;
+    $post_id;
+    $post_title;
+    $post_date;
+    $category_id;
+    $post_ingredient;
+    $post_content;
+    $user_username;
+    $user_id;
+    $category_tag;
 
-            $post_like;
-            $post_dislike;
-            $post_view;
+    $post_like;
+    $post_dislike;
+    $post_view;
 
-            // ดึงข้อมูลมาใช้งาน จาก DATABASE 
-            if ($data !== false) {
-                while ($row = $data->fetch()) {
-                    // echo "p.post_id = $row[0]                  id = $id <bR>";
-                    // echo "p.user_id = $row[7]           u.user_id = $row[8] <bR>";
-                    // echo "p.category_id = $row[3]   c.category_id = $row[9] <bR>";
-                    // echo "<BR><BR>";
-            
-                    $post_id = $row[0];
-                    $post_title = $row[1];
-                    $post_date = $row[2];
-                    $category_id = $row[3];
-                    $post_ingredient = $row[4];
-                    $post_content = $row[5];
-                    $user_username = $row[6];
-                    $user_id = $row[7];
-                    //$user_id = $row[8];
-                    $category_tag = $row[9];
-                    $category_id = $row[10];
+    // ดึงข้อมูลมาใช้งาน จาก DATABASE 
+    if ($data !== false) {
+        while ($row = $data->fetch()) {
+            // echo "p.post_id = $row[0]                  id = $id <bR>";
+            // echo "p.user_id = $row[7]           u.user_id = $row[8] <bR>";
+            // echo "p.category_id = $row[3]   c.category_id = $row[9] <bR>";
+            // echo "<BR><BR>";
+    
+            $post_id = $row[0];
+            $post_title = $row[1];
+            $post_date = $row[2];
+            $category_id = $row[3];
+            $post_ingredient = $row[4];
+            $post_content = $row[5];
+            $user_username = $row[6];
+            $user_id = $row[7];
+            //$user_id = $row[8];
+            $category_tag = $row[9];
+            $category_id = $row[10];
 
-                    $post_like = $row[11];
-                    $post_dislike = $row[12];
-                    $post_view = $row[13];
+            $post_like = $row[11];
+            $post_dislike = $row[12];
+            $post_view = $row[13];
 
-                    // echo "<BR><BR><BR>";
-                    // echo $post_id . "<BR>";
-                    // echo $post_title . "<BR>";
-                    // echo $post_date . "<BR>";
-                    // echo $category_id . "<BR>";
-                    // echo $post_ingredient . "<BR>";
-                    // echo $post_content . "<BR>";
-                    // echo $user_username . "<BR>";
-                    // echo $user_id . "<BR>";
-                    // echo $user_id . "<BR>";
-                    // echo $category_id . "<BR>";
-                }
-            }
-            ?>
+            // echo "<BR><BR><BR>";
+            // echo $post_id . "<BR>";
+            // echo $post_title . "<BR>";
+            // echo $post_date . "<BR>";
+            // echo $category_id . "<BR>";
+            // echo $post_ingredient . "<BR>";
+            // echo $post_content . "<BR>";
+            // echo $user_username . "<BR>";
+            // echo $user_id . "<BR>";
+            // echo $user_id . "<BR>";
+            // echo $category_id . "<BR>";
+        }
+    }
+    ?>
 
-            <!--*********************ส่วนแสดง post******************************* -->
-            <div class="container d-flex justify-content-start col-xs-6 bg-white rounded pt-3" style="margin-top:20px" ;> <!-- Main container -->
+    <!--*********************ส่วนแสดง post******************************* -->
+    <div class="container col-xs-6 bg-white rounded pt-3" style="margin-top:20px" ;>
+        <!-- Main container -->
 
-            <div class="card text-dark bg-white border-primary mb-3">
-                <div class="card-header alert alert-primary">
-                    <strong>
+        <section>
+            <div class='container-fluid card' style='margin-top:20px'>
+                <div class="row">
+                    <?php
+                    echo "<div class = 'col-xs-6 col-sm-12 text-end p-3'>";
+                    echo "<h1 class = 'bold'> $post_title </h1>";
+                    echo "<p><div class='d-flex col-xs-6 col-sm-12 justify-content-sm-end lighter'>";   
+                    echo "<i class='bi bi-eye'></i>&nbsp" . $post_view . "<i class='bi bi-hand-thumbs-up'></i>&nbsp" . $post_like . "<i class='bi bi-hand-thumbs-down'></i>&nbsp"
+                    . $post_dislike . " | Date posted " . $post_date . "</p></div>"; //Post_view, Like, Dislike,Post_date
+                    echo "</div>"; //Post_title
+
+
+                    ?>
+
+
                         <?php
-                        echo "<div class = 'd-flex justify-content-between'>
-                            <div><h1> $post_title </h1></div>
-                            <div style='text-align:right'> view : $post_view </div>
-                            </div>";
-                        echo "<div class = 'd-flex justify-content-between'>
-                            <div> $post_date </div>
-                            <div style='text-align:right'> like : $post_like  dislike : $post_dislike </div>
-                            </div>";
-                        ?>
-                    </strong>
-                </div>
-                <div class="card-body pb-1">
-                    <div class="container row mb-3 justify-content-between">
-                        <?php
-                        echo "รูป :";
                         // Include the database configuration file  
                         require_once 'dbConfig_SQLi.php';
 
@@ -220,17 +242,22 @@ session_start();
                         <?php
                         //******************************** เรียกรูปจาก database *********************************************** */ 
                         if ($result->num_rows > 0) { ?>
-                            <div class="gallery">
-                                <?php while ($row = $result->fetch_assoc()) { ?>
-                                    <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($row['image']); ?>"
-                                        width='500' height='500' />
-                                    <?php if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id']) && $user_id == $_SESSION['user_id']) { ?>
-                                        <form action="deleteimages.php" method="post" enctype="multipart/form-data">
-                                            <input type="hidden" name="id" value="<?= $id; ?>">
-                                            <input type="submit" name="photo" value="deleted photo">
-                                        </form>
+                            <div class="col-xs-6 col-sm-6 text-center center">
+                                
+  
+                                    <?php while ($row = $result->fetch_assoc()) { ?>
+                                        <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($row['image']); ?>"
+                                            width='500' height='500' class = "responsiveImage border"/>
+                                        <?php if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id']) && $user_id == $_SESSION['user_id']) { ?>
+                                            <form action="deleteimages.php" method="post" enctype="multipart/form-data">
+                                                <input type="hidden" name="id" value="<?= $id; ?>">
+                                                <button type="submit" class="btn btn-danger btn-sm text-white" name="rmPhoto" >
+                                                <i class="bi bi-x-square"></i>
+                                                Remove Photo
+                                                </button>
+                                            </form>
+                                        <?php } ?>
                                     <?php } ?>
-                                <?php } ?>
 
                             </div>
                         <?php } else if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id']) && $user_id == $_SESSION['user_id']) { ?>
@@ -241,22 +268,28 @@ session_start();
                                     <input type="submit" name="submit" value="Upload">
                                 </form>
                         <?php } else { ?>
-                                <label>No Image Here</label>
-                        <?php }
+                                <label>No Image Here</label>                                
+
+                        </div>
+                        <?php } ?> <?php
                         // แสดงข้อมูล
-                        echo "ประเภท : $category_tag <BR>";
+
+                        echo "<div class = 'col-xs-6 col-sm-6'>";
+                        echo "<span class = 'h3 bold'>" . " ประเภท : </span>
+                              <span class = 'h4'>" . $category_tag . "</span><BR>";
 
                         require_once 'dbConfig_SQLi.php';
                         $tag_count = 0;
                         $sql_tag = "SELECT post_tag FROM post WHERE post_id = $id";
                         $result = $db->query($sql_tag);
                         if ($result->num_rows > 0) {
-                            echo "Tag : ";
+                            echo "<span class = 'h3 bold '>แท็ก : </span>";
                             while ($row = $result->fetch_assoc()) {
                                 $data = json_decode($row['post_tag']);
                                 while (true) {
                                     if (!empty($data[$tag_count])) {
-                                        echo " '" . $data[$tag_count] . "' ";
+                                        echo "<span class='label bg-success rounded'>$data[$tag_count]</span>";
+                                        echo " ";
                                     } else {
                                         break;
                                     }
@@ -287,19 +320,21 @@ session_start();
                         $db = null;
 
                         echo "$post_content <BR><BR>";
-                        echo "เขียนโดย - $user_username <BR>";
+                        echo "<span class = 'h5 bold d-inline-block d-flex justify-content-center'>เขียนโดย</span>";
                         ?>
-                        
+                        <div class="row ">
+                        <div class="col-sm-12 center text-center">
                         <form action="profile_view.php" method="get">
                             <input type="hidden" name="profile_id" value="<?= $user_id; ?>">
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <center>
-                                        <button type="submit" class="btn btn-danger btn-sm text-white">
+
+
+                                <img src="https://media.discordapp.net/attachments/759437257961635907/1080497630490140744/333569516_3245945072382544_7351929676159766126_n.jpg?width=522&height=644"
+                                alt="" class="circle">
+                                <?php echo $user_username ?> &nbsp;
+                                <button type="submit" class="btn btn-secondary btn-sm text-white ">
                                             <i class="bi bi-person-circle"></i>
                                             ดูโปรไฟล์
                                         </button>
-                                    </center>
                                 </div>
                             </div>
                         </form>
@@ -366,114 +401,117 @@ session_start();
                             <?php } ?>
                         </form>
                     </div>
-                </div>
-            </div>
-            <!-- ตัวเลือกการเรียงลำดับการแสดง Comment -->
-            <div class="d-flex pb-2">
-                <div class="input-group">
-                    <label>เรียงโดย: </label>
-                    <form name="" method="post">
-                        <button type="submit" name="sort" class="button" value="1">เก่า-ใหม่</button>
-                        <button type="submit" name="sort" class="button" value="0">ใหม่-เก่า</button>
-                    </form>
-                </div>
-            </div>
-            <!--*********************ส่วนแสดง comment (input)******************************* -->
-            <?php
-            // ต้อง login ก่อนถึงคอมเม้นได้
-            if (isset($_SESSION["id"])) {
-                ?>
-                <div class="card text-dark bg-white border-success">
-                    <div class="card-header bg-success text-white">แสดงความคิดเห็น</div>
-                    <div class="card-body">
-                        <!-- ส่งข้อมูล comment ไปยัง post_save -->
-                        <form action="post_save.php" method="post">
-                            <input type="hidden" name="post_id" value="<?= $id; ?>">
-                            <div class="row mb-3 justify-content-center">
-                                <div class="col-lg-10">
-                                    <textarea name="comment" class="form-control" rows="8" required></textarea>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <center>
-                                        <button type="submit" class="btn btn-success btn-sm text-white">
-                                            <i class="bi bi-box-arrow-up-right me-1"></i>
-                                            ส่งข้อความ
-                                        </button>
-                                    </center>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                <br><br>
-                <?php
-            }
-            ?>
 
-            <?php
-            //<!--*********************ส่วนแสดง comment******************************* -->
-            
-            // Sort By Date
-            $conn = null;
-            $conn = new PDO("mysql:host=$server_name;dbname=$database;charset=utf8", "$username", "$password");
-            if (isset($_POST['sort']) && !empty($_POST['sort']) && $_POST['sort'] == 1) {
-                $comment = $conn->query("SELECT p.post_id, u.user_name, u.user_id, c.comment_content, c.user_id, c.comment_id, c.post_id 
+                </div>
+        </section>
+    </div>
+
+    <!-- ตัวเลือกการเรียงลำดับการแสดง Comment -->
+    <div class="d-flex pb-2">
+        <div class="input-group">
+            <label>เรียงโดย: </label>
+            <form name="" method="post">
+                <button type="submit" name="sort" class="btn btn-success" value="1">เก่า-ใหม่</button>
+                <button type="submit" name="sort" class="btn btn-success" value="0">ใหม่-เก่า</button>
+            </form>
+        </div>
+    </div>
+    <!--*********************ส่วนแสดง comment (input)******************************* -->
+    <?php
+    // ต้อง login ก่อนถึงคอมเม้นได้
+    if (isset($_SESSION["id"])) {
+        ?>
+        <div class="card text-dark bg-white border-success">
+            <div class="card-header bg-success text-white">แสดงความคิดเห็น</div>
+            <div class="card-body">
+                <!-- ส่งข้อมูล comment ไปยัง post_save -->
+                <form action="post_save.php" method="post">
+                    <input type="hidden" name="post_id" value="<?= $id; ?>">
+                    <div class="row mb-3 justify-content-center">
+                        <div class="col-lg-10">
+                            <textarea name="comment" class="form-control" rows="8" required></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <center>
+                                <button type="submit" class="btn btn-success btn-sm text-white">
+                                    <i class="bi bi-box-arrow-up-right me-1"></i>
+                                    ส่งข้อความ
+                                </button>
+                            </center>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <br><br>
+        <?php
+    }
+    ?>
+
+    <?php
+    //<!--*********************ส่วนแสดง comment******************************* -->
+    
+    // Sort By Date
+    $conn = null;
+    $conn = new PDO("mysql:host=$server_name;dbname=$database;charset=utf8", "$username", "$password");
+    if (isset($_POST['sort']) && !empty($_POST['sort']) && $_POST['sort'] == 1) {
+        $comment = $conn->query("SELECT p.post_id, u.user_name, u.user_id, c.comment_content, c.user_id, c.comment_id, c.post_id 
                     FROM post p , user u , comment c 
                     WHERE p.post_id = c.post_id AND c.user_id = u.user_id AND c.post_id = $id ORDER BY c.comment_id ASC");
-            } else {
-                $comment = $conn->query("SELECT p.post_id, u.user_name, u.user_id, c.comment_content, c.user_id, c.comment_id, c.post_id 
+    } else {
+        $comment = $conn->query("SELECT p.post_id, u.user_name, u.user_id, c.comment_content, c.user_id, c.comment_id, c.post_id 
                     FROM post p , user u , comment c 
                     WHERE p.post_id = c.post_id AND c.user_id = u.user_id AND c.post_id = $id ORDER BY c.comment_id DESC");
-            }
+    }
 
-            // ข้อมูลสำหรับแสดง Comment
-            if ($comment !== false) {
-                while ($comm = $comment->fetch()) {
-                    $post_id = $comm['0'];
-                    $user_name = $comm['1'];
-                    $user_id = $comm['2'];
-                    $comment_content = $comm['3'];
-                    $user_id = $comm['4'];
-                    $comment_id = $comm['5'];
-                    $post_id = $comm['6'];
-                    ?>
-                    <div class="card text-dark bg-white border-info mb-3">
-                        <div class="card-header bg-info text-white">
+    // ข้อมูลสำหรับแสดง Comment
+    if ($comment !== false) {
+        while ($comm = $comment->fetch()) {
+            $post_id = $comm['0'];
+            $user_name = $comm['1'];
+            $user_id = $comm['2'];
+            $comment_content = $comm['3'];
+            $user_id = $comm['4'];
+            $comment_id = $comm['5'];
+            $post_id = $comm['6'];
+            ?>
+            <div class="card text-dark bg-white border-info mb-3">
+                <div class="card-header bg-info text-white">
 
-                            <?php echo "ความคิดเห็นจาก " . $user_name;
-                            // คนเขียนสามารถลบ comment 
-                            if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id']) && $_SESSION["user_id"] == $user_id) {
-                                $_SESSION["comment_id"] = $comment_id;
-                                $_SESSION["post_id"] = $post_id;
-                                //echo "comment_id = " . $_SESSION['comment_id'];
-                                //echo "post_id = " . $_SESSION['post_id'];
-                    
-                                echo '<form method = "GET" action="delete_comment.php">';
-                                echo "<a href=\"delete_comment.php?id=$_SESSION[comment_id]\" onclick='return deleteComment()'>
+                    <?php echo "ความคิดเห็นจาก " . $user_name;
+                    // คนเขียนสามารถลบ comment 
+                    if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id']) && $_SESSION["user_id"] == $user_id) {
+                        $_SESSION["comment_id"] = $comment_id;
+                        $_SESSION["post_id"] = $post_id;
+                        //echo "comment_id = " . $_SESSION['comment_id'];
+                        //echo "post_id = " . $_SESSION['post_id'];
+            
+                        echo '<form method = "GET" action="delete_comment.php">';
+                        echo "<a href=\"delete_comment.php?id=$_SESSION[comment_id]\" onclick='return deleteComment()'>
                                                 <button type='button' class='btn btn-danger'>delete comment</button>
                                             </a>";
-                                echo '</form>';
-                            }
-                            ?>
+                        echo '</form>';
+                    }
+                    ?>
 
-                        </div>
-                        <div class="card-body pb-1">
-                            <div class="container row mb-3 justify-content-between">
-                                <?php
-                                echo $comment_content;
-                                ?>
-                            </div>
-                        </div>
+                </div>
+                <div class="card-body pb-1">
+                    <div class="container row mb-3 justify-content-between">
+                        <?php
+                        echo $comment_content;
+                        ?>
                     </div>
-                    <?php
-                }
-                $conn = null;
-                $db = null;
-            }
-            ?>
-        </section>
+                </div>
+            </div>
+            <?php
+        }
+        $conn = null;
+        $db = null;
+    }
+    ?>
+
     </div>
 </body>
 
