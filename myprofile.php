@@ -22,9 +22,64 @@ $user_id = $_SESSION['user_id'];
         crossorigin="anonymous"></script>
     <!--Icon-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+    <!-- Import Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@200;400;600;900&display=swap"
+        rel="stylesheet">
 </head>
 
-<body style="background-color:#D3D3D3"> 
+<style>
+    .card.rounder {
+        padding: 15px;
+        border-radius: 50px;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
+    }
+
+    .card {
+        padding: 10px;
+        border-radius: 20px;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
+    }
+
+    section {
+        display: block;
+    }
+
+    .profile-circle {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%
+    }
+
+    .contain-rounder {
+        width: 50%;
+        height: 50%;
+        border-radius: 20%
+    }
+
+    hr.solid {
+        border-top: 3px solid #bbb;
+    }
+
+    .centerBlock {
+        display: table;
+        margin: auto;
+    }
+
+    .responsiveImage {
+        width: 80%;
+        height: 40vw;
+        object-fit: cover;
+
+    }
+
+    .border {
+        box-shadow: 0 0px 15px rgba(0, 0, 0, .6);
+    }
+</style>
+
+    <body style="background-color:#D3D3D3">
     <?php
     include "nav.php";
     echo "<BR>";
@@ -53,10 +108,11 @@ $user_id = $_SESSION['user_id'];
     }
     ?>
 
-    <div class="container rounded bg-white mb-1">
+<div class="container-sm bg-white rounded pt-3" style="margin-top:20px" ;> <!-- Main container -->
         <div class="row">
-            <div class="col-md-4 border-right">
-                <div class="d-flex flex-column align-items-center text-center p-3 py-1">
+            <div class="col-md-6 ">
+                <div class="d-flex flex-column align-items-center text-center p-3">
+                    <div class = "card">
                     <?php
                     // Include the database configuration file  
                     require_once 'dbConfig_SQLi.php';
@@ -69,7 +125,7 @@ $user_id = $_SESSION['user_id'];
                     if ($result->num_rows > 0) { ?>
                         <div class="gallery">
                             <?php while ($row = $result->fetch_assoc()) { ?>
-                                <img class="rounded-circle mt-5" width="150px"
+                                <img class="profile-circle mt-5" width="150px"
                                     src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($row['image']); ?>"><BR>
                                 <span class="font-weight-bold">
                                     <?php echo $uname ?>
@@ -87,9 +143,9 @@ $user_id = $_SESSION['user_id'];
                             <?php } ?>
                         </div>
                     <?php } else if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id']) && $user_id == $_SESSION['user_id']) { ?>
-                            <img class="rounded-circle mt-5" width="150px"
+                            <img class="profile-circle mt-5"
                                 src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg">
-                            <span class="font-weight-bold">
+                            <span class="font-weight-bold profile-circle">
                             <?php echo $uname ?>
                             </span>
                             <span class="text-black-50">
@@ -100,16 +156,20 @@ $user_id = $_SESSION['user_id'];
                             <form action="profile_uploadImages.php" method="post" enctype="multipart/form-data">
                                 <input type="hidden" name="id" value="<?= $user_id; ?>">
                                 <input type="file" name="image">
-                                <input type="submit" name="submit" value="Upload">
+                                <button type="submit" name="submit" class = "btn btn-info" value="Upload">
+                                    UPLOAD
+                    </button>
                             </form>
                     <?php } ?>
                 </div>
+                    </div>
             </div>
             <div class="col-md-7 border-right">
                 <div class="p-1 py-1">
                     <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h2 class="text-right">Profile</h2>
+                        <h1 class="text-right bold">Profile</h2>
                     </div>
+
                     <div class="row mt-1">
                         <div class="col-md-6"><label class="labels mb-1">Name :
                                 <?php echo $fname ?>
@@ -118,6 +178,7 @@ $user_id = $_SESSION['user_id'];
                                 <?php echo $lname ?>
                             </label></div>
                     </div>
+
                     <div class="row mt-3">
                         <div class="col-md-12"><label class="labels mb-1">Mobile Number :
                                 <?php echo $phone ?>
@@ -129,6 +190,7 @@ $user_id = $_SESSION['user_id'];
                                 <?php echo $des ?>
                             </label></div>
                     </div>
+
                     <div class="row mt-3">
                         <div class="col-md-6"><label class="labels mb-1">Country :
                                 <?php echo $country ?>
@@ -137,11 +199,13 @@ $user_id = $_SESSION['user_id'];
                                 <?php echo $state ?>
                             </label></div>
                     </div>
+
                     <div class="mt-4 text-center">
                         <form action="profile_edit.php" method="post">
                             <button class="btn btn-primary profile-button" type="submit">Edit</button>
                         </form>
                     </div>
+
                 </div>
             </div>
         </div>

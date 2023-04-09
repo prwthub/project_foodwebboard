@@ -304,12 +304,14 @@ session_start();
                 $sql_ingredient = "SELECT post_ingredient FROM post WHERE post_id = $id";
                 $result = $db->query($sql_ingredient);
                 if ($result->num_rows > 0) {
-                    echo "วัตถุดิบ : ";
+                    echo "<span class = 'h3 bold'>วัตถุดิบ </span>";
                     while ($row = $result->fetch_assoc()) {
                         $data = json_decode($row['post_ingredient']);
                         while (true) {
                             if (!empty($data[$ingredient_count])) {
-                                echo " '" . $data[$ingredient_count] . "' ";
+                                echo "<span class='label bg-warning text-dark rounded '>$data[$ingredient_count]</span>";
+                                echo "<BR>";
+                                //echo " '" . $data[$ingredient_count] . "' ";
                             } else {
                                 break;
                             }

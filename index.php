@@ -233,16 +233,16 @@ session_start();
                   }
                 }
 
-                echo "<div class = 'col-xs-6 col-sm-4 text-end lead centerBlock'>" . " [ " . $post_id . " ] "; // post_id"
+                echo "<div class = 'col-xs-6 col-sm-4 text-end lead centerBlock'>"; //. " [ " . $post_id . " ] "; // post_id"
             
                 echo "<a href=\"post.php?id=" . $post_id . "\" style=text-decoration:none class = 'red'>";
-                echo "<br>" . $post_title . "</a>"; // post_title
+                echo $post_title . "</a>"; // post_title
                 echo "<br>" . "<i class='bi bi-eye'></i>&nbsp" . $post_view . " |" . "<i class='bi bi-hand-thumbs-up'></i>&nbsp" .
                   $post_like . "&nbsp<i class='bi bi-hand-thumbs-down'></i>&nbsp" . $post_dislike . "</div>"; // post_like , post_dislike
             
                 echo "<div class = 'col-xs-6 col-sm-4 centerBlock'>";
                 echo "<h3>Posted by</h3>";
-                echo "<h3 class = 'bold'>" . $user_name . "</h3>" . "" . $post_date . "</div>"; // user_name , post_date
+                echo "<h5 class = 'bold'>" . $user_name . "</h5>" . "" . $post_date . "</div>"; // user_name , post_date
             
 
                 // If role ADMIN, Show Delete button              
