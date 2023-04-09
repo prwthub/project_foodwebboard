@@ -1,5 +1,6 @@
 <?php
 session_start();
+$user_id = $_SESSION['user_id'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -13,9 +14,12 @@ session_start();
     <link rel="stylesheet" href="mystyle.css">
 
     <!-- CSS only -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
     <!-- JavaScript Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+        crossorigin="anonymous"></script>
     <!--Icon-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
 </head>
@@ -29,59 +33,119 @@ session_start();
     $username = "root";
     $password = "";
     $database = "webboard_recipes";
-    $conn = new PDO("mysql:host=$server_name;dbname=$database;charset=utf8","$username","$password");
-    
-    // $sql = "INSERT INTO user ( user_fname, user_lname, user_phone, user_exp, user_des, user_country, user_state) 
-    //         VALUES('$fname','$lname','$phone','$exp','$des','$country','$state')";
-    // $query = $conn->query($sql);
-    // $result = $query->fetch(PDO::FETCH_ASSOC);
-
-    // $fname = $result['user_fname'];
-    // $lname = $result['user_lname'];
-    // $phone = $result['user_phone'];
-    // $exp = $result['user_exp'];
-    // $des = $result['user_des'];
-    // $country = $result['user_country'];
-    // $state = $result['user_state'];
-    // // รอ $pic = $_POST['pic'];
-
+    $conn = new PDO("mysql:host=$server_name;dbname=$database;charset=utf8", "$username", "$password");
+    $sql = $conn->query("SELECT user_name, user_email, user_fname, 
+                                user_lname, user_phone, user_exp, user_des, 
+                                user_country, user_state 
+                                FROM user WHERE user_id = $user_id");
+    if ($sql !== false) {
+        while ($row = $sql->fetch()) {
+            $uname = $row[0];
+            $email = $row[1];
+            $fname = $row[2];
+            $lname = $row[3];
+            $phone = $row[4];
+            $exp = $row[5];
+            $des = $row[6];
+            $country = $row[7];
+            $state = $row[8];
+        }
+    }
     ?>
-    <form action="profile_save.php" method="post">
-        <div class="container rounded bg-white mb-1">
-            <div class="row">
-                <div class="col-md-4 border-right">
-                    <div class="d-flex flex-column align-items-center text-center p-3 py-1">
-                        <img class="rounded-circle mt-5" width="150px" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg">
-                        <span class="font-weight-bold">user_name</span>
-                        <span class="text-black-50">user_email</span>
-                        <span> </span>
-                        <h2>ทำปุ่มใส่รูป</h2>
-                    </div>
+
+    <div class="container rounded bg-white mb-1">
+        <div class="row">
+            <div class="col-md-4 border-right">
+                <div class="d-flex flex-column align-items-center text-center p-3 py-1">
+                    <?php
+                    // Include the database configuration file  
+                    require_once 'dbConfig_SQLi.php';
+                    // Get image data from database 
+                    $result = $db->query("SELECT image FROM images_user WHERE user_id = $user_id");
+                    ?>
+
+                    <?php
+                    //******************************** เรียกรูปจาก database *********************************************** */ 
+                    if ($result->num_rows > 0) { ?>
+                        <div class="gallery">
+                            <?php while ($row = $result->fetch_assoc()) { ?>
+                                <img class="rounded-circle mt-5" width="150px"
+                                    src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($row['image']); ?>"><BR>
+                                <span class="font-weight-bold">
+                                    <?php echo $uname ?>
+                                </span><BR>
+                                <span class="text-black-50">
+                                    <?php echo $email ?>
+                                </span>
+                                <span> </span>
+                                <?php if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id']) && $user_id == $_SESSION['user_id']) { ?>
+                                    <form action="deleteimagesUser.php" method="post" enctype="multipart/form-data">
+                                        <input type="hidden" name="id" value="<?= $user_id; ?>">
+                                        <input type="submit" name="photo" value="deleted photo">
+                                    </form>
+                                <?php } ?>
+                            <?php } ?>
+                        </div>
+                    <?php } else if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id']) && $user_id == $_SESSION['user_id']) { ?>
+                            <img class="rounded-circle mt-5" width="150px"
+                                src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg">
+                            <span class="font-weight-bold">
+                            <?php echo $uname ?>
+                            </span>
+                            <span class="text-black-50">
+                            <?php echo $email ?>
+                            </span>
+                            <span> </span>
+                            <h3>เพิ่มรูป</h3>
+                            <form action="profile_uploadImages.php" method="post" enctype="multipart/form-data">
+                                <input type="hidden" name="id" value="<?= $user_id; ?>">
+                                <input type="file" name="image">
+                                <input type="submit" name="submit" value="Upload">
+                            </form>
+                    <?php } ?>
                 </div>
-                <div class="col-md-7 border-right">
-                    <div class="p-1 py-1">
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <h2 class="text-right">Profile</h2>
-                        </div>
-                        <div class="row mt-1">
-                            <div class="col-md-6"><label class="labels mb-1">Name</label></div>
-                            <div class="col-md-6"><label class="labels mb-1">Lastname</label></div>
-                        </div>
-                        <div class="row mt-3">
-                            <div class="col-md-12"><label class="labels mb-1">Mobile Number</label></div>
-                            <div class="col-md-12"><label class="labels mb-1">Reward / Experience</label></div>
-                            <div class="col-md-12"><label class="labels mb-1">Description</label></div>
-                        </div>
-                        <div class="row mt-3">
-                            <div class="col-md-6"><label class="labels mb-1">Country</label></div>
-                            <div class="col-md-6"><label class="labels mb-1">State/Region</label></div>
-                        </div>
-                        <div class="mt-4 text-center"><button class="btn btn-primary profile-button" type="submit">Save Profile</button></div>
+            </div>
+            <div class="col-md-7 border-right">
+                <div class="p-1 py-1">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h2 class="text-right">Profile</h2>
+                    </div>
+                    <div class="row mt-1">
+                        <div class="col-md-6"><label class="labels mb-1">Name :
+                                <?php echo $fname ?>
+                            </label></div>
+                        <div class="col-md-6"><label class="labels mb-1">Lastname :
+                                <?php echo $lname ?>
+                            </label></div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-12"><label class="labels mb-1">Mobile Number :
+                                <?php echo $phone ?>
+                            </label></div>
+                        <div class="col-md-12"><label class="labels mb-1">Reward / Experience :
+                                <?php echo $exp ?>
+                            </label></div>
+                        <div class="col-md-12"><label class="labels mb-1">Description :
+                                <?php echo $des ?>
+                            </label></div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-6"><label class="labels mb-1">Country :
+                                <?php echo $country ?>
+                            </label></div>
+                        <div class="col-md-6"><label class="labels mb-1">State/Region :
+                                <?php echo $state ?>
+                            </label></div>
+                    </div>
+                    <div class="mt-4 text-center">
+                        <form action="profile_edit.php" method="post">
+                            <button class="btn btn-primary profile-button" type="submit">Edit</button>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
-    </form>
+    </div>
 </body>
 
 </html>
