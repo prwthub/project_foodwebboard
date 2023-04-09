@@ -23,7 +23,7 @@ session_start();
   <!-- Import Font -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;600;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@200;400;600;900&display=swap" rel="stylesheet">
 </head>
 
 <style>
@@ -59,8 +59,8 @@ session_start();
   }
 
   .responsiveImage {
-    width: 100%;
-    height: 20vw;
+    width: 75%;
+    height: 10vw;
     object-fit: cover;
 
   }
@@ -99,7 +99,7 @@ session_start();
         if (!isset($_SESSION["search"])) {
       ?>
       <section>
-        <div class="card mx-3" ;>
+        <div class="card mx-3 rounded" ;>
           <img src="https://www.cnet.com/a/img/resize/69256d2623afcbaa911f08edc45fb2d3f6a8e172/hub/2023/02/03/afedd3ee-671d-4189-bf39-4f312248fb27/gettyimages-1042132904.jpg?auto=webp&fit=crop&height=675&width=1200">
           <div class="d-flex card-body card-img-overlay">
             <div class="pt-5 px-5 card-footer bg-dark text-white">
@@ -228,7 +228,7 @@ session_start();
 
                   echo "<div class = 'col-xs-6 col-sm-4 text-end lead centerBlock'>" . " [ " . $post_id . " ] "; // post_id"
               
-                  echo "<a href=\"post.php?id=" . $post_id . "\" style=text-decoration:none>";
+                  echo "<a href=\"post.php?id=" . $post_id . "\" style=text-decoration:none class = 'red'>";
                   echo "<br>" . $post_title . "</a>"; // post_title
                   echo "<br>" . "<i class='bi bi-eye'></i>&nbsp" . $post_view . " |" . "<i class='bi bi-hand-thumbs-up'></i>&nbsp" .
                     $post_like . "&nbsp<i class='bi bi-hand-thumbs-down'></i>&nbsp" . $post_dislike . "</div>"; // post_like , post_dislike
