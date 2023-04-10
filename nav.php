@@ -1,3 +1,9 @@
+  <!-- Import Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@200;400;600;900&display=swap"
+    rel="stylesheet">
+    
 <style>
     .circle {
         width: 30pt;
@@ -34,7 +40,7 @@
     .lighter {
         font-family: 'Noto Sans Thai', sans-serif;
         font-size: 16px;
-        font-weight: 500;
+        font-weight: 400;
         color: #34495e;
 
     }
