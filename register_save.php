@@ -10,7 +10,7 @@
 
     $passwd = sha1($passwd);
     
-    $sql = "SELECT * FROM user where user_name ='$login' or user_email = '$email'";
+    $sql = "SELECT * FROM user where user_username ='$login' or user_email = '$email'";
     $result=$conn->query($sql);
     // ถ้าบัญชีเคยสมัครไว้แล้ว
     if($result->rowCount()>=1){
