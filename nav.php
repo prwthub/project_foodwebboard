@@ -62,18 +62,17 @@
 if (!isset($_SESSION['id'])) {
     ?>
 
-    <nav class="navbar navbar-light px-2" style="background-color:#D3D3D3">
-        <div class="container-fluid">
-
+    <nav class="navbar navbar-expand-lg navbar-light px-2" style="background-color: #D3D3D3;">
+        <div class="container-fluid justify-content-center">
             <a href="index.php" class="navbar-brand bold">
-                <i class="bi bi-house-door-fill"></i> Home <!--Home button Navbar + Home icon-->
+                <i class="bi bi-house-door-fill"></i> Home
             </a>
 
-            <a class="navbar-text col-md-8">
-                <form action="search.php" method="get">
+            <a class="container-fluid justify-content-start navbar-text col-sm-9">
+                <form action="search.php" method="get" class ="form-inline">
                     <span class="input-group">
-                        <input type="text" name="search" class="form-control" placeholder="Search...">
-                        <button type="submit"><i class="bi bi-search"></i></button>
+                        <input type="search" name="search" class="form-control" placeholder="Search...">
+                        <button type="submit" class = "btn btn-sm btn-outline-success"><i class="bi bi-search"></i></button>
                     </span>
                 </form>
             </a>
@@ -91,17 +90,17 @@ if (!isset($_SESSION['id'])) {
 <?php } else {
     $user_id = $_SESSION['user_id']; ?>
 
-    <nav class="navbar navbar-expand-lg navbar-light px-2" style="background-color: #D3D3D3;">
-        <div class="container-fluid">
+    <nav class="navbar navbar-expand-sm navbar-light px-2" style="background-color: #D3D3D3;">
+        <div class="container-fluid justify-content-center ">
             <a href="index.php" class="navbar-brand bold">
                 <i class="bi bi-house-door-fill"></i> Home
             </a>
 
-            <a class="navbar-text col-md-8">
-                <form action="search.php" method="get">
+            <a class="container-fluid navbar-text col-sm-9">
+                <form action="search.php" method="get" class ="form-inline">
                     <span class="input-group">
-                        <input type="text" name="search" class="form-control" placeholder="Search...">
-                        <button type="submit"><i class="bi bi-search"></i></button>
+                        <input type="search" name="search" class="form-control" placeholder="Search...">
+                        <button type="submit" class = "btn btn-sm btn-outline-success"><i class="bi bi-search"></i></button>
                     </span>
                 </form>
             </a>

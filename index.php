@@ -66,6 +66,10 @@ unset($_SESSION["mymenu"]);
     object-fit: cover;
 
   }
+
+  .stickyText {
+    white-space: nowrap
+  }
 </style>
 
 <script type="text/javascript">
@@ -99,7 +103,7 @@ unset($_SESSION["mymenu"]);
       if (!isset($_SESSION["search"])) {
         ?>
         <section>
-          <div class="card mx-3 rounded" ;>
+          <div class="container-fluid card rounded col-sm-12" ;>
             <?php
             require_once 'dbConfig_SQLi.php';
             $result = $db->query("SELECT image, post_id FROM images_post ORDER BY RAND() LIMIT 1");
@@ -110,19 +114,17 @@ unset($_SESSION["mymenu"]);
             <?php
             }
             ?>
-            <div class="d-flex card-body card-img-overlay">
-              <div class="pt-5 px-5 card-footer bg-dark text-white">
+            <div class="d-flex px-5 card-body card-img-overlay">
+              <div class="p-5 bg-dark text-white col-sm-4">
 
-                <h1 class="card-title text-white mt-auto">
-
+                <h1 class="card-title text-white mt-auto d-flex stickyText d-none d-lg-block">
                   สวัสดีครับ
                 </h1>
 
-                <p class="card-subtitle mb-2 text-white">
-
+                <p class="card-subtitle mb-2 text-white d-flex stickyText d-none d-lg-block">
                   วันนี้ทำอะไรทานดี ~
-
                 </p>
+
 
                 <?php
                 echo "<a href=\"post.php?id=" . $p_id . "\">";
@@ -130,15 +132,14 @@ unset($_SESSION["mymenu"]);
                   <button type="button" class="btn btn-primary">สุ่มอาหาร</button>
                 </a>
 
-                <hr class="solid">
-                <h1 class="card-title text-white mt-auto">
+                <hr class="solid d-none d-lg-block">
+
+                <h1 class="card-title text-white mt-auto d-flex stickyText d-none d-lg-block">
                   หรือ
                 </h1>
 
-                <p class="card-subtitle mb-2 text-white" style="text-decoration: underline">
-
+                <p class="card-subtitle mb-2 text-white d-flex d-none d-lg-block" style="text-decoration: underline">
                   อยากเพิ่มเมนูขึ้นมาเอง
-
                 </p>
                 
 
@@ -146,16 +147,17 @@ unset($_SESSION["mymenu"]);
                 <a href="newpost.php">
                   <!-- session ที่เอาไว้เตือนว่าถ้าไม่ log in ไม่สามารถ newpost ได่ -->
 
-                  <button type="button" class="btn btn-primary">เพิ่มเมนูอาหาร</button>
+                  <button type="button" class="btn btn-primary mb-3 d-flex d-none d-lg-block" >เพิ่มเมนูอาหาร</button>
+                  <button type="button" class="btn btn-primary mb-3 d-lg-none text-align-center" >เพิ่มเมนู</button>
                   <?php
                   if (isset($_SESSION["add_post"])) {
                     ?>
 
-                    <div class="col-md-5">
+                    <div class="col-xs-4 d-flex">
                       <?php
                       // register error
                       if ($_SESSION["add_post"] == 'error') {
-                        echo "<p class=\"alert alert-danger bi bi-x-circle\" role=\"alert\">";
+                        echo "<p class=\"alert alert-danger bi bi-x-circle text-decoration-none\" role=\"alert\">";
                         echo "    คุณจำเป็นต้องเข้าสู่ระบบก่อนถึงจะสามารถเพิ่มโพสได้";
                         echo "</p>";
                         unset($_SESSION["add_post"]);
@@ -176,7 +178,7 @@ unset($_SESSION["mymenu"]);
 
       <hr class="solid">
 
-      <div class="container-fluid d-flex bg-info justify-content-center pt-3 pb-2">
+      <div class="container-fluid d-flex bg-info justify-content-center pt-3 pb-2 sticky-top">
 
         <h1 style="text-decoration:underline"> เมนูอาหารจากทาง Community </h1>
 

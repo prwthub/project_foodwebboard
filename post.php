@@ -90,12 +90,16 @@ session_start();
 
     }
 
+    .textArrange {
+    overflow-wrap: break-word;
+    }
+
     .border {
         box-shadow: 0 0px 15px rgba(0, 0, 0, .6);
     }
 
     .label {
-        display: inline;
+        display: inline-block;
         padding: 0.5em 2em 0.5em;
         font-size: 100%;
         font-weight: normal;
@@ -104,6 +108,9 @@ session_start();
         text-align: center;
         white-space: nowrap;
         vertical-align: baseline;
+        overflow-wrap: break-word;
+
+
     }
 </style>
 <script type="text/javascript">
@@ -309,8 +316,9 @@ session_start();
                         $data = json_decode($row['post_ingredient']);
                         while (true) {
                             if (!empty($data[$ingredient_count])) {
-                                echo "<span class='label bg-warning text-dark rounded '>$data[$ingredient_count]</span>";
                                 echo "<BR>";
+                                echo "<span class='label bg-warning text-dark rounded d-inline-block text-truncate' style='width: 30vw;'>$data[$ingredient_count]</span>";
+                                echo "<span class='label bg-warning text-dark rounded d-inline-block text-truncate d-lg-none' style='width: 30vw;'>$data[$ingredient_count]</span>";
                                 //echo " '" . $data[$ingredient_count] . "' ";
                             } else {
                                 break;
