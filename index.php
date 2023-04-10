@@ -92,8 +92,6 @@ session_start();
   <?php include "nav.php"; ?>
   <form method="GET" action="deletePost.php">
 
-
-
     <div class="container-sm bg-white rounded pt-3" style="margin-top:20px" ;> <!-- Main container -->
 
       <?php
@@ -101,8 +99,16 @@ session_start();
         ?>
         <section>
           <div class="card mx-3 rounded" ;>
-            <img
-              src="https://www.cnet.com/a/img/resize/69256d2623afcbaa911f08edc45fb2d3f6a8e172/hub/2023/02/03/afedd3ee-671d-4189-bf39-4f312248fb27/gettyimages-1042132904.jpg?auto=webp&fit=crop&height=675&width=1200">
+            <?php
+            require_once 'dbConfig_SQLi.php';
+            $result = $db->query("SELECT image, post_id FROM images_post ORDER BY RAND() LIMIT 1");
+            while ($img = $result->fetch_assoc()) {
+              $p_id = $img['post_id'];
+              ?>
+              <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($img['image']); ?>" />
+            <?php
+            }
+            ?>
             <div class="d-flex card-body card-img-overlay">
               <div class="pt-5 px-5 card-footer bg-dark text-white">
 
@@ -116,6 +122,13 @@ session_start();
                   วันนี้ทำอะไรทานดี ~
 
                 </p>
+
+                <?php
+                echo "<a href=\"post.php?id=" . $p_id . "\">";
+                ?>
+                  <button type="button" class="btn btn-primary">สุ่มอาหาร</button>
+                </a>
+
                 <hr class="solid">
                 <h1 class="card-title text-white mt-auto">
                   หรือ
@@ -126,7 +139,7 @@ session_start();
                   อยากเพิ่มเมนูขึ้นมาเอง
 
                 </p>
-
+                
 
 
                 <a href="newpost.php">
@@ -152,7 +165,6 @@ session_start();
                   }
                   ?>
                 </a>
-
               </div>
             </div>
           </div>
@@ -180,7 +192,8 @@ session_start();
       if (isset($_SESSION["search"])) {
         $search = $_SESSION["search"];
         echo "<h1>ผลการค้นหา : $search</h1>";
-        $data = $conn->query("SELECT * FROM post WHERE (post_title LIKE CONCAT('%', '$search', '%') OR post_tag LIKE CONCAT('%', '$search', '%'));");
+        $data = $conn->query("SELECT * FROM post 
+        WHERE (post_title LIKE CONCAT('%', '$search', '%') OR post_tag LIKE CONCAT('%', '$search', '%'));");
       } else {
         $data = $conn->query("SELECT p.category_id,p.post_title,p.user_id,u.user_name,p.post_date,p.post_like,p.post_dislike,p.post_id,p.post_view
           FROM post p, user u WHERE p.user_id = u.user_id ORDER BY p.post_id DESC;");
@@ -219,9 +232,7 @@ session_start();
                         class='card-img-top food-circle responsiveImage' />
 
                     <?php } else { ?>
-                      <img
-                        src=""
-                        class='card-img-top food-circle responsiveImage' />
+                      <img src="" class='card-img-top food-circle responsiveImage' />
                     <?php }
                   } ?>
                 </div>
