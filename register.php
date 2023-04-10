@@ -41,7 +41,7 @@ session_start();
     <style>
         .responsiveImage {
             width: 100%;
-            height: 35vw;
+            height: 100%;
             object-fit: cover;
 
         }
@@ -130,14 +130,12 @@ session_start();
                                                 style="border-radius: 1rem 0 0 1rem;" />
                                         </div>
 
-
-
                                         <div class="form-outline mb-3">
-                                            <h6 class="fw-normal mb-2 pb-1"
-                                                style="letter-spacing: 1px; color: #393f81;">Register</h6>
+                                            <h3 class="fw-normal mb-2 pb-1"
+                                                style="letter-spacing: 1px; color: #393f81;">Register</h3>
                                             <input type="text" name="login" class="form-control"
                                                 class="form-control form-control-lg" required
-                                                placeholder='username or email'>
+                                                placeholder='username'>
                                         </div>
 
                                         <div class="input-group form-outline mb-3">
@@ -153,7 +151,7 @@ session_start();
                                         <div class="form-outline mb-3">
                                             <input type="text" name="name" class="form-control"
                                                 class="form-control form-control-lg" required
-                                                placeholder='username account'>
+                                                placeholder='account name'>
                                         </div>
 
                                         <div class="form-outline mb-3">

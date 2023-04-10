@@ -165,7 +165,7 @@ if (isset($_SESSION["id"])) {
 
 
                                             <div class="form-outline mb-3">
-                                                <h6 class="fw-normal mb-2 pb-1" style="letter-spacing: 1px; color: #393f81;">Sign into your account</h6>
+                                                <h4 class="fw-normal mb-2 pb-1" style="letter-spacing: 1px; color: #393f81;">Sign into your account</h4>
                                                 <input type="text" name="login_or_email" class="form-control" class="form-control form-control-lg" required placeholder='username or email'>
                                             </div>
 
