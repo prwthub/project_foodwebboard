@@ -65,7 +65,7 @@ session_start();
     include "nav.php";
     ?><!-- เรียก navbar จากที่อื่นมาใช้ ง่ายต่อการเรียนใช้ในหลายๆไฟล์ -->
 
-    <section class="vh-100 pb-1" style="background-color: #9A616D; ">
+    <section class="vh-100 pb-1" style="background-color: #6B8E23; ">
         <br>
         <?php
         if (isset($_SESSION["add_login"])) {
@@ -163,7 +163,7 @@ session_start();
 
                                         <div class="pt-1 mb-4">
                                             <button class="btn btn-dark btn-lg btn-block"
-                                                type="submit">Register</button>
+                                                type="submit" style="background-color :#B22222">Register</button>
                                         </div>
 
                                         <a href="#!" class="small text-muted">Terms of use.</a>
