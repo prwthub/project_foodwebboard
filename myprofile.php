@@ -37,7 +37,7 @@ $user_id = $_SESSION['user_id'];
     }
 
     .card {
-        padding: 10px;
+        padding: 20px;
         border-radius: 20px;
         box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
     }
@@ -67,19 +67,38 @@ $user_id = $_SESSION['user_id'];
         margin: auto;
     }
 
-    .responsiveImage {
-        width: 80%;
-        height: 40vw;
+    .responsiveBox {
+        width: 100%;
+        height: 30vw;
         object-fit: cover;
-
     }
 
     .border {
         box-shadow: 0 0px 15px rgba(0, 0, 0, .6);
     }
+
+    .label {
+        display: inline-block;
+        padding: 0.5em 2em 0.5em;
+        font-size: 100%;
+        font-weight: normal;
+        line-height: 3;
+        color: #000;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+    }
+
+    hr.solid {
+        border-top: 3px solid #bbb;
+    }
+
+    .hrVertical {
+        border-left: 3px solid #bbb;
+    }
 </style>
 
-    <body style="background-color:#D3D3D3">
+<body style="background-color:#D3D3D3">
     <?php
     include "nav.php";
     echo "<BR>";
@@ -108,108 +127,159 @@ $user_id = $_SESSION['user_id'];
     }
     ?>
 
-<div class="container-sm bg-white rounded pt-3" style="margin-top:20px" ;> <!-- Main container -->
-        <div class="row">
-            <div class="col-md-6 ">
-                <div class="d-flex flex-column align-items-center text-center p-3">
-                    <div class = "card">
-                    <?php
-                    // Include the database configuration file  
-                    require_once 'dbConfig_SQLi.php';
-                    // Get image data from database 
-                    $result = $db->query("SELECT image FROM images_user WHERE user_id = $user_id");
-                    ?>
+    <div class="container-sm bg-white rounded py-3 " style="margin-top:20px" ;> <!-- Main container -->
 
-                    <?php
-                    //******************************** เรียกรูปจาก database *********************************************** */ 
-                    if ($result->num_rows > 0) { ?>
-                        <div class="gallery">
-                            <?php while ($row = $result->fetch_assoc()) { ?>
-                                <img class="profile-circle mt-5" width="150px"
-                                    src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($row['image']); ?>"><BR>
-                                <span class="font-weight-bold">
-                                    <?php echo $uname ?>
-                                </span><BR>
+        <!-- User profile card -->
+        <div class="row">
+            <div class="col-xs-6 col-md-4">
+                <div class="align-items-center text-center p-3">
+                    <div class="card">
+                        <?php
+                        // Include the database configuration file  
+                        require_once 'dbConfig_SQLi.php';
+                        // Get image data from database 
+                        $result = $db->query("SELECT image FROM images_user WHERE user_id = $user_id");
+                        ?>
+
+                        <?php
+                        //******************************** เรียกรูปจาก database *********************************************** */ 
+                        if ($result->num_rows > 0) { ?>
+                            <div class="gallery">
+                                <?php while ($row = $result->fetch_assoc()) { ?>
+                                    <img class="profile-circle" width="150px"
+                                        src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($row['image']); ?>"><BR>
+                                    <span class="font-weight-bold">
+                                        <?php echo $uname ?>
+                                    </span><BR>
+                                    <span class="text-black-50">
+                                        <?php echo $email ?>
+                                    </span>
+                                    <span> </span>
+                                    <?php if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id']) && $user_id == $_SESSION['user_id']) { ?>
+                                        <form action="deleteimagesUser.php" method="post" enctype="multipart/form-data">
+                                            <input type="hidden" name="id" value="<?= $user_id; ?>">
+                                            <input type="submit" name="photo" value="deleted photo">
+                                        </form>
+                                    <?php } ?>
+                                <?php } ?>
+                            </div>
+                        <?php } else if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id']) && $user_id == $_SESSION['user_id']) { ?>
+                                <img class="profile-circle"
+                                    src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg">
+                                <span class="font-weight-bold profile-circle">
+                                <?php echo $uname ?>
+                                </span>
                                 <span class="text-black-50">
-                                    <?php echo $email ?>
+                                <?php echo $email ?>
                                 </span>
                                 <span> </span>
-                                <?php if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id']) && $user_id == $_SESSION['user_id']) { ?>
-                                    <form action="deleteimagesUser.php" method="post" enctype="multipart/form-data">
-                                        <input type="hidden" name="id" value="<?= $user_id; ?>">
-                                        <input type="submit" name="photo" value="deleted photo">
-                                    </form>
-                                <?php } ?>
-                            <?php } ?>
+                                <h3>เพิ่มรูป</h3>
+                                <form action="profile_uploadImages.php" method="post" enctype="multipart/form-data">
+                                    <input type="hidden" name="id" value="<?= $user_id; ?>">
+                                    <input type="file" name="image" class="form-control">
+                                    <BR>
+                                    <button type="submit" name="submit" class="btn btn-info" value="Upload">
+                                        UPLOAD
+                                    </button>
+                                </form>
+                        <?php } ?>
+                    </div>
+                </div>
+                <div class="mt-4 text-center center">
+                    <form action="profile_edit.php" method="post">
+                        <button class="btn btn-info profile-button" type="submit">Edit Profile</button>
+                    </form>
+                </div>
+            </div>
+
+
+
+            <!-- User Information -->
+            <div class="col-xs-6 col-md-8 ">
+                <div class="py-3 container-fluid rounded">
+                    <h1 class="bold text-secondary centerBlock center d-flex justify-content-center">My Profile</h1>
+                </div><BR>
+
+                <div class="row hrVertical">
+                    <div class="col-md-6"><span class="lighter text-secondary mt-3 ">Name </span><BR>
+                        <h4>
+                            <?php echo $fname ?>
+                        </h4>
+                    </div>
+                    <div class="col-md-6 "><span class="lighter text-secondary mt-3 ">Surname</span><BR>
+                        <h4>
+                            <?php echo $lname ?>
+                            <h4>
+                    </div>
+                </div>
+
+
+                <div class="row hrVertical">
+                    <div class="col-sm-6 ">
+                        <span class="lighter text-secondary mt-3">Mobile Number</span><BR>
+                        <h4>
+                        <?php echo $phone ?>
+                        </h4>
+                    </div>
+                </div>
+
+                <hr>
+
+                <div class="row hrVertical">
+                    <div class="col-xs-6 col-sm-12 ">
+                        <span class="h4 bold text-secondary mt-3 d-flex justify-content-start">
+                            Reward / Experience </span>
+                        <div class="card lighter text-dark mt-3 rounded responsiveBox">
+                            <?php echo $exp ?>
                         </div>
-                    <?php } else if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id']) && $user_id == $_SESSION['user_id']) { ?>
-                            <img class="profile-circle mt-5"
-                                src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg">
-                            <span class="font-weight-bold profile-circle">
-                            <?php echo $uname ?>
-                            </span>
-                            <span class="text-black-50">
-                            <?php echo $email ?>
-                            </span>
-                            <span> </span>
-                            <h3>เพิ่มรูป</h3>
-                            <form action="profile_uploadImages.php" method="post" enctype="multipart/form-data">
-                                <input type="hidden" name="id" value="<?= $user_id; ?>">
-                                <input type="file" name="image">
-                                <button type="submit" name="submit" class = "btn btn-info" value="Upload">
-                                    UPLOAD
-                    </button>
-                            </form>
-                    <?php } ?>
+                    </div>
                 </div>
+
+                <hr>
+
+                <div class="row hrVertical">
+                    <div class="col-xs-6 col-sm-12">
+                        <span class="h4 bold text-secondary mt-3 d-flex justify-content-start">
+                            Description</span>
+                        <div class="card lighter text-dark mt-3 rounded responsiveBox">
+                            <?php echo $des ?>
+                        </div>
                     </div>
-            </div>
-            <div class="col-md-7 border-right">
-                <div class="p-1 py-1">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h1 class="text-right bold">Profile</h2>
+                </div>
+
+                <BR>
+
+                <div class="row hrVertical">
+                    <div class="col-xs-6 col-sm-6"><span class="lighter text-secondary mt-3 ">Country<BR>
+                        </span><h4>
+                        <?php
+                        if ($country > 0) {
+                            echo $country;
+                        } else {
+                            echo "Not assigned";
+                        } ?>
+                    </div>
+                    </h4>
+
+
+                    <div class="col-xs-6 col-sm-6"><span class="lighter text-secondary mt-3 ">State/Region<BR>
+                        </span><h4>
+                        <?php
+                        if ($state > 0) {
+                            echo $state;
+                        } else {
+                            echo "Not assigned";
+                        } ?>
+                        </h4>
                     </div>
 
-                    <div class="row mt-1">
-                        <div class="col-md-6"><label class="labels mb-1">Name :
-                                <?php echo $fname ?>
-                            </label></div>
-                        <div class="col-md-6"><label class="labels mb-1">Lastname :
-                                <?php echo $lname ?>
-                            </label></div>
-                    </div>
 
-                    <div class="row mt-3">
-                        <div class="col-md-12"><label class="labels mb-1">Mobile Number :
-                                <?php echo $phone ?>
-                            </label></div>
-                        <div class="col-md-12"><label class="labels mb-1">Reward / Experience :
-                                <?php echo $exp ?>
-                            </label></div>
-                        <div class="col-md-12"><label class="labels mb-1">Description :
-                                <?php echo $des ?>
-                            </label></div>
-                    </div>
 
-                    <div class="row mt-3">
-                        <div class="col-md-6"><label class="labels mb-1">Country :
-                                <?php echo $country ?>
-                            </label></div>
-                        <div class="col-md-6"><label class="labels mb-1">State/Region :
-                                <?php echo $state ?>
-                            </label></div>
-                    </div>
-
-                    <div class="mt-4 text-center">
-                        <form action="profile_edit.php" method="post">
-                            <button class="btn btn-primary profile-button" type="submit">Edit</button>
-                        </form>
-                    </div>
 
                 </div>
             </div>
-        </div>
-    </div>
+
+
 </body>
 
 </html>
