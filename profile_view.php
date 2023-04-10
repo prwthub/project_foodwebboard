@@ -22,8 +22,91 @@ session_start();
     <!--Icon-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
 </head>
+<style>
+    .card.rounder {
+        padding: 15px;
+        border-radius: 50px;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
+    }
 
-<body>
+    .card {
+        padding: 20px;
+        border-radius: 20px;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
+    }
+
+    section {
+        display: block;
+    }
+
+    .profile-circle {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%
+    }
+
+    .contain-rounder {
+        width: 50%;
+        height: 50%;
+        border-radius: 20%
+    }
+
+    hr.solid {
+        border-top: 3px solid #bbb;
+    }
+
+    .centerBlock {
+        display: table;
+        margin: auto;
+    }
+
+    .responsiveBox {
+        width: 100%;
+        height: 30vw;
+        object-fit: cover;
+    }
+
+    .border {
+        box-shadow: 0 0px 15px rgba(0, 0, 0, .6);
+    }
+
+    .label {
+        display: inline-block;
+        padding: 0.5em 2em 0.5em;
+        font-size: 100%;
+        font-weight: normal;
+        line-height: 3;
+        color: #000;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+    }
+
+    hr.solid {
+        border-top: 3px solid #bbb;
+    }
+
+    .hrVertical {
+        border-left: 3px solid #bbb;
+    }
+</style>
+
+<script type="text/javascript">
+
+  // Script for delete button (ADMIN only)
+  function deletePost() {
+    let areYouSure = confirm("Do you really want to delete this post?");
+    if (areYouSure == true) {
+      alert("Post deleted");
+      return areYouSure;
+    } else {
+      return areYouSure;
+    }
+  }
+  </script>
+
+
+<body style="background-color:#D3D3D3">
     <?php
     include "nav.php";
     echo "<BR>";
@@ -55,6 +138,7 @@ session_start();
     ?>
 
     <div class="container rounded bg-white mb-1">
+        <div></div>
         <div class="row">
             <div class="col-md-4 border-right">
                 <div class="d-flex flex-column align-items-center text-center p-3 py-1">
@@ -128,8 +212,109 @@ session_start();
                     </div>
                 </div>
             </div>
+            </div>
+      <?php
+      // Include the database configuration file  
+      require_once 'dbConfig_SQLi.php';
+      require 'dbConfig_PDO.php';
+
+      $conn->exec("SET CHARACTER SET utf8");
+
+
+      // Get image data from database 
+      if (isset($_SESSION["search"])) {
+        $search = $_SESSION["search"];
+        echo "<h1>ผลการค้นหา : $search</h1>";
+        $data = $conn->query("SELECT * FROM post WHERE (post_title LIKE CONCAT('%', '$search', '%') OR post_tag LIKE CONCAT('%', '$search', '%'));");
+      } else {
+        $data = $conn->query("SELECT p.category_id,p.post_title,p.user_id,u.user_name,p.post_date,p.post_like,p.post_dislike,p.post_id,p.post_view
+          FROM post p, user u WHERE $user_id = u.user_id AND p.user_id = u.user_id ORDER BY p.post_id DESC;");
+      }
+      unset($_SESSION['search']);
+
+      if ($data !== false) {
+        while ($row = $data->fetch()) {
+          //$category_id = $row['0'];
+          $post_title = $row['post_title'];
+          $user_id = $row['user_id'];
+          //$user_name = $row['user_name'];
+          $post_date = $row['post_date'];
+          $post_like = $row['post_like'];
+          $post_dislike = $row['post_dislike'];
+          $post_id = $row['post_id'];
+          $post_view = $row['post_view'];
+
+          $result = $db->query("SELECT image, post_id FROM images_post WHERE post_id = $post_id");
+
+          // echo "<tr><td><a href=\"post.php?id=".$row['0'].'\" style=text-decoration:none></a>"; 
+          ?>
+
+          <section>
+
+            <div class='container-fluid card' style='margin-top:20px'>
+
+              <div class="row">
+
+                <div class="col-xs-6 col-sm-4 text-center center">
+                  <?php
+                  while ($img = $result->fetch_assoc()) {
+                    if ($img['post_id'] == $post_id) {
+                      ?>
+                      <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($img['image']); ?>"
+                        class='card-img-top food-circle responsiveImage' />
+
+                    <?php } else { ?>
+                      <img
+                        src=""
+                        class='card-img-top food-circle responsiveImage' />
+                    <?php }
+                  } ?>
+                </div>
+                <?php
+                $dataname = $conn->query("SELECT user_name FROM user WHERE user_id = $user_id  ;");
+                if ($dataname !== false) {
+                  while ($name = $dataname->fetch()) {
+                    $user_name = $name['user_name'];
+                  }
+                }
+
+                echo "<div class = 'col-xs-6 col-sm-4 text-end lead centerBlock'>"; //. " [ " . $post_id . " ] "; // post_id"
+            
+                echo "<a href=\"post.php?id=" . $post_id . "\" style=text-decoration:none class = 'red'>";
+                echo $post_title . "</a>"; // post_title
+                echo "<br>" . "<i class='bi bi-eye'></i>&nbsp" . $post_view . " |" . "<i class='bi bi-hand-thumbs-up'></i>&nbsp" .
+                  $post_like . "&nbsp<i class='bi bi-hand-thumbs-down'></i>&nbsp" . $post_dislike . "</div>"; // post_like , post_dislike
+            
+                echo "<div class = 'col-xs-6 col-sm-4 centerBlock'>";
+                echo "<h3>Posted by</h3>";
+                echo "<h5 class = 'bold'>" . $user_name . "</h5>" . "" . $post_date . "</div>"; // user_name , post_date
+            
+
+                // If role ADMIN, Show Delete button              
+                if (isset($_SESSION["role"])) {
+                  if ($_SESSION["role"] == "a") {
+                    echo "<div class = 'd-flex pt-2 px-5 justify-content-end'>";
+                    echo "<a href=\"deletePost.php?id=" . $post_id . "\" class=\"btn btn-danger bi bi-trash\" 
+                            onclick='return deletePost();'> Delete</div></a>";
+                  }
+                }
+                ?>
+              </div>
+            </div>
+          </section>
+          <?php
+        }
+      }
+      $conn = null;
+      $db = null;
+
+      ?>
         </div>
+        
     </div>
+    
+    
+
 </body>
 
 </html>

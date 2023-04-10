@@ -330,7 +330,7 @@ session_start();
                         <form action="profile_view.php" method="get">
                             <input type="hidden" name="profile_id" value="<?= $user_id; ?>">
 
-                            <?php echo $user_username ?> &nbsp;
+                            <?php echo $user_name ?> &nbsp;
                             <button type="submit" class="btn btn-secondary btn-sm text-white ">
                                 <i class="bi bi-person-circle"></i>
                                 ดูโปรไฟล์
