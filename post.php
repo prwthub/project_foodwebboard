@@ -104,11 +104,12 @@ session_start();
         font-size: 100%;
         font-weight: normal;
         line-height: 3;
-        color: #fff;
+        color: #ffffff;
         text-align: center;
         white-space: nowrap;
         vertical-align: baseline;
         overflow-wrap: break-word;
+        padding: 6px;
 
 
     }
@@ -128,7 +129,7 @@ session_start();
 
 </script>
 
-<body style="background-color:#7fd4d2">
+<body style="background-color:#6B8E23">
     <?php
     include "nav.php";
     ?>
@@ -253,7 +254,7 @@ session_start();
                                 <?php if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id']) && $user_id == $_SESSION['user_id']) { ?>
                                     <form action="deleteimages.php" method="post" enctype="multipart/form-data">
                                         <input type="hidden" name="id" value="<?= $id; ?>">
-                                        <button type="submit" class="btn btn-danger btn-sm text-white" name="rmPhoto">
+                                        <button type="submit" class="btn btn-danger btn-sm text-white mt-3" name="rmPhoto">
                                             <i class="bi bi-x-square"></i>
                                             Remove Photo
                                         </button>
@@ -283,7 +284,7 @@ session_start();
                 // แสดงข้อมูล
                 
                 echo "<div class = 'col-xs-6 col-sm-6'>";
-                echo "<span class = 'h3 bold'>" . " ประเภท : </span>
+                echo "<span class = 'regular text-secondary mt-3 '>" . " ประเภท : </span>
                               <span class = 'h4'>" . $category_tag . "</span><BR>";
 
                 require_once 'dbConfig_SQLi.php';
@@ -291,7 +292,7 @@ session_start();
                 $sql_tag = "SELECT post_tag FROM post WHERE post_id = $id";
                 $result = $db->query($sql_tag);
                 if ($result->num_rows > 0) {
-                    echo "<span class = 'h3 bold '>แท็ก : </span>";
+                    echo "<span class = 'regular text-secondary mt-3'>แท็ก : </span>";
                     while ($row = $result->fetch_assoc()) {
                         $data = json_decode($row['post_tag']);
                         while (true) {
@@ -311,14 +312,14 @@ session_start();
                 $sql_ingredient = "SELECT post_ingredient FROM post WHERE post_id = $id";
                 $result = $db->query($sql_ingredient);
                 if ($result->num_rows > 0) {
-                    echo "<span class = 'h3 bold'>วัตถุดิบ </span>";
+                    echo "<span class = 'regular text-secondary'>วัตถุดิบ </span>";
                     while ($row = $result->fetch_assoc()) {
                         $data = json_decode($row['post_ingredient']);
                         while (true) {
                             if (!empty($data[$ingredient_count])) {
                                 echo "<BR>";
-                                echo "<span class='label bg-warning text-dark rounded d-inline-block text-truncate' style='width: 30vw;'>$data[$ingredient_count]</span>";
-                                echo "<span class='label bg-warning text-dark rounded d-inline-block text-truncate d-lg-none' style='width: 30vw;'>$data[$ingredient_count]</span>";
+                                echo "<span class='label bg-warning text-dark rounded d-inline-block text-truncate' style='width: 100%;'>$data[$ingredient_count]</span>";
+
                                 //echo " '" . $data[$ingredient_count] . "' ";
                             } else {
                                 break;
@@ -329,7 +330,7 @@ session_start();
                     echo "<BR><BR>";
                 }
                 $db = null;
-
+                echo "<span class = 'regular text-secondary mt-3'>วิธีทำ <BR> </span>";
                 echo "$post_content <BR><BR>";
                 echo "<span class = 'h5 bold d-inline-block d-flex justify-content-center'>เขียนโดย</span>";
                 ?>
@@ -372,26 +373,26 @@ session_start();
                 //echo 'CURRENT_UID_FETCH = '.$rating_uid.'<BR>';
                 //echo 'SESSION_UID = '.$_SESSION['user_id'].'<BR>';
                 //echo 'CURRENT_POST_ID = '.$post_id .'<BR>';
-                
+                echo "<div class = 'd-flex justify-content-center pt-3'>";
                 if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) { ?>
                     <form action="rating_post.php" name="" method="post">
                         <input type="hidden" name="post_id" value="<?= $id; ?>">
                         <?php if (($_SESSION['user_id'] == $rating_uid || $rating_uid == '0') && $rating_status != '1') { ?>
-                            <button type="submit" name="rating" class="button" value="1">LIKE
+                            <button type="submit" name="rating" class="btn btn-secondary" value="1">LIKE
                                 <?php echo $post_like ?>
                             </button>
                         <?php } else { ?>
-                            <button type="submit" name="rating" class="button" value="2">UNLIKE
+                            <button type="submit" name="rating" class="btn btn-success" value="2">UNLIKE
                                 <?php echo $post_like ?>
                             </button>
                         <?php } ?>
                         &nbsp;&nbsp;&nbsp;
                         <?php if (($_SESSION['user_id'] == $rating_uid || $rating_uid == '0') && $rating_status != '-1') { ?>
-                            <button type="submit" name="rating" class="button" value="-1">DISLIKE
+                            <button type="submit" name="rating" class="btn btn-secondary" value="-1">DISLIKE
                                 <?php echo $post_dislike ?>
                             </button>
                         <?php } else { ?>
-                            <button type="submit" name="rating" class="button" value="-2">UNDISLIKE
+                            <button type="submit" name="rating" class="btn btn-danger" value="-2">UNDISLIKE
                                 <?php echo $post_dislike ?>
                             </button>
                         <?php } ?>
@@ -399,28 +400,30 @@ session_start();
                 <?php } else {
                     //แสดงอย่างเดียว Action ไม่ได้ ?>
                     <form action="" name="" method="post">
-                        <button type="submit" name="rating" class="button" value="">LIKE
+                        <button type="submit" name="rating" class="btn btn-secondary" value="">LIKE
                             <?php echo $post_like ?>
                         </button>
                         &nbsp;&nbsp;&nbsp;
-                        <button type="submit" name="rating" class="button" value="">DISLIKE
+                        <button type="submit" name="rating" class="btn btn-secondary" value="">DISLIKE
                             <?php echo $post_like ?>
                         </button>
                     <?php } ?>
                 </form>
+                </div>
             </div>
 
     </div>
     </section>
     </div>
 
+    <hr class = "solid ">
     <!-- ตัวเลือกการเรียงลำดับการแสดง Comment -->
-    <div class="d-flex pb-2">
+    <div class="d-flex">
         <div class="input-group">
-            <label>เรียงโดย: </label>
+            <label class = "regular whiter">&nbsp;&nbsp;&nbsp;เรียงคอมเมนต์โดย &nbsp;</label>
             <form name="" method="post">
-                <button type="submit" name="sort" class="btn btn-success" value="1">เก่า-ใหม่</button>
-                <button type="submit" name="sort" class="btn btn-success" value="0">ใหม่-เก่า</button>
+                <button type="submit" name="sort" class="btn btn-secondary" value="1">เก่า-ใหม่</button>
+                <button type="submit" name="sort" class="btn btn-secondary" value="0">ใหม่-เก่า</button>
             </form>
         </div>
     </div>
@@ -429,8 +432,8 @@ session_start();
     // ต้อง login ก่อนถึงคอมเม้นได้
     if (isset($_SESSION["id"])) {
         ?>
-        <div class="card text-dark bg-white border-success">
-            <div class="card-header bg-success text-white">แสดงความคิดเห็น</div>
+        <div class="card text-dark bg-white border-success mt-3">
+            <div class="card-header bg-success whiter">แสดงความคิดเห็น</div>
             <div class="card-body">
                 <!-- ส่งข้อมูล comment ไปยัง post_save -->
                 <form action="post_save.php" method="post">
@@ -486,7 +489,7 @@ session_start();
             $post_id = $comm['6'];
             ?>
             <div class="card text-dark bg-white border-info mb-3">
-                <div class="card-header bg-info text-white">
+                <div class="card-header bg-info text-white" style ="background-color: #827a73 !important;">
 
                     <?php echo "ความคิดเห็นจาก " . $user_name;
                     // คนเขียนสามารถลบ comment 
@@ -498,7 +501,7 @@ session_start();
             
                         echo '<form method = "GET" action="delete_comment.php">';
                         echo "<a href=\"delete_comment.php?id=$_SESSION[comment_id]\" onclick='return deleteComment()'>
-                                                <button type='button' class='btn btn-danger'>delete comment</button>
+                                                <button type='button' class='btn btn-danger'>Delete Comment</button>
                                             </a>";
                         echo '</form>';
                     }

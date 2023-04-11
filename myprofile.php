@@ -96,9 +96,11 @@ $user_id = $_SESSION['user_id'];
     .hrVertical {
         border-left: 3px solid #bbb;
     }
+
+
 </style>
 
-<body style="background-color:#D3D3D3">
+<body style="background-color:#6B8E23">
     <?php
     include "nav.php";
     echo "<BR>";

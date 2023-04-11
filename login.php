@@ -51,7 +51,7 @@ if (isset($_SESSION["id"])) {
 <style>
     .responsiveImage {
         width: 100%;
-        height: 35vw;
+        height: 60vw;
         object-fit: cover;
 
     }
@@ -120,8 +120,8 @@ if (isset($_SESSION["id"])) {
 
 
     <section class="vh-100 pb-1" style="background-color: #DEB887; ">
-        <br>
-        <div class="container py-1 h-90">
+
+        <div class="container-fluid py-1 h-90 pt-4">
             <div class="row mt-3">
                 <div class="col-md-3"></div>
                 <div class="col-md-6">
@@ -136,7 +136,7 @@ if (isset($_SESSION["id"])) {
                 </div>
                 <div class="col-md-3"></div>
 
-                <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="row-flex d-flex justify-content-center align-items-center h-100">
                     <div class="col col-xl-10">
                         <div class="card" style="border-radius: 1rem;">
                             <div class="row g-0">

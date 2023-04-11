@@ -34,20 +34,31 @@
     .bold {
         font-family: 'Noto Sans Thai', sans-serif;
         font-weight: 900;
-        color: #34495e;
     }
 
     .lighter {
         font-family: 'Noto Sans Thai', sans-serif;
         font-size: 16px;
         font-weight: 400;
-        color: #34495e;
+    }
 
+    .regular{
+        font-family: 'Noto Sans Thai', sans-serif;
+        font-size: 20px;
+        font-weight: 500;
     }
 
     a.red {
-        color: #c0392b;
+        color: #d2746a;
         font-size: 24px;
+    }
+
+    .whiter {
+        color: #ffecde;
+    }
+
+    .darkBrown {
+        color: #635951;
     }
 
     .dropdown-menu {
@@ -56,15 +67,25 @@
         font-weight: 200;
         color: #34495e;
     }
+
+    .btn-secondary, .btn-secondary:active, .btn-secondary:visited, .btn-outline{
+    background-color: #635951 !important;
+    
+  }
+
+  .btn-secondary:hover  {
+    background-color: #8c694d !important;
+  }
+
 </style>
 
 <?php
 if (!isset($_SESSION['id'])) {
     ?>
 
-    <nav class="navbar navbar-expand-lg navbar-light px-2" style="background-color: #D3D3D3;">
+    <nav class="navbar navbar-expand-lg navbar-light px-2 text-white" style="background-color: #635951;">
         <div class="container-fluid justify-content-center">
-            <a href="index.php" class="navbar-brand bold">
+            <a href="index.php" class="navbar-brand bold whiter">
                 <i class="bi bi-house-door-fill"></i> Home
             </a>
 
@@ -72,14 +93,14 @@ if (!isset($_SESSION['id'])) {
                 <form action="search.php" method="get" class ="form-inline">
                     <span class="input-group">
                         <input type="search" name="search" class="form-control" placeholder="Search...">
-                        <button type="submit" class = "btn btn-sm btn-outline-success"><i class="bi bi-search"></i></button>
+                        <button type="submit" class = "btn btn-sm btn-outline-success whiter"><i class="bi bi-search"></i></button>
                     </span>
                 </form>
             </a>
 
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a href="login.php" class="nav-link">
+                    <a href="login.php" class="nav-link whiter">
                         <i class="bi bi-box-arrow-in-right"></i> Sign in
                     </a>
                 </li>
@@ -90,9 +111,9 @@ if (!isset($_SESSION['id'])) {
 <?php } else {
     $user_id = $_SESSION['user_id']; ?>
 
-    <nav class="navbar navbar-expand-sm navbar-light px-2" style="background-color: #D3D3D3;">
+    <nav class="navbar navbar-expand-sm navbar-light px-2" style="background-color: #635951;">
         <div class="container-fluid justify-content-center ">
-            <a href="index.php" class="navbar-brand bold">
+            <a href="index.php" class="navbar-brand bold whiter">
                 <i class="bi bi-house-door-fill"></i> Home
             </a>
 
@@ -100,7 +121,7 @@ if (!isset($_SESSION['id'])) {
                 <form action="search.php" method="get" class ="form-inline">
                     <span class="input-group">
                         <input type="search" name="search" class="form-control" placeholder="Search...">
-                        <button type="submit" class = "btn btn-sm btn-outline-success"><i class="bi bi-search"></i></button>
+                        <button type="submit" class = "btn btn-sm btn-outline-success whiter"><i class="bi bi-search"></i></button>
                     </span>
                 </form>
             </a>
@@ -108,7 +129,7 @@ if (!isset($_SESSION['id'])) {
             <ul class="navbar-nav">
                 <li class="nav-item">
                     <div class="dropdown">
-                        <a class="btn btn-outline-secondary px-3 dropdown-toggle btn-sm" type="button" id="button1"
+                        <a class="btn btn-outline-secondary px-3 dropdown-toggle btn-sm whiter" type="button" id="button1"
                             data-bs-toggle="dropdown" aria-expanded="false">
 
                             <?php echo $_SESSION['username']; ?>

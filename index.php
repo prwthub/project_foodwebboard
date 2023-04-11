@@ -67,9 +67,16 @@ unset($_SESSION["mymenu"]);
 
   }
 
-  .stickyText {
-    white-space: nowrap
+  .responsiveCard {
+    width: 100%;
+    height: 50vw;
+    object-fit: cover;
   }
+
+  .stickyText {
+    white-space: nowrap;
+  }
+
 </style>
 
 <script type="text/javascript">
@@ -87,7 +94,7 @@ unset($_SESSION["mymenu"]);
 
 </script>
 
-<body style="background-color:#7fd4d2">
+<body style="background-color:#DEB887;">
   <?php
   // echo "session['id'] = ".session_id()."<BR>";
   // echo "session['id'] = ".$_SESSION['id']."<BR>";
@@ -97,20 +104,21 @@ unset($_SESSION["mymenu"]);
   <?php include "nav.php"; ?>
   <form method="GET" action="deletePost.php">
 
-    <div class="container-sm bg-white rounded pt-3" style="margin-top:20px" ;> <!-- Main container -->
+    <div class="container-sm bg-white rounded pt-3" style="margin-top:20px; background-color: #827a73 !important;" ;> <!-- Main container -->
 
       <?php
       if (!isset($_SESSION["search"])) {
         ?>
-        <section>
-          <div class="container-fluid card rounded col-sm-12" ;>
+        <section class = 'responsiveCard'>
+          <div class="container-fluid card rounded col-sm-12">
             <?php
             require_once 'dbConfig_SQLi.php';
             $result = $db->query("SELECT image, post_id FROM images_post ORDER BY RAND() LIMIT 1");
             while ($img = $result->fetch_assoc()) {
               $p_id = $img['post_id'];
               ?>
-              <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($img['image']); ?>" />
+              <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($img['image']); ?>"
+              img class = 'responsiveCard' />
             <?php
             }
             ?>
@@ -129,7 +137,8 @@ unset($_SESSION["mymenu"]);
                 <?php
                 echo "<a href=\"post.php?id=" . $p_id . "\">";
                 ?>
-                  <button type="button" class="btn btn-primary">สุ่มอาหาร</button>
+                  <p class = 'text-white text-nowrap d-lg-none'>ทานอะไรดี?</p>
+                  <button type="button" class="btn btn-secondary mb-3 d-flex">สุ่มอาหาร</button>
                 </a>
 
                 <hr class="solid d-none d-lg-block">
@@ -147,17 +156,17 @@ unset($_SESSION["mymenu"]);
                 <a href="newpost.php">
                   <!-- session ที่เอาไว้เตือนว่าถ้าไม่ log in ไม่สามารถ newpost ได่ -->
 
-                  <button type="button" class="btn btn-primary mb-3 d-flex d-none d-lg-block" >เพิ่มเมนูอาหาร</button>
-                  <button type="button" class="btn btn-primary mb-3 d-lg-none text-align-center" >เพิ่มเมนู</button>
+                  <button type="button" class="btn btn-secondary mb-3 d-flex d-none d-lg-block " >เพิ่มเมนูอาหาร</button>
+                  <p class = 'text-white text-nowrap d-lg-none'>มีสูตรใหม่?</p><button type="button" class="btn btn-secondary mb-3 d-lg-none text-nowrap" >เพิ่มเมนู</button>
                   <?php
                   if (isset($_SESSION["add_post"])) {
                     ?>
 
-                    <div class="col-xs-4 d-flex">
+                    <div class="col-xs-4">
                       <?php
                       // register error
                       if ($_SESSION["add_post"] == 'error') {
-                        echo "<p class=\"alert alert-danger bi bi-x-circle text-decoration-none\" role=\"alert\">";
+                        echo "<p class=\"alert alert-danger  bi bi-x-circle text-decoration-none\" role=\"alert\">";
                         echo "    คุณจำเป็นต้องเข้าสู่ระบบก่อนถึงจะสามารถเพิ่มโพสได้";
                         echo "</p>";
                         unset($_SESSION["add_post"]);
@@ -178,9 +187,9 @@ unset($_SESSION["mymenu"]);
 
       <hr class="solid">
 
-      <div class="container-fluid d-flex bg-info justify-content-center pt-3 pb-2 sticky-top">
+      <div class="container-fluid d-flex justify-content-center pt-3 mt-4 pb-2 sticky-top rounded" style = "background-color: #4f4740">
 
-        <h1 style="text-decoration:underline"> เมนูอาหารจากทาง Community </h1>
+        <h1 class = "whiter " style="text-decoration:underline "> - - เมนูอาหารจากทาง Community - -</h1>
 
       </div>
       <?php
@@ -222,7 +231,7 @@ unset($_SESSION["mymenu"]);
 
           <section>
 
-            <div class='container-fluid card' style='margin-top:20px'>
+            <div class='container-fluid card' style='margin-top:20px; background-color: #635951;'>
 
               <div class="row">
 
@@ -247,15 +256,15 @@ unset($_SESSION["mymenu"]);
                   }
                 }
 
-                echo "<div class = 'col-xs-6 col-sm-4 text-end lead centerBlock'>"; //. " [ " . $post_id . " ] "; // post_id"
+                echo "<div class = 'col-xs-6 col-sm-4 text-end lead centerBlock whiter'>"; //. " [ " . $post_id . " ] "; // post_id"
             
                 echo "<a href=\"post.php?id=" . $post_id . "\" style=text-decoration:none class = 'red'>";
                 echo $post_title . "</a>"; // post_title
                 echo "<br>" . "<i class='bi bi-eye'></i>&nbsp" . $post_view . " |" . "<i class='bi bi-hand-thumbs-up'></i>&nbsp" .
                   $post_like . "&nbsp<i class='bi bi-hand-thumbs-down'></i>&nbsp" . $post_dislike . "</div>"; // post_like , post_dislike
             
-                echo "<div class = 'col-xs-6 col-sm-4 centerBlock'>";
-                echo "<h3>Posted by</h3>";
+                echo "<div class = 'col-xs-6 col-sm-4 centerBlock whiter'>";
+                echo "<h3 class = 'lighter'>Posted by</h3>";
                 echo "<h5 class = 'bold'>" . $user_name . "</h5>" . "" . $post_date . "</div>"; // user_name , post_date
             
 
@@ -280,7 +289,7 @@ unset($_SESSION["mymenu"]);
       ?>
 
   </form>
-
+<hr class = "solid">
 </body>
 
 </html>

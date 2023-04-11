@@ -83,16 +83,16 @@
 
 </script>
 
-<body style="background-color:#7fd4d2">
+<body style="background-color:#d2746a">
     <?php include "nav.php"; ?>
     <form method="GET" action="deletePost.php">
-        <div class="container-sm bg-white rounded pt-3" style="margin-top:20px" ;> <!-- Main container -->
+    <div class="container-sm bg-white rounded pt-3" style="margin-top:20px; background-color: #827a73 !important;" ;> <!-- Main container -->
 
             <hr class="solid">
 
-            <div class="container-fluid d-flex bg-info justify-content-center pt-3 pb-2">
+            <div class="container-fluid d-flex justify-content-center pt-3 mt-4 pb-2 rounded" style = "background-color: #4f4740">
 
-                <h1 style="text-decoration:underline"> My menu </h1>
+                <h1 class = "whiter" style="text-decoration:underline;" > - - My menu - -</h1>
 
             </div>
             <br>
@@ -134,7 +134,7 @@
 
                     <section>
 
-                        <div class='container-fluid card' style='margin-top:20px'>
+                    <div class='container-fluid card' style='margin-top:20px; background-color: #635951;'>
 
                             <div class="row">
 
@@ -163,15 +163,15 @@
                                         }
                                     }
 
-                                    echo "<div class = 'col-xs-6 col-sm-4 text-end lead centerBlock'>" . " [ " . $post_id . " ] "; // post_id"
+                                    echo "<div class = 'col-xs-6 col-sm-4 text-end lead centerBlock whiter'>"; // " [ " . $post_id . " ] "; post_id"
 
-                                    echo "<a href=\"post.php?id=" . $post_id . "\" style=text-decoration:none>";
+                                    echo "<a href=\"post.php?id=" . $post_id . "\" style=text-decoration:none class = 'red'>";
                                     echo "<br>" . $post_title . "</a>"; // post_title
                                     echo "<br>" . "<i class='bi bi-eye'></i>&nbsp" . $post_view . " |" . "<i class='bi bi-hand-thumbs-up'></i>&nbsp" .
                                         $post_like . "&nbsp<i class='bi bi-hand-thumbs-down'></i>&nbsp" . $post_dislike . "</div>"; // post_like , post_dislike
 
-                                    echo "<div class = 'col-xs-6 col-sm-4 centerBlock'>";
-                                    echo "<h3>Posted by</h3>";
+                                    echo "<div class = 'col-xs-6 col-sm-4 centerBlock whiter'>";
+                                    echo "<h3 class = 'lighter'>Posted by</h3>";
                                     echo "<h3 class = 'bold'>" . $user_name . "</h3>" . "" . $post_date . "</div>"; // user_name , post_date
 
 

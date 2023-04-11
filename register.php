@@ -39,12 +39,12 @@ session_start();
         }
     </script>
     <style>
-        .responsiveImage {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+    .responsiveImage {
+        width: 100%;
+        height: 60vw;
+        object-fit: cover;
 
-        }
+    }
 
         .responsiveImagelogo {
             width: 140pt;
@@ -105,8 +105,8 @@ session_start();
         ?>
 
 
-        <div class="container py-1 h-90">
-            <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="container-fluid py-1 h-90 pt-4">
+            <div class="row-flex d-flex justify-content-center align-items-center h-100">
                 <div class="col col-xl-10">
                     <div class="card" style="border-radius: 1rem;">
                         <div class="row g-0">
