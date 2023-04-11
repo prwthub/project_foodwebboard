@@ -203,7 +203,7 @@ unset($_SESSION["mymenu"]);
       // Get image data from database 
       if (isset($_SESSION["search"])) {
         $search = $_SESSION["search"];
-        echo "<h1>ผลการค้นหา : $search</h1>";
+        echo "<h1 class = 'whiter pt-3'>ผลการค้นหา : $search</h1>";
         $data = $conn->query("SELECT * FROM post 
         WHERE (post_title LIKE CONCAT('%', '$search', '%') OR post_tag LIKE CONCAT('%', '$search', '%'));");
       } else {
