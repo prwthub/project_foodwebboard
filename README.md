@@ -26,7 +26,14 @@
 # SQL
 ```
 #
-![Alt text](./workflow.png)
+![Alt text](./ginraidee//workflow.png)
+#
+## phase 0
+- เก็บ requirement
+
+- design UML
+
+
 #
 ## phase 1
 - ก๊อต (รองาน)
@@ -37,9 +44,7 @@
 
 - บอม (register , register_save)     
 
-- โม (database)
-
-
+- โม (design database)
 
 design database , connect database , testing
 
@@ -85,5 +90,69 @@ check requirement , diagram ก่อนเริ่ม phase ใหม่
 - บอม (รอประชุม)
 
 - โม (รอประชุม)
+
+กลับมา check requirement และ UML
+
+พูดคุยปัญหาที่เจอและแนวทางแก้ไขปัญหา
+
+จัดตารางการทำงานใหม่ ให้มีเวลาเตรียมตัวอ่านหนังสือสอบ
+
+#
+## phase 4
+- ก๊อต (สอบวิชาตกค้าง)
+
+- พี (search bar , nav bar)
+
+- มอส (like , dislike ,view) 
+
+- บอม (ingredient , tag)     
+
+- โม (สอบวิชาตกค้าง)
+
+พูดคุยปัญหาที่เจอและแนวทางแก้ไขปัญหา
+
+แบ่งงานกันแทนคนที่ไม่สามารถทำงานช่วงนี้ได้
+
+#
+## phase 5
+- ก๊อต (สอบวิชาตกค้าง)
+
+- พี (profile , edit_profile , myprofile , mymenu)
+
+- มอส (connect and fix database) 
+
+- บอม (ย้ายไปทำ mobile and cloud)     
+
+- โม (สอบวิชาตกค้าง)
+
+#
+## phase 6
+- ก๊อต (UX/UI)
+
+- พี (testing)
+
+- มอส (testing) 
+
+- บอม (testing)     
+
+- โม (เอกสาร)
+
+testing ระบบ และพูดคุยปัญหา
+
+list รายการปัญหาที่เจอและไล่แก้ไข
+
+#
+## phase 7
+- ก๊อต (UX/UI)
+
+- พี (testing) 
+
+- มอส (UX/UI)
+
+- บอม (UX/UI)   
+
+- โม (เอกสาร)
+
+เตรียมส่งานและซ้อมพรีเซน ;)
 
 #
